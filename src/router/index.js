@@ -1,20 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import About from '../views/About.vue'
-import Login from '../views/login/loginForm.vue'
-import store from '../store'
+import Home from '@/views/Home.vue'
+import About from '@/views/About.vue'
+import Login from '@/views/login/loginForm.vue'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
-// const ifNotAuthenticated = (to, from, next) => {
-//   if (!store.getters.isAuthenticated) {
-//     next()
-//     return
-//   }
-//   next('/')
-// }
-console.log(Login)
+// eslint-disable-next-line no-unused-vars
+const ifNotAuthenticated = (to, from, next) => {
+  if (!store.getters.isAuthenticated) {
+    next()
+    return
+  }
+  next('/')
+}
+
 // eslint-disable-next-line no-unused-vars
 const ifAuthenticated = (to, from, next) => {
   if (store.getters.isAuthenticated) {
