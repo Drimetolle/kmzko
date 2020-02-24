@@ -1,7 +1,5 @@
 import {
     AUTH_REQUEST,
-    AUTH_ERROR,
-    AUTH_SUCCESS,
     AUTH_LOGOUT
 } from '../actions/auth'
 import apiCall from '@/utils/api'
@@ -18,14 +16,14 @@ const getters = {
 }
 
 const actions = {
-    [AUTH_REQUEST]: ({ commit, dispatch }, user) => {
+    async authRequest ({ commit, dispatch }, user) {
         return new Promise((resolve, reject) => {
             commit(AUTH_REQUEST)
             apiCall({ url: 'auth', data: user, method: 'POST' })
             // TODO api call
         })
     },
-    [AUTH_LOGOUT]: ({ commit }) => {
+    async authLogout ({ commit }) {
         return new Promise(resolve => {
             commit(AUTH_LOGOUT)
             localStorage.removeItem('user-token')
@@ -35,19 +33,19 @@ const actions = {
 }
 
 const mutations = {
-    [AUTH_REQUEST]: state => {
+    authRequest (state) {
         state.status = 'loading'
     },
-    [AUTH_SUCCESS]: (state, resp) => {
+    authSuccess (state, resp) {
         state.status = 'success'
         state.token = resp.token
         state.hasLoadedOnce = true
     },
-    [AUTH_ERROR]: state => {
+    authError (state) {
         state.status = 'error'
         state.hasLoadedOnce = true
     },
-    [AUTH_LOGOUT]: state => {
+    authLogout (state) {
         state.token = ''
     }
 }
