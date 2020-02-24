@@ -1,5 +1,8 @@
 <template>
-    <div>{{item.type}}</div>
+    <v-text-field
+        :label="item.type"
+        placeholder="Placeholder"
+        ></v-text-field>
 </template>
 
 <script>
