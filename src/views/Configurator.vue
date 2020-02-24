@@ -1,6 +1,12 @@
 <template>
     <div>
         <v-container class="content">
+             <v-select
+                :items="items"
+                v-model="select"
+                label="select"
+                @change="getForm"
+                ></v-select>
             <Field v-for="component in conveyorСomponents"
                 :key="component.id"
                 :id="component.id"
@@ -17,40 +23,13 @@
 <script>
 import Basket from '@/components/Basket.vue'
 import Field from '@/components/Field.vue'
-import { AUTH_REQUEST } from 'actions/auth'
+import { GET_FORM_CONVEYOR } from 'actions/configurator'
 export default {
     data: () => {
         return {
-            /**
-             * Example component: {type: 'engine', price: 10000}
-             */
-            conveyorСomponents: [
-                { type: 'engine', id: '1' },
-                { type: 'engine', id: '2' },
-                { type: 'engine', id: '3' },
-                { type: 'engine', id: '4' },
-                { type: 'engine', id: '5' },
-                { type: 'engine', id: '6' },
-                { type: 'engine', id: '7' },
-                { type: 'engine', id: '8' },
-                { type: 'engine', id: '9' },
-                { type: 'engine', id: '10' },
-                { type: 'engine', id: '11' },
-                { type: 'engine', id: '12' },
-                { type: 'engine', id: '13' },
-                { type: 'engine', id: '14' },
-                { type: 'engine', id: '15' },
-                { type: 'engine', id: '16' }]
-            // conveyorСomponents: [
-            //     { type: 'engine', name: 'v8', price: 666 },
-            //     { type: 'engine', name: 'v7', price: 666 }]
-            // conveyorСomponents: [
-            //     { key: '', type: 'engine', price: 10000 },
-            //     { key: '', type: 'engine', price: 465 },
-            //     { key: '', type: 'engine', price: 87128 },
-            //     { key: '', type: 'engine', price: 5200 },
-            //     { key: '', type: 'engine', price: 4613 }
-            // ]
+            conveyorСomponents: [],
+            items: ['Ленточный', 'Скребковый'],
+            select: ''
         }
     },
     computed: {
@@ -61,16 +40,16 @@ export default {
     methods: {
         onSubmit () {
             console.log('Submit!')
-            this.$store.dispatch(AUTH_REQUEST, {
-                username: 'dogo',
-                password: 'dogy'
-            })
         },
         addСomponent (elem) {
             this.conveyorСomponents.push(elem)
         },
         removeСomponent (elem) {
             this.conveyorСomponents.pop(elem)
+        },
+        async getForm () {
+            const newConveyorСomponents = await this.$store.dispatch(GET_FORM_CONVEYOR, { type: this.select })
+            this.conveyorСomponents = newConveyorСomponents
         }
     },
     components: {

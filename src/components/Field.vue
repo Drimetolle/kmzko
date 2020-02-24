@@ -1,7 +1,7 @@
 <template>
     <v-text-field
-        :label="item.type"
-        placeholder="Placeholder"
+        :label="item.value"
+        :placeholder="item.placeholder"
         ></v-text-field>
 </template>
 
