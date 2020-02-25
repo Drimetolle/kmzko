@@ -53,30 +53,32 @@
   </v-app>
 </template>
 
-<script>
-import { AUTH_REQUEST } from 'actions/auth'
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+//import { AUTH_REQUEST } from 'actions/auth';
+export default Vue.extend({
     name: 'login',
-    data () {
+    data() {
         return {
             username: 'dogo',
-            password: 'dogy'
+            password: 'dogy',
         }
     },
     methods: {
-        login () {
+        login() {
             const { username, password } = {
                 username: 'dogo',
-                password: 'dogy'
+                password: 'dogy',
             }
-            this.$store.dispatch(AUTH_REQUEST, { username, password })
-            this.$router.push('/')
+            //this.$store.dispatch(AUTH_REQUEST, { username, password });
+            this.$router.push('/');
         },
-        redirectToReg () {
-            this.$router.push('/registration')
-        }
-    }
-}
+        redirectToReg() {
+            this.$router.push('/registration');
+        },
+    },
+})
 </script>
 
 <style scoped>

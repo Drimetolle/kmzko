@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container class="content">
-             <v-select
+            <v-select
                 :items="items"
                 v-model="select"
                 label="select"
@@ -20,43 +20,45 @@
     </div>
 </template>
 
-<script>
-import Basket from '@/components/Basket.vue'
-import Field from '@/components/Field.vue'
-import { GET_FORM_CONVEYOR } from 'actions/configurator'
-export default {
+<script lang="ts">
+import Vue from 'vue';
+import Basket from '@/components/Basket.vue';
+import Field from '@/components/Field.vue';
+//import { GET_FORM_CONVEYOR } from 'actions/configurator'
+export default Vue.extend({
     data: () => {
         return {
             conveyorСomponents: [],
             items: ['Ленточный', 'Скребковый'],
-            select: ''
+            select: '',
         }
     },
     computed: {
         getPrice () {
             return this.conveyorСomponents.reduce((a, { price }) => a + price, 0) | 0
-        }
+        },
     },
     methods: {
         onSubmit () {
             console.log('Submit!')
         },
-        addСomponent (elem) {
-            this.conveyorСomponents.push(elem)
-        },
-        removeСomponent (elem) {
-            this.conveyorСomponents.pop(elem)
-        },
+        // addСomponent (elem) {
+        //     this.conveyorСomponents.push(elem)
+        // },
+        // removeСomponent (elem) {
+        //     this.conveyorСomponents.pop(elem)
+        // },
         async getForm () {
-            const newConveyorСomponents = await this.$store.dispatch(GET_FORM_CONVEYOR, { type: this.select })
+            //const newConveyorСomponents = await this.$store.dispatch(GET_FORM_CONVEYOR, { type: this.select })
+            const newConveyorСomponents = await this.$store.dispatch('getFormConveyor', { type: this.select })
             this.conveyorСomponents = newConveyorСomponents
-        }
+        },
     },
     components: {
         Basket,
-        Field
-    }
-}
+        Field,
+    },
+})
 </script>
 
 <style scoped>

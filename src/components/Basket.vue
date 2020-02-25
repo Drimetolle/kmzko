@@ -21,9 +21,9 @@
 
 <script>
 export default {
-    name: 'basket',
-    props: {
-        price: Number
-    }
+  name: 'basket',
+  props: {
+    price: Number,
+  }
 }
 </script>

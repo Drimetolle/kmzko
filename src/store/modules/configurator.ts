@@ -1,11 +1,13 @@
-const state = {}
+import {FormConveyor} from '../../types/index';
 
-const getters = {}
+const state = {};
+
+const getters = {};
 
 const actions = {
-    async getFormConveyor ({ commit }, { type }) {
+    async getFormConveyor({ type }: any) {
         return new Promise((resolve) => {
-            console.log(`type: ${type}`)
+            console.log(`type: ${type}`);
             setTimeout(() => resolve([
                 { id: '1', value: 'Температура перевозимого груза', placeholder: '' },
                 { id: '2', value: 'Угол подъема', placeholder: '' },
@@ -13,17 +15,17 @@ const actions = {
                 { id: '4', value: 'Наименование перевозимого груза', placeholder: '' },
                 { id: '5', value: 'Скорость ленты', placeholder: '' },
                 { id: '6', value: 'Длина трассы по горизонтали (м)', placeholder: '' },
-                { id: '7', value: 'Общая максимальная производительность', placeholder: '' }
-            ]), 500)
-        })
-    }
-}
+                { id: '7', value: 'Общая максимальная производительность', placeholder: '' },
+            ]), 500);
+        });
+    },
+};
 
-const mutations = {}
+const mutations = {};
 
 export default {
     state,
     getters,
     actions,
-    mutations
-}
+    mutations,
+};
