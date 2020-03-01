@@ -1,12 +1,20 @@
+const path = require('path');
+const TSLintPlugin = require('tslint-webpack-plugin');
+
 module.exports = {
-  'configureWebpack': {
-    'resolve': {
-        'alias': {
-            'actions': 'C:\\Users\\drime\\source\\JavaScript\\kmzko\\src\\store\\actions'
+  configureWebpack: {
+    resolve: {
+        alias: {
+            actions: path.resolve(__dirname, 'src/store/actions'),
         }
-    }
+    },
+    plugins: [
+      new TSLintPlugin({
+          files: ['./src/**/*.ts']
+      })
+    ],
   },
-  'transpileDependencies': [
+  transpileDependencies: [
     'vuetify'
   ]
 }
