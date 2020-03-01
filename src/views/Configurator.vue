@@ -1,13 +1,9 @@
 <template>
   <div>
     <v-container class="content">
-      <component v-if="true" :is="name" :conveyors="test"/>
+      <component v-if="true" :is="state" :conveyors="test"/>
     </v-container>
-    <form @submit.prevent="onSubmit">
-      <v-container>
-        <Basket class="basket" v-bind:price="getPrice"/>
-      </v-container>
-    </form>
+    <Basket class="basket" @submit.prevent="onSubmit"/>
   </div>
 </template>
 
@@ -17,20 +13,23 @@ import Basket from '@/components/Basket.vue'
 import ListofConveyors from '@/components/ListofConveyors'
 import QuestionList from '@/components/QuestionList'
 
+enum States {
+  ListOfConveyors = 'listof-conveyors',
+  QuestionList = 'question-list'
+}
+
+interface Data {
+  state: States
+}
+
 export default Vue.extend({
-  data: () => {
+  data: (): Data => {
     return {
+      state: States.QuestionList,
     }
   },
   computed: {
-    getPrice(): number {
-      return 0; // this.conveyorСomponents.reduce((a, { price }) => a + price, 0);
-    },
-    name() {
-      // return 'listof-conveyors'
-      return 'question-list'
-    },
-    test() {
+    test(): Array<object> {
       return [
         {id: 1},
         {id: 2},
@@ -39,18 +38,8 @@ export default Vue.extend({
   },
   methods: {
     onSubmit() {
-      return;
+      this.state = States.ListOfConveyors
     },
-    // addСomponent (elem) {
-    //   this.conveyorСomponents.push(elem)
-    // },
-    // removeСomponent (elem) {
-    //   this.conveyorСomponents.pop(elem)
-    // },
-    // async getForm() {
-    //   const newConveyorСomponents = await this.$store.dispatch(GET_FORM_CONVEYOR, { type: this.select });
-    //   this.conveyorСomponents = newConveyorСomponents;
-    // },
   },
   components: {
     Basket,
@@ -63,7 +52,7 @@ export default Vue.extend({
 <style scoped>
 .basket {
   right: 40px;
-  top: 100px;
+  top: 80px;
   position: fixed;
 }
 .content {

@@ -1,9 +1,13 @@
 <template>
   <div>
-    <ConveyorCard v-for="elem in conveyors"
-      :key="elem.id"
-      :id="elem.id"
-      :conveyor="elem"/>
+    <v-row dense>
+      <v-col cols="12" v-for="elem in conveyors"
+        :key="elem.id"
+        :id="elem.id">
+        <ConveyorCard 
+          :conveyor="elem"/>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
