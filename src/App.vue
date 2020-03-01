@@ -22,12 +22,12 @@ import EmptyLayout from '@/layouts/EmptyLayout.vue';
 export default Vue.extend({
   name: 'App',
   computed: {
-    layout () {
-      return (this.$route.meta.layout || 'empty') + '-layout'
-    }
+    layout() {
+      return (this.$route.meta.layout || 'empty') + '-layout';
+    },
   },
   components: {
-    EmptyLayout, MainLayout
+    EmptyLayout, MainLayout,
   },
 
   data: () => ({

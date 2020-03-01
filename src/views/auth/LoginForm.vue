@@ -56,29 +56,28 @@
 <script lang="ts">
 import Vue from 'vue';
 
-//import { AUTH_REQUEST } from 'actions/auth';
 export default Vue.extend({
     name: 'login',
     data() {
         return {
             username: 'dogo',
             password: 'dogy',
-        }
+        };
     },
     methods: {
         login() {
             const { username, password } = {
                 username: 'dogo',
                 password: 'dogy',
-            }
-            //this.$store.dispatch(AUTH_REQUEST, { username, password });
+            };
+            // this.$store.dispatch(AUTH_REQUEST, { username, password });
             this.$router.push('/');
         },
         redirectToReg() {
             this.$router.push('/registration');
         },
     },
-})
+});
 </script>
 
 <style scoped>

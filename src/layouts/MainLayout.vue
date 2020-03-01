@@ -19,13 +19,10 @@
   </v-app>
 </template>
 
-<script>
-export default {
-    props: {
-        source: String
-    },
-    data: () => ({
-        drawer: null
-    })
-}
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+
+});
 </script>
