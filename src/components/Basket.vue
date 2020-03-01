@@ -14,7 +14,7 @@
     </v-list-item>
 
     <v-card-actions>
-      <v-btn color="#d94d33" dark>Сделать заказ</v-btn>
+      <v-btn color="#d94d33" dark @click="onClick">Сделать заказ</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -27,5 +27,10 @@ export default Vue.extend({
   props: {
     price: Number,
   },
+  methods: {
+    onClick() {
+      this.$emit('submit', event)
+    }
+  }
 });
 </script>
