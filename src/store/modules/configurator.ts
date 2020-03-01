@@ -1,5 +1,3 @@
-import {FormConveyor} from '../../types/index';
-
 const state = {};
 
 const getters = {};
@@ -7,7 +5,6 @@ const getters = {};
 const actions = {
     async getFormConveyor({ type }: any) {
         return new Promise((resolve) => {
-            console.log(`type: ${type}`);
             setTimeout(() => resolve([
                 { id: '1', value: 'Температура перевозимого груза', placeholder: '' },
                 { id: '2', value: 'Угол подъема', placeholder: '' },

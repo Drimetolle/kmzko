@@ -7,7 +7,6 @@ import vuetify from './plugins/vuetify';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import currencyFilter from './filters/currency.filter.js';
 
-
 Vue.config.productionTip = false;
 
 Vue.filter('currency', currencyFilter);

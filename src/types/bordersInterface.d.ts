@@ -1,3 +1,5 @@
 export interface FormConveyor {
-    type: string;
+  id: string;
+  value: string;
+  placeholder: string;
 }

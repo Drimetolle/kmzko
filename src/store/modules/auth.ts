@@ -17,15 +17,15 @@ const state: any = {
 };
 
 const getters: any = {
-    isAuthenticated: (state: any) => !!state.token,
-    authStatus: (state: any) => state.status,
+    isAuthenticated: () => !!state.token,
+    authStatus: () => state.status,
 };
 
 const actions: any = {
     async authRequest({ commit, dispatch }: any, user: any) {
         return new Promise((resolve, reject) => {
             commit(AUTH_REQUEST);
-            //apiCall({ url: 'auth', data: user, method: 'POST' });
+            // apiCall({ url: 'auth', data: user, method: 'POST' });
             // TODO api call
         });
     },
@@ -39,19 +39,19 @@ const actions: any = {
 };
 
 const mutations: any = {
-    authRequest(state: any) {
+    authRequest() {
         state.status = 'loading';
     },
-    authSuccess(state: any, resp: any) {
+    authSuccess(resp: any) {
         state.status = 'success';
         state.token = resp.token;
         state.hasLoadedOnce = true;
     },
-    authError(state: any) {
+    authError() {
         state.status = 'error';
         state.hasLoadedOnce = true;
     },
-    authLogout(state: any) {
+    authLogout() {
         state.token = '';
     },
 };
