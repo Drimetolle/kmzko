@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card @click="select">
     <v-card-title class="headline">{{this.conveyor.name}}</v-card-title>  
     <v-card-subtitle>{{components}}</v-card-subtitle> 
   </v-card>
@@ -18,6 +18,11 @@ export default Vue.extend({
   computed: {
     components(): string {
       return this.conveyor.components.join(', ')
+    },
+  },
+  methods: {
+    select() {
+      //
     },
   },
 })

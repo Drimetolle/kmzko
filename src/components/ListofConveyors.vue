@@ -16,12 +16,22 @@
 import Vue from 'vue'
 import { Conveyor } from '@/types/index'
 import ConveyorCard from '@/components/ConveyorCard'
+
+interface Data {
+  conveyors: Array<Conveyor>
+}
+
 export default Vue.extend({
-  name: 'listofconveyors',
-  props: {
-    conveyors: {
-      type: Array,
-    },
+  data: (): Data => {
+    return {
+      conveyors: [],
+    }
+  },
+  mounted() {
+    this.conveyors = [
+        {id: 1, name: 'conveyor1', components: ['engine', 'tape']},
+        {id: 2, name: 'conveyor2', components: ['engine', 'tape']},
+      ]
   },
   components: {
     ConveyorCard,

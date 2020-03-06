@@ -9,7 +9,7 @@
         :key="component.id"
         :id="component.id"
         :item="component"
-        @customivent="test(component.id, $event)"/>
+        @customivent="setField(component.id, $event)"/>
     <v-btn class="mr-4" @click="submit">submit</v-btn>
   </v-form>
 </template>
@@ -19,7 +19,6 @@ import Vue from 'vue'
 import Field from '@/components/Field.vue'
 import { GET_FORM_CONVEYOR } from 'actions/configurator'
 import { FormConveyor } from '@/types/index'
-import formMixin from '@/mixins/formMixin'
 
 interface Data {
   conveyorСomponents: Array<FormConveyor>
@@ -46,7 +45,7 @@ export default Vue.extend({
     submit() {
       // console.log(this.values)
     },
-    test(id: string, event: string) {
+    setField(id: string, event: string) {
       this.values.set(id, event)
     },
   },
