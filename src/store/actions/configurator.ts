@@ -1,1 +1,1 @@
-export const GET_FORM_CONVEYOR = 'getFormConveyor';
+export const GET_FORM_CONVEYOR = 'getFormConveyor'

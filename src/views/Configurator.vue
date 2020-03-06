@@ -9,13 +9,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { Conveyor } from '@/types/index'
 import Basket from '@/components/Basket.vue'
 import ListofConveyors from '@/components/ListofConveyors'
 import QuestionList from '@/components/QuestionList'
 
 enum States {
   ListOfConveyors = 'listof-conveyors',
-  QuestionList = 'question-list'
+  QuestionList = 'question-list',
 }
 
 interface Data {
@@ -29,10 +30,10 @@ export default Vue.extend({
     }
   },
   computed: {
-    test(): Array<object> {
+    test(): Array<Conveyor> {
       return [
-        {id: 1},
-        {id: 2},
+        {id: 1, name: 'conveyor1', components: ['engine', 'tape']},
+        {id: 2, name: 'conveyor2', components: ['engine', 'tape']},
       ]
     },
   },
@@ -46,7 +47,7 @@ export default Vue.extend({
     ListofConveyors,
     QuestionList,
   },
-});
+})
 </script>
 
 <style scoped>

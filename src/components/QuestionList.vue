@@ -19,9 +19,9 @@ import { GET_FORM_CONVEYOR } from 'actions/configurator'
 import { FormConveyor } from '@/types/index'
 
 interface Data {
-  conveyorСomponents: Array<FormConveyor>;
-  items: Array<string>;
-  select: string;
+  conveyorСomponents: Array<FormConveyor>
+  items: Array<string>
+  select: string
 }
 
 export default Vue.extend({
@@ -35,11 +35,11 @@ export default Vue.extend({
   },
   methods: {
     async getForm() {
-      const newConveyorСomponents = await this.$store.dispatch(GET_FORM_CONVEYOR, { type: this.select });
-      this.conveyorСomponents = newConveyorСomponents;
+      const newConveyorСomponents = await this.$store.dispatch(GET_FORM_CONVEYOR, { type: this.select })
+      this.conveyorСomponents = newConveyorСomponents
     },
   },
-    components: {
+  components: {
     Field,
   },
 })

@@ -14,16 +14,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 
-import MainLayout from '@/layouts/MainLayout.vue';
-import EmptyLayout from '@/layouts/EmptyLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue'
+import EmptyLayout from '@/layouts/EmptyLayout.vue'
 
 export default Vue.extend({
   name: 'App',
   computed: {
     layout() {
-      return (this.$route.meta.layout || 'empty') + '-layout';
+      return (this.$route.meta.layout || 'empty') + '-layout'
     },
   },
   components: {
@@ -33,7 +33,7 @@ export default Vue.extend({
   data: () => ({
     //
   }),
-});
+})
 </script>
 
 <style>

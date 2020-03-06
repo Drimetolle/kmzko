@@ -19,8 +19,8 @@
   </v-card>
 </template>
 
-<script>
-import Vue from 'vue';
+<script lang="ts">
+import Vue from 'vue'
 
 export default Vue.extend({
   name: 'basket',
@@ -30,7 +30,7 @@ export default Vue.extend({
   methods: {
     onClick() {
       this.$emit('submit', event)
-    }
-  }
-});
+    },
+  },
+})
 </script>

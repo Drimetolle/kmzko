@@ -13,12 +13,17 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { Conveyor } from '@/types/index'
 import ConveyorCard from '@/components/ConveyorCard'
 export default Vue.extend({
   name: 'listofconveyors',
-  props: ['conveyors'],
+  props: {
+    conveyors: {
+      type: Array,
+    },
+  },
   components: {
-    ConveyorCard
+    ConveyorCard,
   },
 })
 </script>

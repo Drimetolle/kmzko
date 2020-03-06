@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { FormConveyor } from '@/types/index';
+import Vue from 'vue'
+import { FormConveyor } from '@/types/index'
 
 export default Vue.extend({
   props: {
@@ -15,5 +15,5 @@ export default Vue.extend({
       type: Object as () => FormConveyor,
     },
   },
-});
+})
 </script>

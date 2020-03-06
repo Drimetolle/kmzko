@@ -1,11 +1,11 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Login from '@/views/auth/LoginForm.vue';
-import Registration from '@/views/auth/RegistrationForm.vue';
-import store from '@/store';
-import Configurator from '@/views/Configurator.vue';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Login from '@/views/auth/LoginForm.vue'
+import Registration from '@/views/auth/RegistrationForm.vue'
+import store from '@/store'
+import Configurator from '@/views/Configurator.vue'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
 {
@@ -26,12 +26,12 @@ const routes = [
     meta: { layout: 'main' },
     component: Configurator,
 },
-];
+]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
-});
+})
 
-export default router;
+export default router

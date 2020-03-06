@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from 'vue'
 
 export default Vue.extend({
     name: 'login',
@@ -62,22 +62,22 @@ export default Vue.extend({
         return {
             username: 'dogo',
             password: 'dogy',
-        };
+        }
     },
     methods: {
         login() {
             const { username, password } = {
                 username: 'dogo',
                 password: 'dogy',
-            };
+            }
             // this.$store.dispatch(AUTH_REQUEST, { username, password });
-            this.$router.push('/');
+            this.$router.push('/')
         },
         redirectToReg() {
-            this.$router.push('/registration');
+            this.$router.push('/registration')
         },
     },
-});
+})
 </script>
 
 <style scoped>
