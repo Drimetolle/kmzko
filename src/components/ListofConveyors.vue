@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row dense>
+    <v-row v-if="conveyors.length" dense>
       <v-col cols="12" v-for="elem in conveyors"
         :key="elem.id"
         :id="elem.id">
@@ -8,6 +8,7 @@
           :conveyor="elem"/>
       </v-col>
     </v-row>
+    <p v-else-if="!conveyors.length">Подходящие конвейеры не найдены</p>
   </div>
 </template>
 
