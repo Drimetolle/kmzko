@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container class="content">
-      <component v-if="true" :is="state" @changeState="changeState1"/>
+      <component v-if="true" :is="state"/>
     </v-container>
     <Basket class="basket"/>
   </div>
@@ -34,7 +34,6 @@ export default Vue.extend({
   },
   mounted() {
     this.state = this.$store.getters.getState
-    // this.$store.watch('setState', () => {console.log('setState')})
   },
   created() {
     this.$store.watch(
@@ -45,16 +44,6 @@ export default Vue.extend({
     )
   },
   methods: {
-    onSubmit() {
-      this.state = States.ListOfConveyors
-    },
-    onSubmit1() {
-      this.state = States.EditConveyor
-    },
-    changeState1({type}: {type: States}) {
-      // debugger
-      this.state = type
-    },
   },
   components: {
     Basket,

@@ -20,6 +20,7 @@ import { Conveyor, Node, FormConveyor } from '@/types/index'
 
 interface Data {
   conveyorСomponents: Array<Node>
+  values: Map<string, string>
 }
 
 export default Vue.extend({
@@ -34,7 +35,13 @@ export default Vue.extend({
           {id: '2', value: 'tape2'},
         ]},
       ],
+      values: new Map(),
     }
+  },
+  methods: {
+    setField(id: string, event: string) {
+      this.values.set(id, event)
+    },
   },
   components: {
     Field,
