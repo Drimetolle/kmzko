@@ -43,7 +43,7 @@ export default Vue.extend({
       this.conveyorСomponents = newConveyorСomponents
     },
     submit() {
-      // console.log(this.values)
+      this.$store.commit('setState', 'listof-conveyors')
     },
     setField(id: string, event: string) {
       this.values.set(id, event)

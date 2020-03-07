@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-container class="content">
-      <component v-if="true" :is="state"/>
+      <component v-if="true" :is="state" @changeState="changeState1"/>
     </v-container>
-    <Basket class="basket" @submit.prevent="onSubmit" @submit1.prevent="onSubmit1"/>
+    <Basket class="basket"/>
   </div>
 </template>
 
@@ -32,12 +32,28 @@ export default Vue.extend({
   },
   computed: {
   },
+  mounted() {
+    this.state = this.$store.getters.getState
+    // this.$store.watch('setState', () => {console.log('setState')})
+  },
+  created() {
+    this.$store.watch(
+      (state, getters) => getters.getState,
+      (newValue, oldValue) => {
+        this.state = newValue
+      },
+    )
+  },
   methods: {
     onSubmit() {
       this.state = States.ListOfConveyors
     },
     onSubmit1() {
       this.state = States.EditConveyor
+    },
+    changeState1({type}: {type: States}) {
+      // debugger
+      this.state = type
     },
   },
   components: {

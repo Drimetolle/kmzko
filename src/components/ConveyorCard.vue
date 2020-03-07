@@ -22,7 +22,7 @@ export default Vue.extend({
   },
   methods: {
     select() {
-      //
+      this.$emit('select', this.conveyor.id)
     },
   },
 })

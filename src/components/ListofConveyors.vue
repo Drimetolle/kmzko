@@ -4,7 +4,7 @@
       <v-col cols="12" v-for="elem in conveyors"
         :key="elem.id"
         :id="elem.id">
-        <ConveyorCard 
+        <ConveyorCard @select="next"
           :conveyor="elem"/>
       </v-col>
     </v-row>
@@ -26,6 +26,11 @@ export default Vue.extend({
     return {
       conveyors: [],
     }
+  },
+  methods: {
+    next() {
+      this.$store.commit('setState', 'edit-conveyor')
+    },
   },
   mounted() {
     this.conveyors = [

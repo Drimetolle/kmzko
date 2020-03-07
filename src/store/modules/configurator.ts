@@ -1,8 +1,18 @@
 import { FormConveyor } from '@/types/index'
 
-const state = {}
+interface State {
+  appState: string
+}
 
-const getters = {}
+const state: State = {
+  appState: 'question-list',
+}
+
+const getters = {
+  getState() {
+    return state.appState
+  },
+}
 
 const actions = {
   async getFormConveyor({ type }: any) {
@@ -21,7 +31,11 @@ const actions = {
   },
 }
 
-const mutations = {}
+const mutations = {
+  setState(oldState: State, newState: string) {
+    oldState.appState = newState
+  },
+}
 
 export default {
   state,
