@@ -20,7 +20,7 @@ export interface Conveyor {
 export interface Node {
   id: string
   name: string
-  details: Array<Detail>
+  details: Array<FormConveyor>
 }
 
 export interface Detail {
