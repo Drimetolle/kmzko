@@ -14,11 +14,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Conveyor } from '@/types/index'
+import { ConveyorLight } from '@/types/index'
 import ConveyorCard from '@/components/ConveyorCard'
 
 interface Data {
-  conveyors: Array<Conveyor>
+  conveyors: Array<ConveyorLight>
 }
 
 export default Vue.extend({
@@ -29,8 +29,8 @@ export default Vue.extend({
   },
   mounted() {
     this.conveyors = [
-        {id: 1, name: 'conveyor1', components: ['engine', 'tape']},
-        {id: 2, name: 'conveyor2', components: ['engine', 'tape']},
+        {id: '1', name: 'conveyor1', components: ['engine', 'tape']},
+        {id: '2', name: 'conveyor2', components: ['engine', 'tape']},
       ]
   },
   components: {
