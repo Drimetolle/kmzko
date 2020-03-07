@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 import Basket from '@/components/Basket.vue'
 import ListofConveyors from '@/components/ListofConveyors'
 import QuestionList from '@/components/QuestionList'
@@ -25,17 +26,15 @@ interface Data {
 }
 
 export default Vue.extend({
-  data: (): Data => {
+  data: () => {
     return {
-      state: States.QuestionList,
+      state: '',
     }
   },
   computed: {
   },
-  mounted() {
-    this.state = this.$store.getters.getState
-  },
   created() {
+    this.state = this.getState()
     this.$store.watch(
       (state, getters) => getters.getState,
       (newValue, oldValue) => {
@@ -44,6 +43,7 @@ export default Vue.extend({
     )
   },
   methods: {
+    ...mapGetters(['getState']),
   },
   components: {
     Basket,

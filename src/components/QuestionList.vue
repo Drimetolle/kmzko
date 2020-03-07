@@ -16,6 +16,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapMutations, mapActions } from 'vuex'
 import Field from '@/components/Field.vue'
 import { GET_FORM_CONVEYOR } from 'actions/configurator'
 import { FormConveyor } from '@/types/index'
@@ -38,12 +39,14 @@ export default Vue.extend({
     }
   },
   methods: {
+    ...mapMutations(['setState']),
+    ...mapActions([GET_FORM_CONVEYOR]),
     async getForm() {
       const newConveyorСomponents = await this.$store.dispatch(GET_FORM_CONVEYOR, { type: this.select })
       this.conveyorСomponents = newConveyorСomponents
     },
     submit() {
-      this.$store.commit('setState', 'listof-conveyors')
+      this.setState('listof-conveyors')
     },
     setField(id: string, event: string) {
       this.values.set(id, event)

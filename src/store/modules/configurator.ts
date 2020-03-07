@@ -4,13 +4,13 @@ interface State {
   appState: string
 }
 
-const state: State = {
+const state = {
   appState: 'question-list',
 }
 
 const getters = {
-  getState() {
-    return state.appState
+  getState(rstate: State): string {
+    return rstate.appState
   },
 }
 
@@ -34,6 +34,9 @@ const actions = {
 const mutations = {
   setState(oldState: State, newState: string) {
     oldState.appState = newState
+  },
+  throwState(oldState: State) {
+    oldState.appState = 'question-list'
   },
 }
 
