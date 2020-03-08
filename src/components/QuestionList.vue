@@ -20,6 +20,7 @@ import { mapMutations, mapActions } from 'vuex'
 import Field from '@/components/Field.vue'
 import { GET_FORM_CONVEYOR } from 'actions/configurator'
 import { FormConveyor } from '@/types/index'
+import { States } from '@/types/states'
 
 interface Data {
   conveyorСomponents: Array<FormConveyor>
@@ -46,7 +47,7 @@ export default Vue.extend({
       this.conveyorСomponents = newConveyorСomponents
     },
     submit() {
-      this.setState('listof-conveyors')
+      this.setState(States.ListOfConveyors)
     },
     setField(id: string, event: string) {
       this.values.set(id, event)

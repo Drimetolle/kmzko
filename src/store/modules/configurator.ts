@@ -1,11 +1,12 @@
 import { FormConveyor } from '@/types/index'
+import { States } from '@/types/states'
 
 interface State {
-  appState: string
+  appState: States
 }
 
 const state = {
-  appState: 'question-list',
+  appState: States.QuestionList,
 }
 
 const getters = {
@@ -32,11 +33,11 @@ const actions = {
 }
 
 const mutations = {
-  setState(oldState: State, newState: string) {
+  setState(oldState: State, newState: States) {
     oldState.appState = newState
   },
   throwState(oldState: State) {
-    oldState.appState = 'question-list'
+    oldState.appState = States.QuestionList
   },
 }
 
