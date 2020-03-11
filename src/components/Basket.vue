@@ -14,7 +14,7 @@
     </v-list-item>
 
     <v-card-actions>
-      <v-btn color="#d94d33" dark>Сделать заказ</v-btn>
+      <v-btn color="#d94d33" dark @click="() => this.$store.commit('throwState')">Сбросить состояние</v-btn>
     </v-card-actions>
   </v-card>
 </template>
