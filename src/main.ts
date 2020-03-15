@@ -12,11 +12,6 @@ Vue.config.productionTip = false
 
 Vue.filter('currency', currencyFilter)
 
-/**
- * axios config
- */
-axios.defaults.baseURL = 'http://localhost:8081/api'
-
 new Vue({
   router,
   store,

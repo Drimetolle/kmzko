@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
 import { GET_FORM_CONVEYOR } from 'actions/configurator'
 import { FormConveyor } from '@/types/index'
@@ -34,10 +34,13 @@ export default Vue.extend({
   data: (): Data => {
     return {
       conveyorСomponents: [],
-      items: ['Ленточный', 'Скребковый'],
+      items: [],
       select: '',
       values: new Map(),
     }
+  },
+  async created() {
+    this.items = await this.getConveyorType
   },
   methods: {
     ...mapMutations(['setState']),
@@ -48,8 +51,11 @@ export default Vue.extend({
     },
     submit() {
       this.setState(States.ListOfConveyors)
-      console.log(JSON.stringify(Object.fromEntries(this.values)))
+      // console.log(JSON.stringify(Object.fromEntries(this.values)))
     },
+  },
+  computed: {
+    ...mapGetters(['getConveyorType']),
   },
   components: {
     Field,

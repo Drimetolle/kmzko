@@ -1,5 +1,6 @@
 import { FormConveyor } from '@/types/index'
 import { States } from '@/types/states'
+import { getConveyorType } from '@/utils/api.questionnaire'
 
 interface State {
   appState: States
@@ -12,6 +13,9 @@ const state = {
 const getters = {
   getState(rstate: State): string {
     return rstate.appState
+  },
+  async getConveyorType() {
+    return await getConveyorType()
   },
 }
 
