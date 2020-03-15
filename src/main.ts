@@ -6,10 +6,16 @@ import './registerServiceWorker'
 import vuetify from './plugins/vuetify'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import currencyFilter from './filters/currency.filter.js'
+import axios from 'axios'
 
 Vue.config.productionTip = false
 
 Vue.filter('currency', currencyFilter)
+
+/**
+ * axios config
+ */
+axios.defaults.baseURL = 'http://localhost:8081/api'
 
 new Vue({
   router,
