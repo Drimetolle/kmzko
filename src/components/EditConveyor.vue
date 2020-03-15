@@ -8,7 +8,7 @@
         :key="detail.id"
         :id="detail.id"
         :item="detail"
-        @customivent="setField(detail.id, $event)"/>
+        :values="values"/>
     </v-container>
   </v-form>
 </template>
@@ -17,6 +17,7 @@
 import Vue from 'vue'
 import Field from '@/components/Field.vue'
 import { Conveyor, Node, FormConveyor } from '@/types/index'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 interface Data {
   conveyorСomponents: Array<Node>
@@ -38,7 +39,14 @@ export default Vue.extend({
       values: new Map(),
     }
   },
+  async created() {
+    const res = await this.getConveyor()
+    const nodes = res.nodes
+    this.conveyorСomponents = nodes
+    console.log(this.conveyorСomponents)
+  },
   methods: {
+    ...mapActions(['getConveyor']),
     setField(id: string, event: string) {
       this.values.set(id, event)
     },
