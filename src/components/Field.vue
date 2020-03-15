@@ -1,16 +1,16 @@
 <template>
   <v-text-field
     v-if="!!!item.child"
-    :label="item.value"
+    :label="item.name"
     :placeholder="item.placeholder"
     v-model="value"
-    @input="$emit('customivent', value)"
+    @input="changeValue"
     ></v-text-field>
   <v-select v-else-if="item.child"
     :items="item.child"
-    :label="item.value"
+    :label="item.name"
     v-model="value"
-    @input="$emit('customivent', value)"
+    @input="changeValue"
     ></v-select>
 </template>
 
@@ -23,11 +23,23 @@ export default Vue.extend({
     item: {
       type: Object as () => FormConveyor,
     },
+    values: {
+      type: Map,
+    },
   },
   data: () => {
     return {
       value: '',
     }
+  },
+  mounted() {
+    this.value = this.item.value
+    this.values.set(this.item.id, this.value)
+  },
+  methods: {
+    changeValue() {
+      this.values.set(this.item.id, this.value)
+    },
   },
 })
 </script>

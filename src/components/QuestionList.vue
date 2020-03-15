@@ -9,7 +9,7 @@
         :key="component.id"
         :id="component.id"
         :item="component"
-        @customivent="setField(component.id, $event)"/>
+        :values="values"/>
     <v-btn class="mr-4" @click="submit">submit</v-btn>
   </v-form>
 </template>
@@ -48,9 +48,7 @@ export default Vue.extend({
     },
     submit() {
       this.setState(States.ListOfConveyors)
-    },
-    setField(id: string, event: string) {
-      this.values.set(id, event)
+      console.log(JSON.stringify(Object.fromEntries(this.values)))
     },
   },
   components: {
