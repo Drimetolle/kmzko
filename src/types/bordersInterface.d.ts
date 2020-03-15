@@ -1,5 +1,6 @@
 export interface FormConveyor {
   id: string
+  name: string
   value: string
   placeholder?: string
   child?: Array<string>
