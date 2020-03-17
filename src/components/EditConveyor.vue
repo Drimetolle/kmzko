@@ -40,10 +40,9 @@ export default Vue.extend({
     }
   },
   async created() {
-    const res = await this.getConveyor()
+    const res = await this.getConveyor(12)
     const nodes = res.nodes
     this.conveyorСomponents = nodes
-    console.log(this.conveyorСomponents)
   },
   methods: {
     ...mapActions(['getConveyor']),

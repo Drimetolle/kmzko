@@ -7,17 +7,17 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { ConveyorLight } from '@/types/index'
+import { Conveyor } from '@/types/index'
 
 export default Vue.extend({
   props: {
     conveyor: {
-      type: Object as () => ConveyorLight,
+      type: Object as () => Conveyor,
     },
   },
   computed: {
     components(): string {
-      return this.conveyor.components.join(', ')
+      return this.conveyor.nodes.map(n => n.name).join(', ')
     },
   },
   methods: {

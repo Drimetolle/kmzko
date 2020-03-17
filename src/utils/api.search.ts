@@ -6,13 +6,22 @@ const request = axios.create({
   timeout: 1000,
 })
 
-async function getConveyor(): Promise<Conveyor> {
+async function getConveyor(id: number): Promise<Conveyor> {
   try {
-    const res = await request.get('')
-    return res.data[0] as Conveyor
+    const res = await request.get(`conveyors/${id}`)
+    return res.data as Conveyor
   } catch (error) {
     throw Error(error)
   }
 }
 
-export { getConveyor }
+async function getConveyors(payload: Map<string, string>): Promise<Array<Conveyor>> {
+  try {
+    const res = await request.get(`conveyors/`)
+    return res.data as Array<Conveyor>
+  } catch (error) {
+    throw Error(error)
+  }
+}
+
+export { getConveyor, getConveyors }
