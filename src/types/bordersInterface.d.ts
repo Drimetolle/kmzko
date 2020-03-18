@@ -27,5 +27,5 @@ export interface Node {
 export interface Detail {
   id: string
   name: string
-  characteristics: string
+  characteristics: Array<any>
 }

@@ -3,7 +3,15 @@
     <v-container class="content">
       <component v-if="true" :is="state"/>
     </v-container>
-    <Basket class="basket"/>
+    <v-navigation-drawer
+      clipped
+      right
+      floating
+      permanent
+      app
+      overflow>
+      <Basket class="basket"/>
+    </v-navigation-drawer>
   </div>
 </template>
 
@@ -23,12 +31,14 @@ enum States {
 
 interface Data {
   state: States
+  drawer: null
 }
 
 export default Vue.extend({
   data: () => {
     return {
       state: '',
+      drawer: null,
     }
   },
   computed: {
@@ -56,12 +66,6 @@ export default Vue.extend({
 
 <style scoped>
 .basket {
-  right: 40px;
-  top: 80px;
-  position: fixed;
-}
-.content {
-  width: 75%;
-  margin-left: 50px;
+  top: 20px;
 }
 </style>

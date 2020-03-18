@@ -4,6 +4,7 @@
       app
       color="#d94d33"
       dark
+      clipped-right
     >
       <v-toolbar-title>Application</v-toolbar-title>
     </v-app-bar>

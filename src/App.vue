@@ -1,16 +1,14 @@
 <template>
-  <v-app>
-    <div id="app">
-      <div id="nav">
+   <div id="app">
+      <!-- <div id="nav">
         <router-link to="/login">Login</router-link> |
         <router-link to="/registration">Registration</router-link> |
         <router-link to="/">Configurator</router-link>
-      </div>
+      </div> -->
       <component :is="layout">
           <router-view/>
       </component>
-    </div>
-  </v-app>
+  </div>
 </template>
 
 <script lang="ts">

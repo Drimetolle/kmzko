@@ -1,12 +1,15 @@
 <template>
   <div>
     <v-row v-if="conveyors.length" dense>
-      <v-col cols="12" v-for="elem in conveyors"
-        :key="elem.id"
-        :id="elem.id">
-        <ConveyorCard @select="next"
-          :conveyor="elem"/>
-      </v-col>
+      <v-expansion-panels>
+        <v-col cols="12" v-for="elem in conveyors"
+          :key="elem.id"
+          :id="elem.id">
+          <!-- <ConveyorCard @select="next" -->
+          <ConveyorCard 
+            :conveyor="elem"/>
+        </v-col>
+      </v-expansion-panels>
     </v-row>
     <p v-else-if="!conveyors.length">Подходящие конвейеры не найдены</p>
   </div>
