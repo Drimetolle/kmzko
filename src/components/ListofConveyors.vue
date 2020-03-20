@@ -33,7 +33,7 @@ export default Vue.extend({
   },
   async mounted() {
     this.conveyors = await this.fetchConveyors(this.getQuestionnaire)
-    console.log(this.conveyors)
+    // console.log(this.conveyors)
   },
   computed: {
     ...mapGetters(['getConveyors', 'getQuestionnaire']),
