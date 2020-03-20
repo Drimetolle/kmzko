@@ -32,12 +32,11 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    await this.fetchConveyors(new Map<string, string>())
-    const res = this.getConveyors
-    this.conveyors = res
+    this.conveyors = await this.fetchConveyors(this.getQuestionnaire)
+    console.log(this.conveyors)
   },
   computed: {
-    ...mapGetters(['getConveyors']),
+    ...mapGetters(['getConveyors', 'getQuestionnaire']),
   },
   methods: {
     ...mapActions(['fetchConveyors']),

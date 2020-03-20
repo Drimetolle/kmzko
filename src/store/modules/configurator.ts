@@ -1,16 +1,18 @@
 import { FormConveyor, Conveyor } from '@/types/index'
 import { States } from '@/types/states'
 import { getConveyorType, getQuestionnaireByType } from '@/utils/api.questionnaire'
-import { getConveyor, getConveyors } from '@/utils/api.search'
+import { getConveyor, getNearConveyors } from '@/utils/api.search'
 
 interface State {
   appState: States
   listOfConveyors: Array<Conveyor>
+  questionnaire: Map<string, string>
 }
 
 const state = {
   appState: States.QuestionList,
   listOfConveyors: null,
+  questionnaire: null,
 }
 
 const getters = {
@@ -26,6 +28,9 @@ const getters = {
   getConveyorById(rstate: State, id: string) {
     return rstate.listOfConveyors.find(i => i.id === id)
   },
+  getQuestionnaire(rstate: State) {
+    return rstate.questionnaire
+  },
 }
 
 const actions = {
@@ -36,7 +41,7 @@ const actions = {
     return await getConveyor(id)
   },
   async fetchConveyors({ dispatch, commit }: any, payload: Map<string, string>): Promise<Array<Conveyor>> {
-    const conveyors = await getConveyors(payload)
+    const conveyors = await getNearConveyors(payload)
     commit('setListOfConveyors', conveyors)
     return conveyors
   },
@@ -51,6 +56,9 @@ const mutations = {
   },
   setListOfConveyors(oldState: State, listOfConveyors: Array<Conveyor>) {
     oldState.listOfConveyors = listOfConveyors
+  },
+  setQuestionnaire(oldState: State, questionnaire: Map<string, string>) {
+    oldState.questionnaire = questionnaire
   },
 }
 

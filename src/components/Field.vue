@@ -21,7 +21,7 @@ import { FormConveyor } from '@/types/index'
 export default Vue.extend({
   props: {
     item: {
-      type: Object as () => FormConveyor,
+      type: Object ,
     },
     values: {
       type: Map,
@@ -34,11 +34,11 @@ export default Vue.extend({
   },
   mounted() {
     this.value = this.item.value
-    this.values.set(this.item.id, this.value)
+    this.values.set(this.item.type, this.value)
   },
   methods: {
     changeValue() {
-      this.values.set(this.item.id, this.value)
+      this.values.set(this.item.type, this.value)
     },
   },
 })

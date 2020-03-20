@@ -6,11 +6,11 @@
         label="select"
         @change="getForm"/>
       <Field v-for="component in conveyorСomponents"
-        :key="component.id"
-        :id="component.id"
+        :key="component.mark"
+        :id="component.mark"
         :item="component"
         :values="values"/>
-    <v-btn class="mr-4" @click="submit">submit</v-btn>
+    <v-btn class="mr-4" @click.prevent="submit">submit</v-btn>
   </v-form>
 </template>
 
@@ -43,15 +43,15 @@ export default Vue.extend({
     this.items = await this.getConveyorType
   },
   methods: {
-    ...mapMutations(['setState']),
-    ...mapActions(['getFormConveyor']),
+    ...mapMutations(['setState', 'setQuestionnaire']),
+    ...mapActions(['getFormConveyor', 'fetchConveyors']),
     async getForm() {
       const newConveyorСomponents = await this.getFormConveyor({ type: this.select })
       this.conveyorСomponents = newConveyorСomponents
     },
     submit() {
+      this.setQuestionnaire(this.values)
       this.setState(States.ListOfConveyors)
-      // console.log(JSON.stringify(Object.fromEntries(this.values)))
     },
   },
   computed: {

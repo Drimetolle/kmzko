@@ -14,7 +14,7 @@
             </v-list-item>
           </v-list-item-content>
         </v-list-item>
-        <v-divider/>
+        <v-divider v-if="conveyor.nodes.length - 1 > i"/>
       </div>
     </v-expansion-panel-content>
   </v-expansion-panel>
@@ -45,11 +45,7 @@ export default Vue.extend({
     },
     characteristics(detail: Detail): string {
       // console.log(detail)
-      return detail.characteristics.map(n => n.unit.value).join(', ')
-    },
-    characteristicsName(detail: Detail): string {
-      // console.log(detail)
-      return detail.characteristics.map(n => n.unit.name).join(', ')
+      return detail.characteristics.map(n => `${n.name} - ${n.value}${n.type.substring(0, 1)}`).join(', ')
     },
   },
 })

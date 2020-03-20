@@ -15,13 +15,15 @@ async function getConveyor(id: number): Promise<Conveyor> {
   }
 }
 
-async function getConveyors(payload: Map<string, string>): Promise<Array<Conveyor>> {
+async function getNearConveyors(payload: Map<string, string>): Promise<Array<Conveyor>> {
   try {
-    const res = await request.get(`conveyors/`)
+    const res = await request.get(`conveyors/`, {
+      params: Object.fromEntries(payload),
+    })
     return res.data as Array<Conveyor>
   } catch (error) {
     throw Error(error)
   }
 }
 
-export { getConveyor, getConveyors }
+export { getConveyor, getNearConveyors }
