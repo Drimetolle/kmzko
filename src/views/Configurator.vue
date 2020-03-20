@@ -1,8 +1,5 @@
 <template>
   <div>
-    <v-container class="content">
-      <component v-if="true" :is="state"/>
-    </v-container>
     <v-navigation-drawer
       clipped
       right
@@ -12,6 +9,9 @@
       overflow>
       <Basket class="basket"/>
     </v-navigation-drawer>
+    <v-container class="content">
+      <component v-if="true" :is="state"/>
+    </v-container>
   </div>
 </template>
 
