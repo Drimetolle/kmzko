@@ -17,6 +17,8 @@
     "quotemark": [true, "single"],
     "array-type": [true, "generic"],
     "semicolon": [true, "never"],
-    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}]
+    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
+    "space-before-blocks": 2,
+    "whitespace": [true, "check-decl", "check-postbrace", "check-preblock"]
   }
 }
