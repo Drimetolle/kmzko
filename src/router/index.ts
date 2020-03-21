@@ -4,6 +4,7 @@ import Login from '@/views/auth/LoginForm.vue'
 import Registration from '@/views/auth/RegistrationForm.vue'
 import store from '@/store'
 import Configurator from '@/views/Configurator.vue'
+import Profile from '@/views/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,16 @@ const routes = [
     name: 'configurator',
     meta: { layout: 'main' },
     component: Configurator,
+},
+{
+    path: '/settings',
+    redirect: { name: 'profile' },
+},
+{
+    path: '/settings/profile',
+    name: 'profile',
+    meta: { layout: 'main' },
+    component: Profile,
 },
 ]
 

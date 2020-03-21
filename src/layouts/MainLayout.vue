@@ -11,19 +11,17 @@
     <v-content>
       <router-view/>
     </v-content>
-    <v-footer
+    <!-- <v-footer
       color="#d94d33"
       app
     >
       <span class="white--text">&copy; 2020</span>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.extend({
-
-})
+export default Vue.extend({ })
 </script>
