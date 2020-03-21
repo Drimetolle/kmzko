@@ -7,6 +7,29 @@
       clipped-right
     >
       <v-toolbar-title>Application</v-toolbar-title>
+      <v-spacer/>
+      <div class="text-center">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              color="primary"
+              dark
+              v-on="on"
+            >
+              Drop
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in items"
+              :key="index"
+              @click="pushTo(index)"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
     </v-app-bar>
     <v-content>
       <router-view/>
@@ -23,5 +46,19 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.extend({ })
+export default Vue.extend({
+  data: () => {
+    return {
+      items: [
+        { title: 'Settings' },
+      ],
+    }
+  },
+  methods: {
+    pushTo(index: number) {
+      if(index === 0) this.$router.push('/settings/profile')
+      else if (index === 1) this.$router.push('/settings/profile')
+    },
+  },
+ })
 </script>
