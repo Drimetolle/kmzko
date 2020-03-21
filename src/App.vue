@@ -3,7 +3,8 @@
       <div id="nav">
         <router-link to="/login">Login</router-link> |
         <router-link to="/registration">Registration</router-link> |
-        <router-link to="/">Configurator</router-link>
+        <router-link to="/">Configurator</router-link> |
+        <router-link to="/settings/profile">Settings</router-link>
       </div>
       <component :is="layout">
           <router-view/>
@@ -27,10 +28,6 @@ export default Vue.extend({
   components: {
     EmptyLayout, MainLayout,
   },
-
-  data: () => ({
-    //
-  }),
 })
 </script>
 
