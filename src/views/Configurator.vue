@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <v-navigation-drawer
       clipped
       right
@@ -20,8 +20,29 @@
         </div>
       </v-stepper-header>
     </v-stepper>
-
-    <v-container class="content">
+    <v-snackbar
+      v-model="snackbar"
+      multi-line
+      right
+      timeout="10000"
+    >
+      Вы не закончили прошлый проект, желаете продолжить?
+      <v-btn
+        dark
+        text
+        @click="snackbar = false"
+      >
+        Да
+      </v-btn>
+      <v-btn
+        dark
+        text
+        @click="snackbar = false"
+      >
+        Нет
+      </v-btn>
+    </v-snackbar>
+    <v-container>
       <component v-if="true" :is="state"/>
     </v-container>
   </div>
@@ -48,9 +69,14 @@ export default Vue.extend({
       stateIndex: 0,
       drawer: null,
       flow: [States.QuestionList, States.ListOfConveyors, States.EditConveyor],
+      snackbar: false,
     }
   },
   computed: {
+  },
+  methods: {
+    ...mapGetters(['getState']),
+     ...mapMutations(['setState']),
   },
   created() {
     this.state = this.getState()
@@ -62,9 +88,9 @@ export default Vue.extend({
       },
     )
   },
-  methods: {
-    ...mapGetters(['getState']),
-     ...mapMutations(['setState']),
+  mounted() {
+    this.snackbar = true
+    // check previous project
   },
   components: {
     Basket,
@@ -78,5 +104,8 @@ export default Vue.extend({
 <style scoped>
 .basket {
   top: 20px;
+}
+.content {
+  padding: 5px;
 }
 </style>
