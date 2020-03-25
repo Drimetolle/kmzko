@@ -16,7 +16,7 @@
         </v-list-item>
         <v-divider v-if="conveyor.nodes.length - 1 > i"/>
       </div>
-      <v-btn class="mr-4" @click.prevent="submit">Редактировать</v-btn>
+      <v-btn class="mr-4" @click.prevent="submit">{{ $t('edit') }}</v-btn>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>

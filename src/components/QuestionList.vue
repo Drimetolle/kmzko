@@ -19,7 +19,7 @@
       :id="component.mark"
       :item="component"
       :values="values"/>
-    <v-btn v-if="select !== '' && loaded" class="mr-4" @click.prevent="submit">submit</v-btn>
+    <v-btn v-if="select !== '' && loaded" class="mr-4" @click.prevent="submit">{{ $t('submit') }}</v-btn>
   </v-form>
 </template>
 
@@ -51,7 +51,9 @@ export default Vue.extend({
     }
   },
   async created() {
-    this.items = await this.getConveyorType
+    const conveyorTypes: Array<string> = await this.getConveyorType
+    const localeItems = conveyorTypes.map(i => this.$t(i)) as Array<string>
+    this.items = conveyorTypes
   },
   methods: {
     ...mapMutations(['setState', 'setQuestionnaire']),

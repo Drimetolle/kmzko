@@ -14,7 +14,7 @@
       <v-stepper-header>
         <div v-for="(step, i) in flow"
           :key="step">
-          <v-stepper-step :complete="flow.indexOf(state) >= i" :step="i+1">{{step}}</v-stepper-step>
+          <v-stepper-step :complete="flow.indexOf(state) >= i" :step="i+1">{{ $t(step) }}</v-stepper-step>
           
           <v-divider></v-divider>
         </div>
