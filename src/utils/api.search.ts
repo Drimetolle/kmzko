@@ -2,8 +2,8 @@ import axios from 'axios'
 import { Conveyor } from '@/types/index'
 
 const request = axios.create({
-  baseURL: 'http://localhost:8081/api/search/',
-  timeout: 1000,
+  baseURL: `${process.env.VUE_APP_API_BASE_URL}/api/search/`,
+  timeout: 5000,
 })
 
 async function getConveyor(id: number): Promise<Conveyor> {
