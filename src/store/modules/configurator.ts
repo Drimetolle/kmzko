@@ -7,12 +7,14 @@ interface State {
   appState: States
   listOfConveyors: Array<Conveyor>
   questionnaire: Map<string, string>
+  conveyor: any
 }
 
 const state = {
   appState: States.QuestionList,
   listOfConveyors: null,
   questionnaire: null,
+  conveyor: null,
 }
 
 const getters = {
@@ -28,6 +30,9 @@ const getters = {
   getConveyorById(rstate: State, id: string) {
     return rstate.listOfConveyors.find(i => i.id === id)
   },
+  getConveyor(rstate: State) {
+    return rstate.conveyor
+  },
   getQuestionnaire(rstate: State) {
     return rstate.questionnaire
   },
@@ -37,7 +42,7 @@ const actions = {
   async getFormConveyor({ dispatch, commit }: any, { type }: { type: string }): Promise<Array<FormConveyor>> {
     return await getQuestionnaireByType(type)
   },
-  async getConveyor({ dispatch, commit }: any, id: number): Promise<Conveyor> {
+  async fetchConveyor({ dispatch, commit }: any, id: number): Promise<Conveyor> {
     return await getConveyor(id)
   },
   async fetchConveyors({ dispatch, commit }: any, payload: Map<string, string>): Promise<Array<Conveyor>> {
@@ -59,6 +64,9 @@ const mutations = {
   },
   setQuestionnaire(oldState: State, questionnaire: Map<string, string>) {
     oldState.questionnaire = questionnaire
+  },
+  setConveyor(oldState: State, conveyor: any) {
+    oldState.conveyor = conveyor
   },
 }
 

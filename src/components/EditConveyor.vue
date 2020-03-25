@@ -10,6 +10,7 @@
         :item="detail"
         :values="values"/>
     </v-container>
+    <v-btn class="mr-4" @click.prevent="submit">save</v-btn>
   </v-form>
 </template>
 
@@ -40,12 +41,16 @@ export default Vue.extend({
     }
   },
   async created() {
-    const res = await this.getConveyor(12)
+    // const res = await this.fetchConveyor(12)
+    const res = this.getConveyor
     const nodes = res.nodes
     this.conveyorСomponents = nodes
   },
+  computed: {
+    ...mapGetters(['getConveyor']),
+  },
   methods: {
-    ...mapActions(['getConveyor']),
+    ...mapActions(['fetchConveyor']),
     setField(id: string, event: string) {
       this.values.set(id, event)
     },
