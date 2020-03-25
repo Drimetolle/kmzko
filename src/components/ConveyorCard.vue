@@ -6,7 +6,7 @@
           :key="i">
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>{{node.name}}</v-list-item-title>
+            <v-list-item-title class="title">{{node.name}}</v-list-item-title>
             <v-list-item v-for="(detail, i) in node.details"
                 :key="i">
               <v-list-item-title>{{`${detail.name}: `}}{{characteristics(detail)}}</v-list-item-title>
@@ -16,6 +16,7 @@
         </v-list-item>
         <v-divider v-if="conveyor.nodes.length - 1 > i"/>
       </div>
+      <v-btn class="mr-4" @click.prevent="submit">Редактировать</v-btn>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -23,6 +24,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Conveyor, Detail } from '@/types/index'
+import { mapGetters, mapMutations } from 'vuex'
+import { States } from '@/types/states'
 
 export default Vue.extend({
   props: {
@@ -36,6 +39,7 @@ export default Vue.extend({
     },
   },
   methods: {
+    ...mapMutations(['setConveyor', 'setState']),
     select() {
       this.$emit('select', this.conveyor.id)
     },
@@ -46,6 +50,11 @@ export default Vue.extend({
     characteristics(detail: Detail): string {
       // console.log(detail)
       return detail.characteristics.map(n => `${n.name} - ${n.value}${n.type.substring(0, 1)}`).join(', ')
+    },
+    submit() {
+      this.$emit('selectConveyor', this.conveyor.id)
+      this.setConveyor(this.conveyor)
+      this.setState(States.EditConveyor)
     },
   },
 })

@@ -1,16 +1,25 @@
 <template>
   <v-form>
     <v-select
-        :items="items"
-        v-model="select"
-        label="select"
-        @change="getForm"/>
-      <Field v-for="component in conveyorСomponents"
-        :key="component.mark"
-        :id="component.mark"
-        :item="component"
-        :values="values"/>
-    <v-btn class="mr-4" @click.prevent="submit">submit</v-btn>
+      :items="items"
+      v-model="select"
+      label="select"
+      @change="getForm"
+    />
+    <div class="text-center">
+      <v-progress-circular
+        v-if="!loaded"
+        indeterminate
+        color="primary"
+        size="50"
+      ></v-progress-circular>
+    </div>
+    <Field v-for="component in conveyorСomponents"
+      :key="component.mark"
+      :id="component.mark"
+      :item="component"
+      :values="values"/>
+    <v-btn v-if="select !== '' && loaded" class="mr-4" @click.prevent="submit">submit</v-btn>
   </v-form>
 </template>
 
@@ -27,6 +36,7 @@ interface Data {
   items: Array<string>
   select: string,
   values: Map<string, string>
+  loaded: boolean
 }
 
 export default Vue.extend({
@@ -37,6 +47,7 @@ export default Vue.extend({
       items: [],
       select: '',
       values: new Map(),
+      loaded: true,
     }
   },
   async created() {
@@ -46,8 +57,10 @@ export default Vue.extend({
     ...mapMutations(['setState', 'setQuestionnaire']),
     ...mapActions(['getFormConveyor', 'fetchConveyors']),
     async getForm() {
+      this.loaded = false
       const newConveyorСomponents = await this.getFormConveyor({ type: this.select })
       this.conveyorСomponents = newConveyorСomponents
+      this.loaded = true
     },
     submit() {
       this.setQuestionnaire(this.values)

@@ -1,17 +1,25 @@
 <template>
   <div>
+    <div class="text-center">
+      <v-progress-circular
+        v-if="!loaded"
+        indeterminate
+        color="primary"
+        size="50"
+      ></v-progress-circular>
+    </div>
     <v-row v-if="conveyors.length" dense>
-      <v-expansion-panels>
+      <v-expansion-panels multiple>
         <v-col cols="12" v-for="elem in conveyors"
           :key="elem.id"
           :id="elem.id">
-          <!-- <ConveyorCard @select="next" -->
           <ConveyorCard 
-            :conveyor="elem"/>
+            :conveyor="elem"
+          />
         </v-col>
       </v-expansion-panels>
     </v-row>
-    <p v-else-if="!conveyors.length">Подходящие конвейеры не найдены</p>
+    <p v-else-if="!conveyors.length && loaded">Подходящие конвейеры не найдены</p>
   </div>
 </template>
 
@@ -23,16 +31,20 @@ import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 interface Data {
   conveyors: Array<ConveyorLight>
+  loaded: boolean
 }
 
 export default Vue.extend({
   data: (): Data => {
     return {
       conveyors: [],
+      loaded: true,
     }
   },
   async mounted() {
+    this.loaded = false
     this.conveyors = await this.fetchConveyors(this.getQuestionnaire)
+    this.loaded = true
     // console.log(this.conveyors)
   },
   computed: {
@@ -40,8 +52,9 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions(['fetchConveyors']),
+    ...mapMutations(['setState']),
     next() {
-      this.$store.commit('setState', 'edit-conveyor')
+      this.setState('edit-conveyor')
     },
   },
   components: {

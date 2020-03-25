@@ -24,7 +24,6 @@
       v-model="snackbar"
       multi-line
       right
-      timeout="10000"
     >
       Вы не закончили прошлый проект, желаете продолжить?
       <v-btn
@@ -68,7 +67,8 @@ export default Vue.extend({
       state: '',
       stateIndex: 0,
       drawer: null,
-      flow: [States.QuestionList, States.ListOfConveyors, States.EditConveyor],
+      // flow: [States.QuestionList, States.ListOfConveyors, States.EditConveyor, States.AddOptions],
+      flow: [States.QuestionList, States.ListOfConveyors],
       snackbar: false,
     }
   },
@@ -89,7 +89,7 @@ export default Vue.extend({
     )
   },
   mounted() {
-    this.snackbar = true
+    this.snackbar = false
     // check previous project
   },
   components: {

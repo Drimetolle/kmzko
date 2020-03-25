@@ -11,12 +11,8 @@
       <div class="text-center">
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
-            <v-btn
-              color="primary"
-              dark
-              v-on="on"
-            >
-              Drop
+            <v-btn v-on="on" fab small>
+              <v-icon>account_circle</v-icon>
             </v-btn>
           </template>
           <v-list>
