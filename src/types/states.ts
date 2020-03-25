@@ -2,6 +2,7 @@ export const enum States {
     ListOfConveyors = 'listof-conveyors',
     QuestionList = 'question-list',
     EditConveyor = 'edit-conveyor',
+    AddOptions = 'add-options',
 }
 
 export const ListOfConveyors = 'listof-conveyors'
