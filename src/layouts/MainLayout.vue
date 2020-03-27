@@ -21,7 +21,7 @@
               :key="index"
               @click="pushTo(index)"
             >
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -46,7 +46,7 @@ export default Vue.extend({
   data: () => {
     return {
       items: [
-        { title: 'Settings' },
+        { title: 'settings' },
       ],
     }
   },

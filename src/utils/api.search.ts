@@ -6,7 +6,7 @@ const request = axios.create({
   timeout: 5000,
 })
 
-async function getConveyor(id: number): Promise<Conveyor> {
+async function getConveyor(id: string): Promise<Conveyor> {
   try {
     const res = await request.get(`conveyors/${id}`)
     return res.data as Conveyor

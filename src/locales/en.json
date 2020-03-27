@@ -1,7 +1,8 @@
 {
-  "question-list":"Questionnaire",
-  "listof-conveyors":"List of conveyors",
+  "question-list":"questionnaire",
+  "listof-conveyors":"list of conveyors",
   "tape":"tape",
   "submit":"submit",
-  "edit":"edit"
+  "edit":"edit",
+  "settings": "settings"
 }

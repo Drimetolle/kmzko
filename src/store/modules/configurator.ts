@@ -42,7 +42,7 @@ const actions = {
   async getFormConveyor({ dispatch, commit }: any, { type }: { type: string }): Promise<Array<FormConveyor>> {
     return await getQuestionnaireByType(type)
   },
-  async fetchConveyor({ dispatch, commit }: any, id: number): Promise<Conveyor> {
+  async fetchConveyor({ dispatch, commit }: any, id: string): Promise<Conveyor> {
     return await getConveyor(id)
   },
   async fetchConveyors({ dispatch, commit }: any, payload: Map<string, string>): Promise<Array<Conveyor>> {

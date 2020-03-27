@@ -1,25 +1,37 @@
 <template>
-  <v-form>
-    <v-select
-      :items="items"
-      v-model="select"
-      label="select"
-      @change="getForm"
-    />
-    <div class="text-center">
-      <v-progress-circular
-        v-if="!loaded"
-        indeterminate
-        color="primary"
-        size="50"
-      ></v-progress-circular>
-    </div>
-    <Field v-for="component in conveyorСomponents"
-      :key="component.mark"
-      :id="component.mark"
-      :item="component"
-      :values="values"/>
-    <v-btn v-if="select !== '' && loaded" class="mr-4" @click.prevent="submit">{{ $t('submit') }}</v-btn>
+  <v-form v-model="valid">
+    <v-container>
+      <v-row
+          align="center"
+          justify="start"
+      >
+        <v-col
+            cols="10"
+            md="24"
+        >
+          <v-select
+            :items="items"
+            v-model="select"
+            label="select"
+            @change="getForm"
+          />
+          <div class="text-center">
+            <v-progress-circular
+              v-if="!loaded"
+              indeterminate
+              color="primary"
+              size="50"
+            ></v-progress-circular>
+          </div>
+          <Field v-for="component in conveyorСomponents"
+            :key="component.mark"
+            :id="component.mark"
+            :item="component"
+            :values="values"/>
+          <v-btn v-if="select !== '' && loaded" class="mr-4" @click.prevent="submit">{{ $t('submit') }}</v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-form>
 </template>
 
@@ -37,6 +49,7 @@ interface Data {
   select: string,
   values: Map<string, string>
   loaded: boolean
+  valid: boolean
 }
 
 export default Vue.extend({
@@ -48,6 +61,7 @@ export default Vue.extend({
       select: '',
       values: new Map(),
       loaded: true,
+      valid: false,
     }
   },
   async created() {

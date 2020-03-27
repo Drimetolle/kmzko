@@ -2,13 +2,14 @@
   <v-form>
     <v-container v-for="component in conveyorСomponents"
       :key="component.id"
-      :id="component.id">
+    >
       <h2>{{ component.name }}</h2>
       <Field v-for="detail in component.details"
         :key="detail.id"
         :id="detail.id"
         :item="detail"
-        :values="values"/>
+        :values="values"
+      />
     </v-container>
     <v-btn class="mr-4" @click.prevent="submit">save</v-btn>
   </v-form>
@@ -54,6 +55,9 @@ export default Vue.extend({
     setField(id: string, event: string) {
       this.values.set(id, event)
     },
+    submit() {
+      //
+     },
   },
   components: {
     Field,

@@ -8,7 +8,8 @@
         <v-card
           class="pa-2"
           outlined
-          tile>
+          tile
+        >
           <v-list-item @click="">
             <v-list-item-content>
               <v-list-item-title>Account</v-list-item-title>
@@ -21,7 +22,7 @@
           </v-list-item>
         </v-card>
       </v-col>
-            <v-col
+      <v-col
         cols="12"
         sm="8"
       >
@@ -32,7 +33,8 @@
         >
           <v-text-field
             solo
-            label="Name">
+            label="Name"
+          >
           </v-text-field>
         </v-card>
       </v-col>

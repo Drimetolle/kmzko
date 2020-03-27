@@ -3,19 +3,36 @@
     <v-expansion-panel-header>{{this.conveyor.name}}</v-expansion-panel-header>
     <v-expansion-panel-content>
       <div v-for="(node, i) in this.conveyor.nodes"
-          :key="i">
+          :key="i"
+      >
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="title">{{node.name}}</v-list-item-title>
             <v-list-item v-for="(detail, i) in node.details"
-                :key="i">
+                :key="i"
+            >
               <v-list-item-title>{{`${detail.name}: `}}{{characteristics(detail)}}</v-list-item-title>
-              
             </v-list-item>
           </v-list-item-content>
         </v-list-item>
         <v-divider v-if="conveyor.nodes.length - 1 > i"/>
       </div>
+      <!-- <v-img 
+        src="https://bad.src/not/valid"
+        lazy-src="https://via.placeholder.com/300.png/09f/fff"
+        contain
+        max-height="300"
+      >
+        <template v-slot:placeholder>
+          <v-row
+            class="fill-height ma-0"
+            align="center"
+            justify="center"
+          >
+            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+          </v-row>
+        </template>
+      </v-img> -->
       <v-btn class="mr-4" @click.prevent="submit">{{ $t('edit') }}</v-btn>
     </v-expansion-panel-content>
   </v-expansion-panel>

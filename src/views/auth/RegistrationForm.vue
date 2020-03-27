@@ -51,11 +51,11 @@
                     name="password"
                     prepend-icon="lock"
                     type="password"
-                  />
+                />
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                <v-spacer />
+                <v-spacer/>
                 <v-btn color="#d94d33" dark>Login</v-btn>
               </v-card-actions>
             </v-card>
