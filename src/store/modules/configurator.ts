@@ -1,13 +1,15 @@
-import { FormConveyor, Conveyor } from '@/types/index'
+import { FormConveyor, Conveyor, OptionalDetail, ConveyorDto } from '@/types/index'
 import { States } from '@/types/states'
 import { getConveyorType, getQuestionnaireByType } from '@/utils/api.questionnaire'
 import { getConveyor, getNearConveyors } from '@/utils/api.search'
+import { getOptionsByConveyorType } from '@/utils/api.options'
 
 interface State {
   appState: States
   listOfConveyors: Array<Conveyor>
   questionnaire: Map<string, string>
-  conveyor: any
+  conveyor: ConveyorDto
+  options: Array<OptionalDetail>
 }
 
 const state = {
@@ -15,6 +17,7 @@ const state = {
   listOfConveyors: null,
   questionnaire: null,
   conveyor: null,
+  options: null,
 }
 
 const getters = {
@@ -50,6 +53,11 @@ const actions = {
     commit('setListOfConveyors', conveyors)
     return conveyors
   },
+  async fetchOptions({ dispatch, commit }: any, { type }: { type: string }): Promise<Array<OptionalDetail>> {
+    const options = await getOptionsByConveyorType(type)
+    commit('setListOfOptions', options)
+    return options
+  },
 }
 
 const mutations = {
@@ -65,8 +73,11 @@ const mutations = {
   setQuestionnaire(oldState: State, questionnaire: Map<string, string>) {
     oldState.questionnaire = questionnaire
   },
-  setConveyor(oldState: State, conveyor: any) {
+  setConveyor(oldState: State, conveyor: ConveyorDto) {
     oldState.conveyor = conveyor
+  },
+  setListOfOptions(oldState: State, options: Array<OptionalDetail>) {
+    oldState.options = options
   },
 }
 

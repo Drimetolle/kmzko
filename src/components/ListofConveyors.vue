@@ -26,12 +26,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { ConveyorLight } from '@/types/index'
+import {  } from '@/types/index'
 import ConveyorCard from '@/components/ConveyorCard'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 interface Data {
-  conveyors: Array<ConveyorLight>
+  conveyors: any
   loaded: boolean
 }
 

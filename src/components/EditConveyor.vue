@@ -43,6 +43,7 @@ export default Vue.extend({
   },
   async created() {
     const a = await this.$store.dispatch('fetchConveyors', new Map())
+    this.setConveyor(a[0])
     // const res = this.getConveyor
     const res =  a[0]
     const nodes = res.nodes
@@ -53,6 +54,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions(['fetchConveyor']),
+    ...mapMutations(['setConveyor']),
     setField(id: string, event: string) {
       this.values.set(id, event)
     },
