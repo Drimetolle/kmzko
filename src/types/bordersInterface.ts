@@ -6,12 +6,6 @@ export interface FormConveyor {
   child?: Array<string>
 }
 
-export interface ConveyorLight {
-  id: string
-  name: string
-  components: Array<string>
-}
-
 export interface Conveyor {
   id: string
   name: string
@@ -39,4 +33,44 @@ export interface User {
   email: string
   name: string
   password: string
+}
+
+export interface ConveyorDto {
+  name: string
+  type: string
+  nodes: Array<NodeDto>
+  optionalDetails: Array<OptionalDetailDto>
+}
+
+export interface NodeDto {
+  name: string
+  details: Array<Node>
+}
+
+export interface DetailDto {
+  name: string
+  characteristics: Array<CharacteristicDto>
+}
+
+export interface CharacteristicDto {
+  name: string
+  value: string
+  mark: string
+  type: string
+}
+
+export interface QuestionnaireDto {
+  name: string
+  type: string
+  rateList: Array<RateDto>
+}
+
+export interface RateDto {
+  name: string
+  value: string
+  mark: string
+}
+
+export interface OptionalDetailDto {
+  name: string
 }
