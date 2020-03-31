@@ -84,7 +84,6 @@ export default Vue.extend({
       (state, getters) => getters.getState,
       (newValue, oldValue) => {
         this.state = newValue
-
       },
     )
   },

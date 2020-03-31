@@ -29,3 +29,14 @@ export interface Detail {
   name: string
   characteristics: Array<any>
 }
+
+export interface OptionalDetail {
+  id: string
+  name: string
+}
+
+export interface User {
+  email: string
+  name: string
+  password: string
+}

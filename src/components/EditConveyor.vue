@@ -42,13 +42,14 @@ export default Vue.extend({
     }
   },
   async created() {
-    // const res = await this.fetchConveyor(12)
-    const res = this.getConveyor
+    const a = await this.$store.dispatch('fetchConveyors', new Map())
+    // const res = this.getConveyor
+    const res =  a[0]
     const nodes = res.nodes
     this.conveyorСomponents = nodes
   },
   computed: {
-    ...mapGetters(['getConveyor']),
+    ...mapGetters(['getConveyor', 'getConveyorById']),
   },
   methods: {
     ...mapActions(['fetchConveyor']),

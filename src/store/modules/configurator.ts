@@ -11,7 +11,7 @@ interface State {
 }
 
 const state = {
-  appState: States.QuestionList,
+  appState: States.EditConveyor,
   listOfConveyors: null,
   questionnaire: null,
   conveyor: null,
