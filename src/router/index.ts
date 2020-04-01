@@ -5,38 +5,45 @@ import Registration from '@/views/auth/RegistrationForm.vue'
 import store from '@/store'
 import Configurator from '@/views/Configurator.vue'
 import Profile from '@/views/Profile.vue'
+import Purchase from '@/views/Purchase.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-{
+  {
     path: '/login',
     name: 'login',
     meta: { layout: 'empty' },
     component: Login,
-},
-{
+  },
+  {
     path: '/registration',
     name: 'registration',
     meta: { layout: 'empty' },
     component: Registration,
-},
-{
+  },
+  {
     path: '/',
     name: 'configurator',
     meta: { layout: 'main' },
     component: Configurator,
-},
-{
+  },
+  {
     path: '/settings',
     redirect: { name: 'profile' },
-},
-{
+  },
+  {
     path: '/settings/profile',
     name: 'profile',
     meta: { layout: 'main' },
     component: Profile,
-},
+  },
+  {
+    path: '/purchase',
+    name: 'purchase',
+    meta: { layout: 'main' },
+    component: Purchase,
+  },
 ]
 
 const router = new VueRouter({

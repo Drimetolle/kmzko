@@ -8,7 +8,7 @@ class State {
   questionnaire?: Map<string, string>
   conveyor?: ConveyorDto
   options?: Array<OptionalDetail>
-  conveyorType?: string
+  // conveyorType?: string
 
   constructor() {
     this.appState = States.QuestionList
@@ -31,6 +31,9 @@ const getters = {
   },
   getQuestionnaire(state: State) {
     return state.questionnaire
+  },
+  getConveyorType(state: State) {
+    return state.conveyor?.type
   },
 }
 
@@ -72,9 +75,9 @@ const mutations = {
   setListOfOptions(oldState: State, options: Array<OptionalDetail>) {
     oldState.options = options
   },
-  setConveyorType(oldState: State, type: string) {
-    oldState.conveyorType = type
-  },
+  // setConveyorType(oldState: State, type: string) {
+  //   oldState.conveyorType = type
+  // },
 }
 
 export default {

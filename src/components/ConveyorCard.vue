@@ -34,6 +34,7 @@
         </template>
       </v-img>
       <v-btn class="mr-4" @click.prevent="submit">{{ $t('edit') }}</v-btn>
+      <v-btn class="mr-4" @click.prevent="selectOptions">{{ $t('options') }}</v-btn>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -72,6 +73,11 @@ export default Vue.extend({
       this.$emit('selectConveyor', this.conveyor.id)
       this.setConveyor(this.conveyor)
       this.setState(States.EditConveyor)
+    },
+    selectOptions() {
+      this.$emit('selectConveyor', this.conveyor.id)
+      this.setConveyor(this.conveyor)
+      this.setState(States.AddOptions)
     },
   },
 })

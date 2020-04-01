@@ -54,6 +54,7 @@ import Basket from '@/components/Basket.vue'
 import ListofConveyors from '@/components/ListofConveyors'
 import QuestionList from '@/components/QuestionList'
 import EditConveyor from '@/components/EditConveyor'
+import OptionsConveyor from '@/components/OptionsConveyor'
 import { States } from '@/types/states'
 
 interface Data {
@@ -71,7 +72,7 @@ export default Vue.extend({
       stateIndex: 0,
       drawer: null,
       // flow: [States.QuestionList, States.ListOfConveyors, States.EditConveyor, States.AddOptions],
-      flow: [States.QuestionList, States.ListOfConveyors],
+      flow: [States.QuestionList, States.ListOfConveyors, States.AddOptions],
       snackbar: false,
     }
   },
@@ -98,6 +99,7 @@ export default Vue.extend({
     ListofConveyors,
     QuestionList,
     EditConveyor,
+    OptionsConveyor,
   },
 })
 </script>

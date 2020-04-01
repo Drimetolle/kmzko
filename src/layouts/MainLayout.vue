@@ -19,7 +19,7 @@
             <v-list-item
               v-for="(item, index) in items"
               :key="index"
-              @click="pushTo(index)"
+              @click="pushTo(item)"
             >
               <v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
             </v-list-item>
@@ -47,13 +47,14 @@ export default Vue.extend({
     return {
       items: [
         { title: 'settings' },
+        { title: 'purchase-history' },
       ],
     }
   },
   methods: {
-    pushTo(index: number) {
-      if(index === 0) this.$router.push('/settings/profile')
-      else if (index === 1) this.$router.push('/settings/profile')
+    pushTo({ title }: any) {
+      if(title === 'settings') this.$router.push('/settings/profile')
+      else if (title === 'purchase-history') this.$router.push('/purchase')
     },
   },
  })

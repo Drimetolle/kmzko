@@ -4,5 +4,8 @@
   "tape":"tape",
   "submit":"submit",
   "edit":"edit",
-  "settings": "settings"
+  "settings": "settings",
+  "purchase-history": "purchase history",
+  "options": "options",
+  "options-conveyor": "select options"
 }

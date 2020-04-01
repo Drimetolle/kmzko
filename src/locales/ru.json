@@ -4,5 +4,8 @@
   "tape":"ленточный",
   "submit":"отправить",
   "edit":"редактировать",
-  "settings": "настройки"
+  "settings": "настройки",
+  "purchase-history": "история заказов",
+  "options": "опции",
+  "options-conveyor": "выбор опций"
 }
