@@ -1,60 +1,53 @@
 import { FormConveyor, Conveyor, OptionalDetail, ConveyorDto } from '@/types/index'
 import { States } from '@/types/index'
-import { getConveyorType, getQuestionnaireByType } from '@/utils/api.questionnaire'
-import { getConveyor, getNearConveyors } from '@/utils/api.search'
-import { getOptionsByConveyorType } from '@/utils/api.options'
+import * as request from '@/utils/request/index'
 
-interface State {
+class State {
   appState: States
   listOfConveyors: Array<Conveyor>
-  questionnaire: Map<string, string>
-  conveyor: ConveyorDto
-  options: Array<OptionalDetail>
-}
+  questionnaire?: Map<string, string>
+  conveyor?: ConveyorDto
+  options?: Array<OptionalDetail>
+  conveyorType?: string
 
-const state = {
-  appState: States.QuestionList,
-  listOfConveyors: null,
-  questionnaire: null,
-  conveyor: null,
-  options: null,
+  constructor() {
+    this.appState = States.QuestionList
+    this.listOfConveyors = new Array<Conveyor>()
+  }
 }
 
 const getters = {
-  getState(rstate: State): string {
-    return rstate.appState
+  getState(state: State): string {
+    return state.appState
   },
-  async getConveyorType() {
-    return await getConveyorType()
+  getConveyors(state: State) {
+    return state.listOfConveyors
   },
-  getConveyors(rstate: State) {
-    return rstate.listOfConveyors
+  getConveyorById(state: State, id: string) {
+    return state.listOfConveyors.find(i => i.id === id)
   },
-  getConveyorById(rstate: State, id: string) {
-    return rstate.listOfConveyors.find(i => i.id === id)
+  getConveyor(state: State) {
+    return state.conveyor
   },
-  getConveyor(rstate: State) {
-    return rstate.conveyor
-  },
-  getQuestionnaire(rstate: State) {
-    return rstate.questionnaire
+  getQuestionnaire(state: State) {
+    return state.questionnaire
   },
 }
 
 const actions = {
   async getFormConveyor({ dispatch, commit }: any, { type }: { type: string }): Promise<Array<FormConveyor>> {
-    return await getQuestionnaireByType(type)
+    return await request.getQuestionnaireByType(type)
   },
   async fetchConveyor({ dispatch, commit }: any, id: string): Promise<Conveyor> {
-    return await getConveyor(id)
+    return await request.getConveyor(id)
   },
   async fetchConveyors({ dispatch, commit }: any, payload: Map<string, string>): Promise<Array<Conveyor>> {
-    const conveyors = await getNearConveyors(payload)
+    const conveyors = await request.getNearConveyors(payload)
     commit('setListOfConveyors', conveyors)
     return conveyors
   },
   async fetchOptions({ dispatch, commit }: any, { type }: { type: string }): Promise<Array<OptionalDetail>> {
-    const options = await getOptionsByConveyorType(type)
+    const options = await request.getOptionsByConveyorType(type)
     commit('setListOfOptions', options)
     return options
   },
@@ -79,10 +72,13 @@ const mutations = {
   setListOfOptions(oldState: State, options: Array<OptionalDetail>) {
     oldState.options = options
   },
+  setConveyorType(oldState: State, type: string) {
+    oldState.conveyorType = type
+  },
 }
 
 export default {
-  state,
+  state: new State(),
   getters,
   actions,
   mutations,

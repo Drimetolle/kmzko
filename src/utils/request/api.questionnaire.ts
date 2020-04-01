@@ -6,7 +6,7 @@ const request = axios.create({
   timeout: process.env.VUE_APP_API_BASE_TIMEOUT,
 })
 
-async function getConveyorType(): Promise<Array<string>> {
+async function getConveyorTypes(): Promise<Array<string>> {
   try {
     const res = await request.get('')
     return res.data
@@ -24,4 +24,4 @@ async function getQuestionnaireByType(type: string): Promise<Array<FormConveyor>
   }
 }
 
-export { getConveyorType, getQuestionnaireByType }
+export { getConveyorTypes, getQuestionnaireByType }

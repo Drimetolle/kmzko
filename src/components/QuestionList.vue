@@ -41,6 +41,7 @@ import Vue from 'vue'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
 import { FormConveyor, States } from '@/types/index'
+import { getConveyorTypes } from '@/utils/request/index'
 
 interface SelectElement {
   text: any
@@ -78,7 +79,7 @@ export default Vue.extend({
     }
   },
   async created() {
-    const conveyorTypes: Array<string> = await this.getConveyorType
+    const conveyorTypes: Array<string> = await getConveyorTypes()
     const localeItems = conveyorTypes.map(i => this.$t(i)) as Array<string>
     this.items = conveyorTypes.map(i => new ImplSelectElement(this.$t(i), i))
   },
@@ -97,7 +98,6 @@ export default Vue.extend({
     },
   },
   computed: {
-    ...mapGetters(['getConveyorType']),
   },
   components: {
     Field,
