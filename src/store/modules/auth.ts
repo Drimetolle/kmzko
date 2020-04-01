@@ -1,9 +1,3 @@
-import {
-    AUTH_REQUEST,
-    AUTH_LOGOUT,
-} from '../actions/auth'
-import apiCall from '@/utils/api'
-
 interface State {
   token: string
   status: string
@@ -24,14 +18,14 @@ const getters: any = {
 const actions: any = {
   async authRequest({ commit, dispatch }: any, user: any) {
     return new Promise((resolve, reject) => {
-      commit(AUTH_REQUEST)
+      commit('authRequest')
       // apiCall({ url: 'auth', data: user, method: 'POST' });
       // TODO api call
     })
   },
   async authLogout({ commit }: any) {
     return new Promise((resolve) => {
-      commit(AUTH_LOGOUT)
+      commit('authRequest')
       localStorage.removeItem('user-token')
       resolve()
     })

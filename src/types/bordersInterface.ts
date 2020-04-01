@@ -10,6 +10,7 @@ export interface Conveyor {
   id: string
   name: string
   nodes: Array<Node>
+  img?: string
 }
 
 export interface Node {
@@ -36,23 +37,28 @@ export interface User {
 }
 
 export interface ConveyorDto {
+  id: string
   name: string
   type: string
   nodes: Array<NodeDto>
-  optionalDetails: Array<OptionalDetailDto>
+  optionalDetails?: Array<OptionalDetailDto>
+  img?: string
 }
 
 export interface NodeDto {
+  id: string
   name: string
   details: Array<Node>
 }
 
 export interface DetailDto {
+  id: string
   name: string
   characteristics: Array<CharacteristicDto>
 }
 
 export interface CharacteristicDto {
+  id: string
   name: string
   value: string
   mark: string
@@ -60,17 +66,20 @@ export interface CharacteristicDto {
 }
 
 export interface QuestionnaireDto {
+  id: string
   name: string
   type: string
   rateList: Array<RateDto>
 }
 
 export interface RateDto {
+  id: string
   name: string
   value: string
   mark: string
 }
 
 export interface OptionalDetailDto {
+  id: string
   name: string
 }

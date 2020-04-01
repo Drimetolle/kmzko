@@ -59,12 +59,15 @@ import { States } from '@/types/states'
 interface Data {
   state: States
   drawer: null
+  stateIndex: number
+  flow: Array<States>
+  snackbar: boolean
 }
 
 export default Vue.extend({
-  data: () => {
+  data: (): Data => {
     return {
-      state: '',
+      state: States.QuestionList,
       stateIndex: 0,
       drawer: null,
       // flow: [States.QuestionList, States.ListOfConveyors, States.EditConveyor, States.AddOptions],
@@ -89,7 +92,6 @@ export default Vue.extend({
   },
   mounted() {
     this.snackbar = false
-    // check previous project
   },
   components: {
     Basket,

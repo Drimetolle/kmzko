@@ -17,7 +17,7 @@
         </v-list-item>
         <v-divider v-if="conveyor.nodes.length - 1 > i"/>
       </div>
-      <!-- <v-img 
+      <v-img v-if="conveyor.img" 
         src="https://bad.src/not/valid"
         lazy-src="https://via.placeholder.com/300.png/09f/fff"
         contain
@@ -32,7 +32,7 @@
             <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
           </v-row>
         </template>
-      </v-img> -->
+      </v-img>
       <v-btn class="mr-4" @click.prevent="submit">{{ $t('edit') }}</v-btn>
     </v-expansion-panel-content>
   </v-expansion-panel>
@@ -40,9 +40,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Conveyor, Detail } from '@/types/index'
+import { Conveyor, Detail, States } from '@/types/index'
 import { mapGetters, mapMutations } from 'vuex'
-import { States } from '@/types/states'
 
 export default Vue.extend({
   props: {

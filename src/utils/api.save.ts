@@ -1,20 +1,21 @@
 import axios from 'axios'
 import { ConveyorDto, QuestionnaireDto } from '@/types/index'
+import ConveyorMinimizezer from '@/utils/minimizerConveyor'
+import QuestionnaireMinimizezer from '@/utils/minimizerQuestionnaire'
 
 const request = axios.create({
   baseURL: `${process.env.VUE_APP_API_BASE_URL}/api/user`,
-  timeout: 5000,
+  timeout: process.env.VUE_APP_API_BASE_TIMEOUT,
 })
 
 async function saveQuestionnaire(questionnaire: QuestionnaireDto) {
   try {
-    const res = await request.post(`/questionnaires`,{
+    const res = await request.put(`/questionnaires/${questionnaire.id}`,{
       headers: {
         'accept': 'application/json',
-        'accept-language': 'en_US',
         'content-type': 'application/json',
       },
-      body: questionnaire,
+      body: new QuestionnaireMinimizezer().minimize(questionnaire),
     })
 
     return res
@@ -25,13 +26,12 @@ async function saveQuestionnaire(questionnaire: QuestionnaireDto) {
 
 async function saveConveyor(conveyor: ConveyorDto) {
   try {
-    const res = await request.post(`/questionnaires`,{
+    const res = await request.put(`/questionnaires/${conveyor.id}`,{
       headers: {
         'accept': 'application/json',
-        'accept-language': 'en_US',
         'content-type': 'application/json',
       },
-      body: conveyor,
+      body: new ConveyorMinimizezer().minimize(conveyor),
     })
 
     return res

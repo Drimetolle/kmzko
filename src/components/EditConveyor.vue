@@ -29,15 +29,7 @@ interface Data {
 export default Vue.extend({
   data: (): Data => {
     return {
-      conveyorСomponents: [
-        // {id: '1', name: 'Engine', details: [
-        //   {id: '1', value: 'Engine', child: ['engine1', 'engine2']},
-        // ]},
-        // {id: '2', name: 'Tape', details: [
-        //   {id: '1', value: 'tape1'},
-        //   {id: '2', value: 'tape2'},
-        // ]},
-      ],
+      conveyorСomponents: [],
       values: new Map(),
     }
   },
@@ -60,7 +52,7 @@ export default Vue.extend({
     },
     submit() {
       //
-     },
+    },
   },
   components: {
     Field,

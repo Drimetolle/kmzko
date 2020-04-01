@@ -14,7 +14,8 @@
             v-model="select"
             label="select"
             @change="getForm"
-          />
+          >
+          </v-select>
           <div class="text-center">
             <v-progress-circular
               v-if="!loaded"
@@ -39,13 +40,26 @@
 import Vue from 'vue'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
-import { GET_FORM_CONVEYOR, SET_STATE, GET_CONVEYOR_TYPE } from 'actions/configurator'
-import { FormConveyor } from '@/types/index'
-import { States } from '@/types/states'
+import { FormConveyor, States } from '@/types/index'
+
+interface SelectElement {
+  text: any
+  value: string
+}
+
+class ImplSelectElement implements SelectElement {
+  text: any
+  value: string
+
+  constructor(text: any, value: string) {
+    this.text = text
+    this.value = value
+  }
+}
 
 interface Data {
   conveyorСomponents: Array<FormConveyor>
-  items: Array<string>
+  items: Array<SelectElement>
   select: string,
   values: Map<string, string>
   loaded: boolean
@@ -53,7 +67,6 @@ interface Data {
 }
 
 export default Vue.extend({
-  name: 'questionlist',
   data: (): Data => {
     return {
       conveyorСomponents: [],
@@ -67,7 +80,7 @@ export default Vue.extend({
   async created() {
     const conveyorTypes: Array<string> = await this.getConveyorType
     const localeItems = conveyorTypes.map(i => this.$t(i)) as Array<string>
-    this.items = conveyorTypes
+    this.items = conveyorTypes.map(i => new ImplSelectElement(this.$t(i), i))
   },
   methods: {
     ...mapMutations(['setState', 'setQuestionnaire']),

@@ -3,7 +3,7 @@ import { FormConveyor, Conveyor } from '@/types/index'
 
 const request = axios.create({
   baseURL: `${process.env.VUE_APP_API_BASE_URL}/api/questionnaire/`,
-  timeout: 5000,
+  timeout: process.env.VUE_APP_API_BASE_TIMEOUT,
 })
 
 async function getConveyorType(): Promise<Array<string>> {

@@ -1,5 +1,5 @@
 import { FormConveyor, Conveyor, OptionalDetail, ConveyorDto } from '@/types/index'
-import { States } from '@/types/states'
+import { States } from '@/types/index'
 import { getConveyorType, getQuestionnaireByType } from '@/utils/api.questionnaire'
 import { getConveyor, getNearConveyors } from '@/utils/api.search'
 import { getOptionsByConveyorType } from '@/utils/api.options'
@@ -13,7 +13,7 @@ interface State {
 }
 
 const state = {
-  appState: States.EditConveyor,
+  appState: States.QuestionList,
   listOfConveyors: null,
   questionnaire: null,
   conveyor: null,

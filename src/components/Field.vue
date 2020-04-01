@@ -21,7 +21,7 @@ import { FormConveyor } from '@/types/index'
 export default Vue.extend({
   props: {
     item: {
-      type: Object ,
+      type: Object,
     },
     values: {
       type: Map,
