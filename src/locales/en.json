@@ -7,5 +7,7 @@
   "settings": "settings",
   "purchase-history": "purchase history",
   "options": "options",
-  "options-conveyor": "select options"
+  "options-conveyor": "select options",
+  "piece": "piece",
+  "pieces": "pieces"
 }

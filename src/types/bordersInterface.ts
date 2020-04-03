@@ -22,12 +22,15 @@ export interface Node {
 export interface Detail {
   id: string
   name: string
+  count: number
   characteristics: Array<any>
 }
 
 export interface OptionalDetail {
   id: string
   name: string
+  value: string
+  child?: Array<{ id: string, name: string }>
 }
 
 export interface User {
@@ -54,6 +57,7 @@ export interface NodeDto {
 export interface DetailDto {
   id: string
   name: string
+  count: number
   characteristics: Array<CharacteristicDto>
 }
 
@@ -82,4 +86,5 @@ export interface RateDto {
 export interface OptionalDetailDto {
   id: string
   name: string
+  value: string
 }

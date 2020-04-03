@@ -11,7 +11,7 @@ class State {
   // conveyorType?: string
 
   constructor() {
-    this.appState = States.QuestionList
+    this.appState = States.AddOptions
     this.listOfConveyors = new Array<Conveyor>()
   }
 }

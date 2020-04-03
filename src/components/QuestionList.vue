@@ -40,23 +40,10 @@
 import Vue from 'vue'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
-import { FormConveyor, States } from '@/types/index'
+import { FormConveyor, States, SelectElement, ImplSelectElement } from '@/types/index'
 import { getConveyorTypes } from '@/utils/request/index'
 
-interface SelectElement {
-  text: any
-  value: string
-}
 
-class ImplSelectElement implements SelectElement {
-  text: any
-  value: string
-
-  constructor(text: any, value: string) {
-    this.text = text
-    this.value = value
-  }
-}
 
 interface Data {
   conveyorСomponents: Array<FormConveyor>
