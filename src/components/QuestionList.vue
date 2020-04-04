@@ -27,7 +27,8 @@
           <Field v-for="component in conveyorСomponents"
             :key="component.mark"
             :id="component.mark"
-            :item="component"
+            :item="toFieldSkelet(component)"
+            :converter="getConverter"
             :values="values"/>
           <v-btn v-if="select !== '' && loaded" class="mr-4" @click.prevent="submit">{{ $t('submit') }}</v-btn>
         </v-col>
@@ -42,7 +43,7 @@ import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
 import { FormConveyor, States, SelectElement, ImplSelectElement } from '@/types/index'
 import { getConveyorTypes } from '@/utils/request/index'
-
+import OptionConverter from '@/utils/optionConverter'
 
 
 interface Data {
@@ -83,8 +84,14 @@ export default Vue.extend({
       this.setQuestionnaire(this.values)
       this.setState(States.ListOfConveyors)
     },
+    toFieldSkelet(option: any) {
+      return OptionConverter.prototype.toFieldSkelet(option)
+    },
   },
   computed: {
+    getConverter(): OptionConverter {
+      return new OptionConverter()
+    },
   },
   components: {
     Field,

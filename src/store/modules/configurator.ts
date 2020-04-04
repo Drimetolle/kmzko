@@ -11,7 +11,7 @@ class State {
   // conveyorType?: string
 
   constructor() {
-    this.appState = States.AddOptions
+    this.appState = States.QuestionList
     this.listOfConveyors = new Array<Conveyor>()
   }
 }
@@ -34,6 +34,9 @@ const getters = {
   },
   getConveyorType(state: State) {
     return state.conveyor?.type
+  },
+  getUserConveyor(state: State) {
+    return { ...state.conveyor, optionalDetails: state.options }
   },
 }
 

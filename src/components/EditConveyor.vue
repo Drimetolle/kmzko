@@ -15,7 +15,8 @@
       <Field v-for="detail in component.details"
         :key="detail.id"
         :id="detail.id"
-        :item="detail"
+        :item="toFieldSkelet(detail)"
+        :converter="getConverter"
         :values="values"
       />
     </v-container>
@@ -31,6 +32,7 @@ import Vue from 'vue'
 import Field from '@/components/Field.vue'
 import { Conveyor, Node, FormConveyor, OptionalDetail } from '@/types/index'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
+import OptionConverter from '@/utils/optionConverter'
 
 interface Data {
   conveyorСomponents: Array<Node>
@@ -60,6 +62,9 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters(['getConveyor', 'getConveyorById']),
+    getConverter(): OptionConverter {
+      return new OptionConverter()
+    },
   },
   methods: {
     ...mapActions(['fetchConveyor', 'fetchOptions']),
@@ -69,6 +74,9 @@ export default Vue.extend({
     },
     submit() {
       //
+    },
+    toFieldSkelet(option: any) {
+      return OptionConverter.prototype.toFieldSkelet(option)
     },
   },
   components: {

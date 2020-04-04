@@ -12,11 +12,13 @@
         <Field v-for="option in options"
         :key="option.id"
         :id="option.id"
-        :item="option"
+        :item="toFieldSkelet(option)"
+        :converter="getConverter"
         :values="values"
         />
       </div>
     </v-container>
+    <v-btn class="mr-4" @click.prevent="submit">tes</v-btn>
   </v-form>
 </template>
 
@@ -25,6 +27,8 @@ import Vue from 'vue'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { OptionalDetail } from '@/types/index'
 import Field from '@/components/Field.vue'
+import OptionConverter from '@/utils/optionConverter'
+import { saveConveyor } from '@/utils/request/index'
 
 interface Data {
   loaded: boolean
@@ -47,13 +51,21 @@ export default Vue.extend({
     this.loaded = true
   },
   computed: {
-    ...mapGetters(['getConveyorType']),
+    ...mapGetters(['getConveyorType', 'getUserConveyor']),
+    getConverter(): OptionConverter {
+      return new OptionConverter()
+    },
   },
   methods: {
     ...mapActions(['fetchOptions']),
     ...mapMutations(['setListOfOptions']),
     submit() {
-      // console.log(this.values)
+      this.setListOfOptions(this.options)
+      console.log(this.getUserConveyor)
+      // saveConveyor()
+    },
+    toFieldSkelet(option: any) {
+      return OptionConverter.prototype.toFieldSkelet(option)
     },
   },
   components: {
