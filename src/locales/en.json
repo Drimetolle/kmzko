@@ -9,5 +9,6 @@
   "options": "options",
   "options-conveyor": "select options",
   "piece": "piece",
-  "pieces": "pieces"
+  "pieces": "pieces",
+  "logout": "logout"
 }

@@ -44,7 +44,8 @@ import Field from '@/components/Field.vue'
 import { FormConveyor, States, SelectElement, ImplSelectElement } from '@/types/index'
 import { getConveyorTypes } from '@/utils/request/index'
 import OptionConverter from '@/utils/optionConverter'
-
+import LoadingMixin from '@/mixin/loading.mixin'
+import loadingMixin from '@/mixin/loading.mixin'
 
 interface Data {
   conveyorСomponents: Array<FormConveyor>
@@ -56,6 +57,7 @@ interface Data {
 }
 
 export default Vue.extend({
+  mixins: [LoadingMixin],
   data: (): Data => {
     return {
       conveyorСomponents: [],

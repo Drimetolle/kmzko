@@ -18,7 +18,7 @@
         />
       </div>
     </v-container>
-    <v-btn class="mr-4" @click.prevent="submit">tes</v-btn>
+    <v-btn v-if="loaded" class="mr-4" @click.prevent="submit">tes</v-btn>
   </v-form>
 </template>
 
@@ -61,8 +61,7 @@ export default Vue.extend({
     ...mapMutations(['setListOfOptions']),
     submit() {
       this.setListOfOptions(this.options)
-      console.log(this.getUserConveyor)
-      // saveConveyor()
+      saveConveyor(this.getUserConveyor)
     },
     toFieldSkelet(option: any) {
       return OptionConverter.prototype.toFieldSkelet(option)

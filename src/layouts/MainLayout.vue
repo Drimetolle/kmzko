@@ -48,12 +48,14 @@ export default Vue.extend({
       items: [
         { title: 'settings' },
         { title: 'purchase-history' },
+        { title: 'logout' },
       ],
     }
   },
   methods: {
     pushTo({ title }: any) {
       if(title === 'settings') this.$router.push('/settings/profile')
+      else if (title === 'logout') this.$router.push('/login')
       else if (title === 'purchase-history') this.$router.push('/purchase')
     },
   },
