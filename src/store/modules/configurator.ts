@@ -1,5 +1,4 @@
-import { FormConveyor, Conveyor, OptionalDetail, ConveyorDto } from '@/types/index'
-import { States } from '@/types/index'
+import { FormConveyor, Conveyor, OptionalDetail, ConveyorDto, States, QuestionnaireDto } from '@/types/index'
 import * as request from '@/utils/request/index'
 
 class State {
@@ -8,7 +7,7 @@ class State {
   questionnaire?: Map<string, string>
   conveyor?: ConveyorDto
   options?: Array<OptionalDetail>
-  // conveyorType?: string
+  conveyorType?: string
 
   constructor() {
     this.appState = States.QuestionList
@@ -47,8 +46,13 @@ const actions = {
   async fetchConveyor({ dispatch, commit }: any, id: string): Promise<Conveyor> {
     return await request.getConveyor(id)
   },
-  async fetchConveyors({ dispatch, commit }: any, payload: Map<string, string>): Promise<Array<Conveyor>> {
+  async fetchConveyors({ dispatch, commit }: any, payload: QuestionnaireDto): Promise<Array<Conveyor>> {
     const conveyors = await request.getNearConveyors(payload)
+
+    if (conveyors.length === 0) {
+      commit('setConveyor', await request.getConveyorTemplate(payload.type))
+    }
+
     commit('setListOfConveyors', conveyors)
     return conveyors
   },
@@ -78,9 +82,9 @@ const mutations = {
   setListOfOptions(oldState: State, options: Array<OptionalDetail>) {
     oldState.options = options
   },
-  // setConveyorType(oldState: State, type: string) {
-  //   oldState.conveyorType = type
-  // },
+  setConveyorType(oldState: State, type: string) {
+    oldState.conveyorType = type
+  },
 }
 
 export default {

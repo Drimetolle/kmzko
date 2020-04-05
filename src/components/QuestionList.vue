@@ -83,7 +83,6 @@ export default Vue.extend({
       this.loaded = true
     },
     submit() {
-      console.log(this.values)
       this.setQuestionnaire(this.values)
       this.setState(States.ListOfConveyors)
     },

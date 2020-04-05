@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Conveyor } from '@/types/index'
+import { Conveyor, QuestionnaireDto } from '@/types/index'
 
 const request = axios.create({
   baseURL: `${process.env.VUE_APP_API_BASE_URL}/api/search/`,
@@ -15,10 +15,10 @@ async function getConveyor(id: string): Promise<Conveyor> {
   }
 }
 
-async function getNearConveyors(payload: Map<string, string>): Promise<Array<Conveyor>> {
+async function getNearConveyors(payload: QuestionnaireDto): Promise<Array<Conveyor>> {
   try {
     const res = await request.get(`conveyors/`, {
-      params: Object.fromEntries(payload),
+      params: payload,
     })
     return res.data as Array<Conveyor>
   } catch (error) {

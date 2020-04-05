@@ -15,7 +15,7 @@
   ></v-select>
   <div
     v-else-if="valueOf(item) === 'colorPicker'">
-    <h4>{{ item.name }}</h4>
+    <p>{{ item.name }}</p>
     <v-color-picker
       v-model="value"
       @input="changeValue"

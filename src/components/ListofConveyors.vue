@@ -20,7 +20,12 @@
         </v-col>
       </v-expansion-panels>
     </v-row>
-    <p v-else-if="!conveyors.length && loaded">Подходящие конвейеры не найдены</p>
+    <div class="text-center" 
+      v-else-if="!conveyors.length && loaded"
+    >
+      <p>Подходящие конвейеры не найдены. Составить конвейер по шаблону?</p>
+      <a @click.prevent="redirect">Создать</a>
+    </div>
   </div>
 </template>
 
@@ -46,7 +51,6 @@ export default Vue.extend({
     this.loaded = false
     this.conveyors = await this.fetchConveyors(this.getQuestionnaire)
     this.loaded = true
-    // console.log(this.conveyors)
   },
   computed: {
     ...mapGetters(['getConveyors', 'getQuestionnaire']),
@@ -54,7 +58,7 @@ export default Vue.extend({
   methods: {
     ...mapActions(['fetchConveyors']),
     ...mapMutations(['setState']),
-    next() {
+    redirect() {
       this.setState('edit-conveyor')
     },
   },
