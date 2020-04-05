@@ -13,19 +13,21 @@
     v-model="value"
     @input="changeValue"
   ></v-select>
-  <v-color-picker
-    v-else-if="valueOf(item) === 'colorPicker'"
-    v-model="value"
-    @input="changeValue"
-  >
-  </v-color-picker>
+  <div
+    v-else-if="valueOf(item) === 'colorPicker'">
+    <h4>{{ item.name }}</h4>
+    <v-color-picker
+      v-model="value"
+      @input="changeValue"
+    >
+    </v-color-picker>
+  </div>
   <v-checkbox
     v-else-if="valueOf(item) === 'checkBox'"
     v-model="value"
     :label="`${item.name}`"
     @click.native="changeValue"
   >
-
   </v-checkbox>
 </template>
 

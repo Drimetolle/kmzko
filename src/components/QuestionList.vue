@@ -43,7 +43,7 @@ import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
 import { FormConveyor, States, SelectElement, ImplSelectElement } from '@/types/index'
 import { getConveyorTypes } from '@/utils/request/index'
-import OptionConverter from '@/utils/optionConverter'
+import QuestionnaireConverter from '@/utils/questionnaireConverter'
 import LoadingMixin from '@/mixin/loading.mixin'
 import loadingMixin from '@/mixin/loading.mixin'
 
@@ -83,16 +83,17 @@ export default Vue.extend({
       this.loaded = true
     },
     submit() {
+      console.log(this.values)
       this.setQuestionnaire(this.values)
       this.setState(States.ListOfConveyors)
     },
     toFieldSkelet(option: any) {
-      return OptionConverter.prototype.toFieldSkelet(option)
+      return QuestionnaireConverter.prototype.toFieldSkelet(option)
     },
   },
   computed: {
-    getConverter(): OptionConverter {
-      return new OptionConverter()
+    getConverter(): QuestionnaireConverter {
+      return new QuestionnaireConverter()
     },
   },
   components: {
