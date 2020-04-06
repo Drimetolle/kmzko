@@ -29,46 +29,46 @@ import { OptionalDetail } from '@/types/index'
 import Field from '@/components/Field.vue'
 import OptionConverter from '@/utils/optionConverter'
 import { saveConveyor } from '@/utils/request/index'
+import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
+import Component, { mixins } from 'vue-class-component'
 
-interface Data {
-  loaded: boolean
-  options: Array<OptionalDetail>
-  values: Map<string, string>
-}
-
-export default Vue.extend({
-  data: (): Data => {
-    return {
-      options: [],
-      values: new Map(),
-      loaded: true,
-    }
-  },
-  async created() {
-    this.loaded = false
-    this.options = await this.fetchOptions('tape')
-
-    this.loaded = true
-  },
-  computed: {
-    ...mapGetters(['getConveyorType', 'getUserConveyor']),
-    getConverter(): OptionConverter {
-      return new OptionConverter()
-    },
+@Component({
+  components: {
+    Field,
   },
   methods: {
     ...mapActions(['fetchOptions']),
     ...mapMutations(['setListOfOptions']),
-    submit() {
-      this.setListOfOptions(this.options)
-      saveConveyor(this.getUserConveyor)
-    },
-    toFieldSkelet(option: any) {
-      return OptionConverter.prototype.toFieldSkelet(option)
-    },
   },
-  components: {
-    Field,
+  computed: {
+    ...mapGetters(['getConveyorType', 'getUserConveyor']),
   },
 })
+export default class extends mixins(LoadingMixin){
+  options: Array<OptionalDetail> = []
+  values: Map<string, string> = new Map()
+
+  fetchOptions!: any
+  setListOfOptions!: any
+  getConveyorType!: any
+  getUserConveyor!: any
+
+  @AsyncLoading
+  async mounted() {
+    this.options = await this.fetchOptions('tape')
+  }
+
+  get getConverter(): OptionConverter {
+    return new OptionConverter()
+  }
+
+  submit() {
+    this.setListOfOptions(this.options)
+    saveConveyor(this.getUserConveyor)
+  }
+
+  toFieldSkelet(option: any) {
+    return OptionConverter.prototype.toFieldSkelet(option)
+  }
+}
 </script>

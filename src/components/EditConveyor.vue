@@ -33,54 +33,54 @@ import Field from '@/components/Field.vue'
 import { Conveyor, Node, FormConveyor, OptionalDetail } from '@/types/index'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import OptionConverter from '@/utils/optionConverter'
+import Component, { mixins } from 'vue-class-component'
+import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 
-interface Data {
-  conveyorСomponents: Array<Node>
-  options: Array<OptionalDetail>
-  values: Map<string, string>
-  loaded: boolean
-}
-
-export default Vue.extend({
-  data: (): Data => {
-    return {
-      conveyorСomponents: [],
-      values: new Map(),
-      options: [],
-      loaded: true,
-    }
+@Component({
+  components: {
+    Field,
   },
-  async created() {
-    this.loaded = false
+  methods: {
+    ...mapActions(['fetchConveyor', 'fetchOptions']),
+    ...mapMutations(['setConveyor']),
+  },
+  computed: {
+    ...mapGetters(['getConveyor', 'getConveyorById']),
+  },
+})
+export default class extends mixins(LoadingMixin){
+  conveyorСomponents: Array<Node> = []
+  values: Map<string, string> = new Map()
+  options: Array<OptionalDetail> = []
+
+  fetchConveyor!: any
+  fetchOptions!: any
+  setConveyor!: any
+  getConveyor!: any
+  getConveyorById!: any
+
+  @AsyncLoading
+  async mounted() {
     const a = await this.$store.dispatch('fetchConveyors', new Map())
     this.setConveyor(a[0])
     // const res = this.getConveyor
     const res =  a[0]
     const nodes = res.nodes
     this.conveyorСomponents = nodes
-    this.loaded = true
-  },
-  computed: {
-    ...mapGetters(['getConveyor', 'getConveyorById']),
-    getConverter(): OptionConverter {
-      return new OptionConverter()
-    },
-  },
-  methods: {
-    ...mapActions(['fetchConveyor', 'fetchOptions']),
-    ...mapMutations(['setConveyor']),
-    setField(id: string, event: string) {
-      this.values.set(id, event)
-    },
-    submit() {
-      //
-    },
-    toFieldSkelet(option: any) {
-      return OptionConverter.prototype.toFieldSkelet(option)
-    },
-  },
-  components: {
-    Field,
-  },
-})
+  }
+
+  get getConverter(): OptionConverter {
+    return new OptionConverter()
+  }
+
+  setField(id: string, event: string) {
+    this.values.set(id, event)
+  }
+  submit() {
+    //
+  }
+  toFieldSkelet(option: any) {
+    return OptionConverter.prototype.toFieldSkelet(option)
+  }
+}
 </script>

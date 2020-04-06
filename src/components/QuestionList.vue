@@ -44,59 +44,58 @@ import Field from '@/components/Field.vue'
 import { FormConveyor, States, SelectElement, ImplSelectElement } from '@/types/index'
 import { getConveyorTypes } from '@/utils/request/index'
 import QuestionnaireConverter from '@/utils/questionnaireConverter'
-import LoadingMixin from '@/mixin/loading.mixin'
-import loadingMixin from '@/mixin/loading.mixin'
+import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
+import Component, { mixins } from 'vue-class-component'
 
-interface Data {
-  conveyorСomponents: Array<FormConveyor>
-  items: Array<SelectElement>
-  select: string,
-  values: Map<string, string>
-  loaded: boolean
-  valid: boolean
-}
-
-export default Vue.extend({
-  mixins: [LoadingMixin],
-  data: (): Data => {
-    return {
-      conveyorСomponents: [],
-      items: [],
-      select: '',
-      values: new Map(),
-      loaded: true,
-      valid: false,
-    }
+@Component({
+  components: {
+    Field,
   },
+  methods: {
+    ...mapMutations(['setState', 'setQuestionnaire', 'setConveyorType']),
+    ...mapActions(['getFormConveyor', 'fetchConveyors', 'getQuestionnaire']),
+  },
+})
+export default class extends mixins(LoadingMixin) {
+  conveyorСomponents: Array<FormConveyor> = []
+  items: Array<SelectElement> = []
+  select: string = ''
+  values: Map<string, string> = new Map()
+  valid: boolean = false
+
+  setState!: any
+  setQuestionnaire!: any
+  getFormConveyor!: any
+  setConveyorType!: any
+
   async created() {
     const conveyorTypes: Array<string> = await getConveyorTypes()
     const localeItems = conveyorTypes.map(i => this.$t(i)) as Array<string>
     this.items = conveyorTypes.map(i => new ImplSelectElement(this.$t(i), i))
-  },
-  methods: {
-    ...mapMutations(['setState', 'setQuestionnaire']),
-    ...mapActions(['getFormConveyor', 'fetchConveyors']),
-    async getForm() {
-      this.loaded = false
-      const newConveyorСomponents = await this.getFormConveyor({ type: this.select })
-      this.conveyorСomponents = newConveyorСomponents
-      this.loaded = true
-    },
-    submit() {
-      this.setQuestionnaire(this.values)
-      this.setState(States.ListOfConveyors)
-    },
-    toFieldSkelet(option: any) {
-      return QuestionnaireConverter.prototype.toFieldSkelet(option)
-    },
-  },
-  computed: {
-    getConverter(): QuestionnaireConverter {
-      return new QuestionnaireConverter()
-    },
-  },
-  components: {
-    Field,
-  },
-})
+  }
+
+  @AsyncLoading
+  async getForm() {
+    this.setConveyorType(this.select)
+    const newConveyorСomponents = await this.getFormConveyor({ type: this.select })
+    this.conveyorСomponents = newConveyorСomponents
+  }
+
+  submit() {
+    this.setQuestionnaire(this.values)
+    this.setState(States.ListOfConveyors)
+  }
+
+  toFieldSkelet(option: any) {
+    return QuestionnaireConverter.prototype.toFieldSkelet(option)
+  }
+
+  get getConverter(): QuestionnaireConverter {
+    return new QuestionnaireConverter()
+  }
+
+  get getLoading() {
+    return this.loaded
+  }
+}
 </script>

@@ -44,41 +44,51 @@ import Vue from 'vue'
 import { Conveyor, Detail, States } from '@/types/index'
 import { mapGetters, mapMutations } from 'vuex'
 import { CharacteristicDto } from '@/types/index'
+import Component from 'vue-class-component'
 
-export default Vue.extend({
+const Props = Vue.extend({
   props: {
-    conveyor: {
-      type: Object as () => Conveyor,
-    },
-  },
-  computed: {
-    components(): string {
-      return this.conveyor.nodes.map(n => n.name).join(', ')
-    },
-  },
-  methods: {
-    ...mapMutations(['setConveyor', 'setState']),
-    select() {
-      this.$emit('select', this.conveyor.id)
-    },
-    details(index: number): string {
-      // console.log(this.conveyor)
-      return this.conveyor.nodes[index].details.map(n => n.name).join(', ')
-    },
-    characteristics(detail: Detail): Array<CharacteristicDto> {
-      // console.log(detail)
-      return detail.characteristics
-    },
-    submit() {
-      this.$emit('selectConveyor', this.conveyor.id)
-      this.setConveyor(this.conveyor)
-      this.setState(States.EditConveyor)
-    },
-    selectOptions() {
-      this.$emit('selectConveyor', this.conveyor.id)
-      this.setConveyor(this.conveyor)
-      this.setState(States.AddOptions)
-    },
+    conveyor: Object as () => Conveyor,
   },
 })
+
+@Component({
+  methods: {
+    ...mapMutations(['setConveyor', 'setState']),
+  },
+})
+export default class extends Props {
+  setConveyor!: any
+  setState!: any
+
+  get components(): string {
+      return this.conveyor.nodes.map(n => n.name).join(', ')
+  }
+
+  select() {
+    this.$emit('select', this.conveyor.id)
+  }
+
+  details(index: number): string {
+    // console.log(this.conveyor)
+    return this.conveyor.nodes[index].details.map(n => n.name).join(', ')
+  }
+
+  characteristics(detail: Detail): Array<CharacteristicDto> {
+    // console.log(detail)
+    return detail.characteristics
+  }
+
+  submit() {
+    this.$emit('selectConveyor', this.conveyor.id)
+    this.setConveyor(this.conveyor)
+    this.setState(States.EditConveyor)
+  }
+
+  selectOptions() {
+    this.$emit('selectConveyor', this.conveyor.id)
+    this.setConveyor(this.conveyor)
+    this.setState(States.AddOptions)
+  }
+}
 </script>

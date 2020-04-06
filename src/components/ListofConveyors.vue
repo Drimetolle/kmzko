@@ -34,36 +34,41 @@ import Vue from 'vue'
 import { Conveyor } from '@/types/index'
 import ConveyorCard from '@/components/ConveyorCard'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
+import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
+import Component, { mixins } from 'vue-class-component'
 
 interface Data {
   conveyors: Array<Conveyor>
   loaded: boolean
 }
 
-export default Vue.extend({
-  data: (): Data => {
-    return {
-      conveyors: [],
-      loaded: true,
-    }
-  },
-  async mounted() {
-    this.loaded = false
-    this.conveyors = await this.fetchConveyors(this.getQuestionnaire)
-    this.loaded = true
-  },
-  computed: {
-    ...mapGetters(['getConveyors', 'getQuestionnaire']),
+@Component({
+  components: {
+    ConveyorCard,
   },
   methods: {
     ...mapActions(['fetchConveyors']),
     ...mapMutations(['setState']),
-    redirect() {
-      this.setState('edit-conveyor')
-    },
   },
-  components: {
-    ConveyorCard,
+  computed: {
+    ...mapGetters(['getConveyors', 'getQuestionnaire']),
   },
 })
+export default class extends mixins(LoadingMixin) {
+  conveyors: Array<Conveyor> = []
+
+  fetchConveyors!: any
+  setState!: any
+  getConveyors!: any
+  getQuestionnaire!: any
+
+  @AsyncLoading
+  async mounted() {
+    this.conveyors = await this.fetchConveyors(this.getQuestionnaire)
+  }
+
+  redirect() {
+    this.setState('edit-conveyor')
+  }
+}
 </script>
