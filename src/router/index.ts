@@ -6,6 +6,7 @@ import store from '@/store'
 import Configurator from '@/views/Configurator.vue'
 import Profile from '@/views/Profile.vue'
 import Purchase from '@/views/Purchase.vue'
+import Questionnaire from '@/views/Questionnaire.vue'
 
 Vue.use(VueRouter)
 
@@ -43,6 +44,12 @@ const routes = [
     name: 'purchase',
     meta: { layout: 'main' },
     component: Purchase,
+  },
+  {
+    path: '/questionnaire',
+    name: 'questionnaire',
+    meta: { layout: 'main' },
+    component: Questionnaire,
   },
 ]
 

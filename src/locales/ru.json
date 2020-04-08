@@ -1,14 +1,15 @@
 {
-  "question-list":"опросный лист",
-  "listof-conveyors":"список конвейеров",
-  "tape":"ленточный",
-  "submit":"отправить",
-  "edit":"редактировать",
+  "question-list": "опросный лист",
+  "listof-conveyors": "список конвейеров",
+  "tape": "ленточный",
+  "submit": "отправить",
+  "edit": "редактировать",
   "settings": "настройки",
   "purchase-history": "история заказов",
   "options": "опции",
   "options-conveyor": "выбор опций",
   "piece": "штук",
   "pieces": "штуки",
-  "logout": "logout"
+  "logout": "выход",
+  "questionnaires": "опросные листы"
 }

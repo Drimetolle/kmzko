@@ -48,7 +48,7 @@ import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
     ...mapGetters(['getConveyor', 'getConveyorById']),
   },
 })
-export default class extends mixins(LoadingMixin){
+export default class EditConveyor extends mixins(LoadingMixin){
   conveyorСomponents: Array<Node> = []
   values: Map<string, string> = new Map()
   options: Array<OptionalDetail> = []

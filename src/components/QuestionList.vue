@@ -93,9 +93,5 @@ export default class extends mixins(LoadingMixin) {
   get getConverter(): QuestionnaireConverter {
     return new QuestionnaireConverter()
   }
-
-  get getLoading() {
-    return this.loaded
-  }
 }
 </script>
