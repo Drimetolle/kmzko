@@ -58,8 +58,8 @@ const Props = Vue.extend({
   },
 })
 export default class extends Props {
-  setConveyor!: any
-  setState!: any
+  setConveyor!: (...args: any) => void
+  setState!: (...args: any) => void
 
   get components(): string {
       return this.conveyor.nodes.map(n => n.name).join(', ')

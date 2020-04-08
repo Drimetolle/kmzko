@@ -53,11 +53,11 @@ export default class extends mixins(LoadingMixin){
   values: Map<string, string> = new Map()
   options: Array<OptionalDetail> = []
 
-  fetchConveyor!: any
-  fetchOptions!: any
-  setConveyor!: any
-  getConveyor!: any
-  getConveyorById!: any
+  fetchConveyor!: Promise<Conveyor>
+  fetchOptions!: Promise<Array<OptionalDetail>>
+  setConveyor!: (...args: any) => void
+  getConveyor!: Conveyor
+  getConveyorById!: (id: string) => Conveyor
 
   @AsyncLoading
   async mounted() {

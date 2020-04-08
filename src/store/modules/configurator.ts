@@ -19,19 +19,19 @@ const getters = {
   getState(state: State): string {
     return state.appState
   },
-  getConveyors(state: State) {
+  getConveyors(state: State): Array<Conveyor> {
     return state.listOfConveyors
   },
-  getConveyorById(state: State, id: string) {
+  getConveyorById(state: State, id: string): Conveyor | undefined {
     return state.listOfConveyors.find(i => i.id === id)
   },
-  getConveyor(state: State) {
+  getConveyor(state: State): ConveyorDto | undefined {
     return state.conveyor
   },
-  getQuestionnaire(state: State) {
+  getQuestionnaire(state: State): Map<string, string> | undefined {
     return state.questionnaire
   },
-  getConveyorType(state: State) {
+  getConveyorType(state: State): string | undefined {
     return state.conveyor?.type
   },
   getUserConveyor(state: State) {
@@ -40,7 +40,7 @@ const getters = {
 }
 
 const actions = {
-  async getFormConveyor({ dispatch, commit }: any, { type }: { type: string }): Promise<Array<FormConveyor>> {
+  async getFormConveyor({ dispatch, commit }: any, type: string): Promise<Array<FormConveyor>> {
     return await request.getQuestionnaireByType(type)
   },
   async fetchConveyor({ dispatch, commit }: any, id: string): Promise<Conveyor> {
@@ -56,7 +56,7 @@ const actions = {
     commit('setListOfConveyors', conveyors)
     return conveyors
   },
-  async fetchOptions({ dispatch, commit }: any, { type }: { type: string }): Promise<Array<OptionalDetail>> {
+  async fetchOptions({ dispatch, commit }: any, type: string): Promise<Array<OptionalDetail>> {
     const options = await request.getOptionsByConveyorType(type)
     commit('setListOfOptions', options)
     return options

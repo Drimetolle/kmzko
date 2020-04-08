@@ -63,10 +63,10 @@ export default class extends mixins(LoadingMixin) {
   values: Map<string, string> = new Map()
   valid: boolean = false
 
-  setState!: any
-  setQuestionnaire!: any
-  getFormConveyor!: any
-  setConveyorType!: any
+  setState!: (...args: any) => void
+  setQuestionnaire!: (...args: any) => void
+  getFormConveyor!: (type: string) => Promise<Array<FormConveyor>>
+  setConveyorType!: (...args: any) => void
 
   async created() {
     const conveyorTypes: Array<string> = await getConveyorTypes()
@@ -77,7 +77,7 @@ export default class extends mixins(LoadingMixin) {
   @AsyncLoading
   async getForm() {
     this.setConveyorType(this.select)
-    const newConveyorСomponents = await this.getFormConveyor({ type: this.select })
+    const newConveyorСomponents = await this.getFormConveyor(this.select)
     this.conveyorСomponents = newConveyorСomponents
   }
 

@@ -31,16 +31,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Conveyor } from '@/types/index'
+import { Conveyor, QuestionnaireDto } from '@/types/index'
 import ConveyorCard from '@/components/ConveyorCard'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 import Component, { mixins } from 'vue-class-component'
+import QuestionnaireMapper from '@/utils/mapper/QuestionnaireMapper'
 
-interface Data {
-  conveyors: Array<Conveyor>
-  loaded: boolean
-}
+const mapper: QuestionnaireMapper = new QuestionnaireMapper()
 
 @Component({
   components: {
@@ -57,14 +55,14 @@ interface Data {
 export default class extends mixins(LoadingMixin) {
   conveyors: Array<Conveyor> = []
 
-  fetchConveyors!: any
-  setState!: any
-  getConveyors!: any
-  getQuestionnaire!: any
+  fetchConveyors!: (payload: QuestionnaireDto) => Promise<Array<Conveyor>>
+  setState!: (...args: any) => void
+  getConveyors!: Array<Conveyor>
+  getQuestionnaire!: Map<string, string>
 
   @AsyncLoading
   async mounted() {
-    this.conveyors = await this.fetchConveyors(this.getQuestionnaire)
+    this.conveyors = await this.fetchConveyors(mapper.toDto(this.getQuestionnaire))
   }
 
   redirect() {
