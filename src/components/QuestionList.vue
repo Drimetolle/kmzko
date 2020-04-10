@@ -24,12 +24,10 @@
               size="50"
             ></v-progress-circular>
           </div>
-          <Field v-for="component in conveyorСomponents"
-            :key="component.mark"
-            :id="component.mark"
-            :item="toFieldSkelet(component)"
-            :converter="getConverter"
-            :values="values"/>
+          <Field v-for="rate in questionnaire.rateList"
+            :key="rate.mark"
+            :item="toFieldSkelet(rate)"
+            @click="focus"/>
           <v-btn v-if="select !== '' && loaded" class="mr-4" @click.prevent="submit">{{ $t('submit') }}</v-btn>
         </v-col>
       </v-row>
@@ -41,7 +39,7 @@
 import Vue from 'vue'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
-import { FormConveyor, States, SelectElement, ImplSelectElement } from '@/types/index'
+import { QuestionnaireDto, RateDto, States, SelectElement, ImplSelectElement } from '@/types/index'
 import { getConveyorTypes } from '@/utils/request/index'
 import QuestionnaireConverter from '@/utils/questionnaireConverter'
 import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
@@ -57,15 +55,14 @@ import Component, { mixins } from 'vue-class-component'
   },
 })
 export default class extends mixins(LoadingMixin) {
-  conveyorСomponents: Array<FormConveyor> = []
   items: Array<SelectElement> = []
   select: string = ''
-  values: Map<string, string> = new Map()
+  questionnaire: QuestionnaireDto = { } as any
   valid: boolean = false
 
   setState!: (...args: any) => void
   setQuestionnaire!: (...args: any) => void
-  getFormConveyor!: (type: string) => Promise<Array<FormConveyor>>
+  getFormConveyor!: (type: string) => Promise<QuestionnaireDto>
   setConveyorType!: (...args: any) => void
 
   async created() {
@@ -77,21 +74,20 @@ export default class extends mixins(LoadingMixin) {
   @AsyncLoading
   async getForm() {
     this.setConveyorType(this.select)
-    const newConveyorСomponents = await this.getFormConveyor(this.select)
-    this.conveyorСomponents = newConveyorСomponents
+    this.questionnaire = await this.getFormConveyor(this.select)
   }
 
   submit() {
-    this.setQuestionnaire(this.values)
+    this.setQuestionnaire(this.questionnaire)
     this.setState(States.ListOfConveyors)
+  }
+
+  focus() {
+    console.log(1)
   }
 
   toFieldSkelet(option: any) {
     return QuestionnaireConverter.prototype.toFieldSkelet(option)
-  }
-
-  get getConverter(): QuestionnaireConverter {
-    return new QuestionnaireConverter()
   }
 }
 </script>

@@ -1,11 +1,3 @@
-export interface FormConveyor {
-  id: string
-  name: string
-  value: string
-  placeholder?: string
-  child?: Array<string>
-}
-
 export interface Conveyor {
   id: string
   name: string
@@ -16,7 +8,7 @@ export interface Conveyor {
 export interface Node {
   id: string
   name: string
-  details: Array<FormConveyor>
+  details: Array<Detail>
 }
 
 export interface Detail {

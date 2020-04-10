@@ -1,10 +1,10 @@
-import { FormConveyor, Conveyor, OptionalDetail, ConveyorDto, States, QuestionnaireDto } from '@/types/index'
+import { Conveyor, OptionalDetail, ConveyorDto, States, QuestionnaireDto } from '@/types/index'
 import * as request from '@/utils/request/index'
 
 class State {
   appState: States
   listOfConveyors: Array<Conveyor>
-  questionnaire?: Map<string, string>
+  questionnaire?: QuestionnaireDto
   conveyor?: ConveyorDto
   options?: Array<OptionalDetail>
   conveyorType?: string
@@ -28,7 +28,7 @@ const getters = {
   getConveyor(state: State): ConveyorDto | undefined {
     return state.conveyor
   },
-  getQuestionnaire(state: State): Map<string, string> | undefined {
+  getQuestionnaire(state: State): QuestionnaireDto | undefined {
     return state.questionnaire
   },
   getConveyorType(state: State): string | undefined {
@@ -40,7 +40,7 @@ const getters = {
 }
 
 const actions = {
-  async getFormConveyor({ dispatch, commit }: any, type: string): Promise<Array<FormConveyor>> {
+  async getFormConveyor({ dispatch, commit }: any, type: string): Promise<QuestionnaireDto> {
     return await request.getQuestionnaireByType(type)
   },
   async fetchConveyor({ dispatch, commit }: any, id: string): Promise<Conveyor> {
@@ -73,7 +73,7 @@ const mutations = {
   setListOfConveyors(oldState: State, listOfConveyors: Array<Conveyor>) {
     oldState.listOfConveyors = listOfConveyors
   },
-  setQuestionnaire(oldState: State, questionnaire: Map<string, string>) {
+  setQuestionnaire(oldState: State, questionnaire: QuestionnaireDto) {
     oldState.questionnaire = questionnaire
   },
   setConveyor(oldState: State, conveyor: ConveyorDto) {

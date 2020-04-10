@@ -76,7 +76,7 @@ import Field from '@/components/Field.vue'
 import { QuestionnaireDto } from '@/types/index'
 import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 import MarkMixin from '@/mixin/mark.mixin'
-import { getAllQuestionnaire } from '@/utils/request/index'
+import { getAllQuestionnaire, deployQuestionnaire } from '@/utils/request/index'
 import QuestionnaireConverter from '@/utils/questionnaireConverter'
 
 @Component({
@@ -110,7 +110,7 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
   }
 
   newItem() {
-    const newItem: QuestionnaireDto = { id: '', name: 'newItem', type: '', rateList: [{ id: '0', name: '', value: '', mark: '' }] }
+    const newItem: QuestionnaireDto = { id: this.questionnaireList.length.toString(), name: 'newItem', type: '', rateList: [{ id: '0', name: '', value: '', mark: '' }] }
     this.questionnaireList.push(newItem)
     this.questionnaire = newItem
   }
@@ -127,6 +127,7 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
     (this.$refs.form as any).validate()
     const length = this.questionnaire.rateList.length
     const valid: boolean = (new Set(this.questionnaire.rateList.map(i => i.mark))).size === length
+    deployQuestionnaire(this.questionnaire)
   }
 
   get getConverter(): QuestionnaireConverter {

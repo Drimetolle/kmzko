@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FormConveyor, Conveyor, QuestionnaireDto } from '@/types/index'
+import { Conveyor, QuestionnaireDto } from '@/types/index'
 
 const request = axios.create({
   baseURL: `${process.env.VUE_APP_API_BASE_URL}/api/questionnaire`,
@@ -15,10 +15,10 @@ async function getConveyorTypes(): Promise<Array<string>> {
   }
 }
 
-async function getQuestionnaireByType(type: string): Promise<Array<FormConveyor>> {
+async function getQuestionnaireByType(type: string): Promise<QuestionnaireDto> {
   try {
     const res = await request.get(`/${type}`)
-    return res.data.rateList as Array<FormConveyor>
+    return res.data as QuestionnaireDto
   } catch (error) {
     throw Error(error)
   }
@@ -33,4 +33,19 @@ async function getAllQuestionnaire(): Promise<Array<QuestionnaireDto>> {
   }
 }
 
-export { getConveyorTypes, getQuestionnaireByType, getAllQuestionnaire }
+async function deployQuestionnaire(questionnaire: QuestionnaireDto): Promise<QuestionnaireDto> {
+  try {
+    const res = await request.put(`/${questionnaire.id}`, {
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json',
+      },
+      body: questionnaire,
+    })
+    return res.data as QuestionnaireDto
+  } catch (error) {
+    throw Error(error)
+  }
+}
+
+export { getConveyorTypes, getQuestionnaireByType, getAllQuestionnaire, deployQuestionnaire }

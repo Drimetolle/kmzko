@@ -3,37 +3,33 @@
     v-if="valueOf(item) === 'textBox'"
     :label="item.name"
     :placeholder="item.placeholder"
-    v-model="value"
-    @input="changeValue"
+    v-model="item.value"
   ></v-text-field>
   <v-select 
     v-else-if="valueOf(item) === 'selectBox'"
     :items="convertValue(item.child)"
     :label="item.name"
-    v-model="value"
-    @input="changeValue"
+    v-model="item.value"
   ></v-select>
   <div
     v-else-if="valueOf(item) === 'colorPicker'">
     <p>{{ item.name }}</p>
     <v-color-picker
-      v-model="value"
-      @input="changeValue"
+      v-model="item.value"
     >
     </v-color-picker>
   </div>
   <v-checkbox
     v-else-if="valueOf(item) === 'checkBox'"
-    v-model="value"
+    v-model="item.value"
     :label="`${item.name}`"
-    @click.native="changeValue"
   >
   </v-checkbox>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { FormConveyor, ImplSelectElement, FieldSkelet } from '@/types/index'
+import { ImplSelectElement, FieldSkelet } from '@/types/index'
 import FieldConverter from '@/utils/fieldConverter'
 
 function parseBoolean(str: string): boolean {
@@ -49,28 +45,8 @@ export default Vue.extend({
     item: {
       type: Object as () => FieldSkelet,
     },
-    values: {
-      type: Map,
-    },
-    converter: {
-      type: Object as () => FieldConverter,
-    },
-  },
-  data: () => {
-    return {
-      value: '',
-    }
-  },
-  mounted() {
-    this.value = this.item.value
-    const model = this.converter.toModel({ id: this.item.id, value: this.value })
-    this.values.set(model.id, model)
   },
   methods: {
-    changeValue() {
-      const model = this.converter.toModel({ id: this.item.id, value: this.value })
-      this.values.set(model.id, model)
-    },
     convertValue(item: Array<any>): Array<ImplSelectElement> {
       return item.map(i => new ImplSelectElement(i.name, i.name))
     },

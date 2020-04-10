@@ -14,10 +14,7 @@
       <h2>{{ component.name }}</h2>
       <Field v-for="detail in component.details"
         :key="detail.id"
-        :id="detail.id"
         :item="toFieldSkelet(detail)"
-        :converter="getConverter"
-        :values="values"
       />
     </v-container>
     <v-container>
@@ -30,7 +27,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Field from '@/components/Field.vue'
-import { Conveyor, Node, FormConveyor, OptionalDetail } from '@/types/index'
+import { Conveyor, Node, OptionalDetail } from '@/types/index'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import OptionConverter from '@/utils/optionConverter'
 import Component, { mixins } from 'vue-class-component'
@@ -50,7 +47,6 @@ import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 })
 export default class EditConveyor extends mixins(LoadingMixin){
   conveyorСomponents: Array<Node> = []
-  values: Map<string, string> = new Map()
   options: Array<OptionalDetail> = []
 
   fetchConveyor!: Promise<Conveyor>
@@ -69,13 +65,6 @@ export default class EditConveyor extends mixins(LoadingMixin){
     this.conveyorСomponents = nodes
   }
 
-  get getConverter(): OptionConverter {
-    return new OptionConverter()
-  }
-
-  setField(id: string, event: string) {
-    this.values.set(id, event)
-  }
   submit() {
     //
   }

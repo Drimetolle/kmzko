@@ -10,11 +10,8 @@
           size="50"
         ></v-progress-circular>
         <Field v-for="option in options"
-        :key="option.id"
-        :id="option.id"
-        :item="toFieldSkelet(option)"
-        :converter="getConverter"
-        :values="values"
+          :key="option.id"
+          :item="toFieldSkelet(option)"
         />
       </div>
     </v-container>
@@ -46,7 +43,6 @@ import Component, { mixins } from 'vue-class-component'
 })
 export default class extends mixins(LoadingMixin){
   options: Array<OptionalDetail> = []
-  values: Map<string, string> = new Map()
 
   fetchOptions!: (type: string) => Promise<Array<OptionalDetail>>
   setListOfOptions!: (...args: any) => void
@@ -56,10 +52,6 @@ export default class extends mixins(LoadingMixin){
   @AsyncLoading
   async mounted() {
     this.options = await this.fetchOptions('tape')
-  }
-
-  get getConverter(): OptionConverter {
-    return new OptionConverter()
   }
 
   submit() {
