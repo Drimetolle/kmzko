@@ -4,21 +4,21 @@
       <v-list flat>
         <div>
           <v-row>
-          <v-col>
-          <v-subheader>{{ $t('questionnaires') }}</v-subheader>
-          </v-col>
-          <v-spacer/>
-          <v-col>
-          <v-btn
-            small
-            bottom
-            right
-            fab
-            @click="newItem"
-          >
-            <v-icon>add</v-icon>
-          </v-btn>
-          </v-col>
+            <v-col>
+              <v-subheader>{{ $t('questionnaires') }}</v-subheader>
+            </v-col>
+            <v-spacer/>
+            <v-col>
+              <v-btn
+                small
+                bottom
+                right
+                fab
+                @click="newItem"
+              >
+                <v-icon>add</v-icon>
+              </v-btn>
+            </v-col>
           </v-row>
         </div>
         <v-list-item-group color="primary">
@@ -59,6 +59,9 @@
               required
             ></v-select>
           </v-col>
+        </v-row>
+        <v-row justify="center">
+          <v-btn v-if="!!questionnaire.rateList" @click="newRate">add field</v-btn>
         </v-row>
       </v-form>
     </v-col>
@@ -107,7 +110,17 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
   }
 
   newItem() {
-    this.questionnaireList.push({ id: '', name: 'newItem', type: '', rateList: []  })
+    const newItem: QuestionnaireDto = { id: '', name: 'newItem', type: '', rateList: [{ id: '0', name: '', value: '', mark: '' }] }
+    this.questionnaireList.push(newItem)
+    this.questionnaire = newItem
+  }
+
+  newRate() {
+    this.questionnaire.rateList.push({ id: this.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
+  }
+
+  edit() {
+    //
   }
 
   submit() {
