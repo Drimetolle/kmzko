@@ -26,8 +26,9 @@
           </div>
           <Field v-for="rate in questionnaire.rateList"
             :key="rate.mark"
-            :item="toFieldSkelet(rate)"
-            @click="focus"/>
+            :item="rate"
+            @unfocus="unfocus"
+          />
           <v-btn v-if="select !== '' && loaded" class="mr-4" @click.prevent="submit">{{ $t('submit') }}</v-btn>
         </v-col>
       </v-row>
@@ -39,9 +40,8 @@
 import Vue from 'vue'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
-import { QuestionnaireDto, RateDto, States, SelectElement, ImplSelectElement } from '@/types/index'
-import { getConveyorTypes } from '@/utils/request/index'
-import QuestionnaireConverter from '@/utils/questionnaireConverter'
+import { QuestionnaireDto, RateDto, States, SelectElement, ImplSelectElement, FieldSkelet } from '@/types/index'
+import { getConveyorTypes, saveQuestionnaire } from '@/utils/request/index'
 import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 import Component, { mixins } from 'vue-class-component'
 
@@ -82,12 +82,8 @@ export default class extends mixins(LoadingMixin) {
     this.setState(States.ListOfConveyors)
   }
 
-  focus() {
-    console.log(1)
-  }
-
-  toFieldSkelet(option: any) {
-    return QuestionnaireConverter.prototype.toFieldSkelet(option)
+  unfocus(item: QuestionnaireDto) {
+    // saveQuestionnaire(this.questionnaire)
   }
 }
 </script>

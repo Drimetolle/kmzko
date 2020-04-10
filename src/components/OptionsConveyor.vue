@@ -11,7 +11,8 @@
         ></v-progress-circular>
         <Field v-for="option in options"
           :key="option.id"
-          :item="toFieldSkelet(option)"
+          :item="option"
+          @unfocus="unfocus"
         />
       </div>
     </v-container>
@@ -24,7 +25,6 @@ import Vue from 'vue'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { OptionalDetail } from '@/types/index'
 import Field from '@/components/Field.vue'
-import OptionConverter from '@/utils/optionConverter'
 import { saveConveyor } from '@/utils/request/index'
 import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 import Component, { mixins } from 'vue-class-component'
@@ -56,11 +56,11 @@ export default class extends mixins(LoadingMixin){
 
   submit() {
     this.setListOfOptions(this.options)
-    saveConveyor(this.getUserConveyor)
+    // saveConveyor(this.getUserConveyor)
   }
 
-  toFieldSkelet(option: any) {
-    return OptionConverter.prototype.toFieldSkelet(option)
+  unfocus(item: OptionalDetail) {
+    //
   }
 }
 </script>

@@ -4,18 +4,21 @@
     :label="item.name"
     :placeholder="item.placeholder"
     v-model="item.value"
+    @blur="blur"
   ></v-text-field>
   <v-select 
     v-else-if="valueOf(item) === 'selectBox'"
     :items="convertValue(item.child)"
     :label="item.name"
     v-model="item.value"
+    @blur="blur"
   ></v-select>
   <div
     v-else-if="valueOf(item) === 'colorPicker'">
     <p>{{ item.name }}</p>
     <v-color-picker
       v-model="item.value"
+      @blur="blur"
     >
     </v-color-picker>
   </div>
@@ -23,6 +26,7 @@
     v-else-if="valueOf(item) === 'checkBox'"
     v-model="item.value"
     :label="`${item.name}`"
+    @blur="blur"
   >
   </v-checkbox>
 </template>
@@ -47,6 +51,9 @@ export default Vue.extend({
     },
   },
   methods: {
+    blur() {
+      this.$emit('unfocus', this.item)
+    },
     convertValue(item: Array<any>): Array<ImplSelectElement> {
       return item.map(i => new ImplSelectElement(i.name, i.name))
     },
