@@ -2,7 +2,25 @@
   <v-row>
     <v-col dense cols="2">
       <v-list flat>
-        <v-subheader>{{ $t('questionnaires') }}</v-subheader>
+        <div>
+          <v-row>
+          <v-col>
+          <v-subheader>{{ $t('questionnaires') }}</v-subheader>
+          </v-col>
+          <v-spacer/>
+          <v-col>
+          <v-btn
+            small
+            bottom
+            right
+            fab
+            @click="newItem"
+          >
+            <v-icon>add</v-icon>
+          </v-btn>
+          </v-col>
+          </v-row>
+        </div>
         <v-list-item-group color="primary">
           <v-list-item
             v-for="(item, i) in questionnaireList"
@@ -18,25 +36,31 @@
     </v-col>
     <v-divider vertical/>
     <v-col dense>
-      <h3>{{ questionnaire.name }}</h3>
-      <v-row v-for="rate in questionnaire.rateList"
-        :key="rate.id">
-        <v-col>
-          <v-text-field
-            label="Характеристика"
-            :placeholder="rate.placeholder"
-            v-model="rate.name"
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-select
-            :items="marks"
-            label="Метка"
-            solo
-            v-model="rate.mark"
-          ></v-select>
-        </v-col>
-      </v-row>
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <h3>{{ questionnaire.name }}</h3>
+        <v-row v-for="rate in questionnaire.rateList"
+          :key="rate.id">
+          <v-col>
+            <v-text-field
+              label="Характеристика"
+              :placeholder="rate.placeholder"
+              v-model="rate.name"
+              :rules="textRules"
+              required
+            ></v-text-field>
+          </v-col>
+          <v-col>
+            <v-select
+              :items="marks"
+              label="Метка"
+              solo
+              v-model="rate.mark"
+              :rules="markRules"
+              required
+            ></v-select>
+          </v-col>
+        </v-row>
+      </v-form>
     </v-col>
   </v-row>
 </template>
@@ -61,6 +85,13 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
   questionnaire: QuestionnaireDto = { } as any
   questionnaireList: Array<QuestionnaireDto> = []
   values: Map<string, string> = new Map()
+  valid: boolean = true
+  textRules = [
+    (v: any) => !!v || 'Is required',
+  ]
+  markRules = [
+    (v: any) => !!v || 'Is required',
+  ]
 
   @AsyncLoading
   async mounted() {
@@ -73,6 +104,16 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
 
   toFieldSkelet(option: any) {
     return QuestionnaireConverter.prototype.toFieldSkelet(option)
+  }
+
+  newItem() {
+    this.questionnaireList.push({ id: '', name: 'newItem', type: '', rateList: []  })
+  }
+
+  submit() {
+    (this.$refs.form as any).validate()
+    const length = this.questionnaire.rateList.length
+    const valid: boolean = (new Set(this.questionnaire.rateList.map(i => i.mark))).size === length
   }
 
   get getConverter(): QuestionnaireConverter {
