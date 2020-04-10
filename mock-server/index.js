@@ -12,7 +12,35 @@ server.listen(port, () => {
 
 server.get('/api/questionnaire', (request, response) => {
   if (request.method === 'GET') {
-    const users = require('./questionnaire')
-    response.status(200).jsonp(users())
+    const questionnaire = require('./questionnaire')
+    response.status(200).jsonp(questionnaire())
+  }
+})
+
+server.get('/api/questionnaire/tape', (request, response) => {
+  if (request.method === 'GET') {
+    const questionnaire = require('./questionnaire-tape')
+    response.status(200).jsonp(questionnaire())
+  }
+})
+
+server.get('/api/questionnaire/types', (request, response) => {
+  if (request.method === 'GET') {
+    const questionnaires = ['tape']
+    response.status(200).jsonp(questionnaires)
+  }
+})
+
+server.get('/api/options', (request, response) => {
+  if (request.method === 'GET') {
+    const options = require('./options')
+    response.status(200).jsonp(options())
+  }
+})
+
+server.get('/api/search/conveyors', (request, response) => {
+  if (request.method === 'GET') {
+    const conveyors = require('./search/conveyors-get')
+    response.status(200).jsonp(conveyors())
   }
 })
