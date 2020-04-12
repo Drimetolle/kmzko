@@ -60,17 +60,17 @@ export default Vue.extend({
     name: 'login',
     data() {
         return {
-            username: 'dogo',
-            password: 'dogy',
+            username: 'qwerty',
+            password: '12345',
         }
     },
     methods: {
         login() {
             const { username, password } = {
-                username: 'dogo',
-                password: 'dogy',
+              username: 'qwerty',
+              password: '12345',
             }
-            // this.$store.dispatch(AUTH_REQUEST, { username, password });
+            this.$store.dispatch('authRequest', { username, password })
             this.$router.push('/')
         },
         redirectToReg() {

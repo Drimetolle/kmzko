@@ -80,3 +80,8 @@ export interface OptionalDetailDto {
   name: string
   value: string
 }
+
+export interface TokensDto {
+  access_token: string
+  refresh_token: string
+}

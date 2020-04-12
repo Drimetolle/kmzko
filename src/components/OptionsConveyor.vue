@@ -60,7 +60,7 @@ export default class extends mixins(LoadingMixin){
   }
 
   unfocus(item: OptionalDetail) {
-    //
+    // SAVE
   }
 }
 </script>

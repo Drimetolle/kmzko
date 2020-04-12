@@ -8,14 +8,13 @@ const request = axios.create({
   timeout: process.env.VUE_APP_API_BASE_TIMEOUT,
 })
 
-async function saveQuestionnaire(questionnaire: QuestionnaireDto) {
+export async function saveQuestionnaire(questionnaire: QuestionnaireDto) {
   try {
-    const res = await request.put(`/questionnaires/${questionnaire.id}`,{
+    const res = await request.put(`/questionnaires/${questionnaire.id}`, new QuestionnaireMinimizezer().minimize(questionnaire), {
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',
       },
-      body: new QuestionnaireMinimizezer().minimize(questionnaire),
     })
 
     return res
@@ -24,14 +23,13 @@ async function saveQuestionnaire(questionnaire: QuestionnaireDto) {
   }
 }
 
-async function saveConveyor(conveyor: ConveyorDto) {
+export async function saveConveyor(conveyor: ConveyorDto) {
   try {
-    const res = await request.put(`/questionnaires/${conveyor.id}`,{
+    const res = await request.put(`/questionnaires/${conveyor.id}`, new ConveyorMinimizezer().minimize(conveyor), {
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',
       },
-      body: new ConveyorMinimizezer().minimize(conveyor),
     })
 
     return res
@@ -39,5 +37,3 @@ async function saveConveyor(conveyor: ConveyorDto) {
     throw Error(error)
   }
 }
-
-export { saveQuestionnaire, saveConveyor }

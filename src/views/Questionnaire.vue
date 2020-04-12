@@ -87,7 +87,6 @@ import QuestionnaireConverter from '@/utils/questionnaireConverter'
 export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
   questionnaire: QuestionnaireDto = { } as any
   questionnaireList: Array<QuestionnaireDto> = []
-  values: Map<string, string> = new Map()
   valid: boolean = true
   textRules = [
     (v: any) => !!v || 'Is required',
@@ -117,10 +116,6 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
 
   newRate() {
     this.questionnaire.rateList.push({ id: this.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
-  }
-
-  edit() {
-    //
   }
 
   submit() {

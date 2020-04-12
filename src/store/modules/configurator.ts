@@ -64,25 +64,25 @@ const actions = {
 }
 
 const mutations = {
-  setState(oldState: State, newState: States) {
+  setState(oldState: State, newState: States): void {
     oldState.appState = newState
   },
-  throwState(oldState: State) {
+  throwState(oldState: State): void {
     oldState.appState = States.QuestionList
   },
-  setListOfConveyors(oldState: State, listOfConveyors: Array<Conveyor>) {
+  setListOfConveyors(oldState: State, listOfConveyors: Array<Conveyor>): void {
     oldState.listOfConveyors = listOfConveyors
   },
-  setQuestionnaire(oldState: State, questionnaire: QuestionnaireDto) {
+  setQuestionnaire(oldState: State, questionnaire: QuestionnaireDto): void {
     oldState.questionnaire = questionnaire
   },
-  setConveyor(oldState: State, conveyor: ConveyorDto) {
+  setConveyor(oldState: State, conveyor: ConveyorDto): void {
     oldState.conveyor = conveyor
   },
-  setListOfOptions(oldState: State, options: Array<OptionalDetail>) {
+  setListOfOptions(oldState: State, options: Array<OptionalDetail>): void {
     oldState.options = options
   },
-  setConveyorType(oldState: State, type: string) {
+  setConveyorType(oldState: State, type: string): void {
     oldState.conveyorType = type
   },
 }

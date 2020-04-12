@@ -1,57 +1,48 @@
-interface State {
-  token: string
-  status: string
-  hasLoadedOnce: boolean
+import { User, TokensDto } from '@/types/index'
+import { login, refresh } from '@/utils/request/auth'
+
+class State {
+  accessToken: string = localStorage.getItem('access-token') || ''
+  refreshToken: string = localStorage.getItem('refresh-token') || ''
 }
 
-const state: any = {
-  token: localStorage.getItem('user-token') || '',
-  status: '',
-  hasLoadedOnce: false,
-}
-
-const getters: any = {
-  isAuthenticated: () => !!state.token,
-  authStatus: () => state.status,
-}
-
-const actions: any = {
-  async authRequest({ commit, dispatch }: any, user: any) {
-    return new Promise((resolve, reject) => {
-      commit('authRequest')
-      // apiCall({ url: 'auth', data: user, method: 'POST' });
-      // TODO api call
-    })
+const getters = {
+  getAccessToken(state: State): string  {
+    return state.accessToken
   },
-  async authLogout({ commit }: any) {
-    return new Promise((resolve) => {
-      commit('authRequest')
-      localStorage.removeItem('user-token')
-      resolve()
-    })
+  getRefreshToken(state: State): string {
+    return state.refreshToken
   },
 }
 
-const mutations: any = {
-  authRequest() {
-    state.status = 'loading'
+const actions = {
+  async authRequest({ commit, dispatch }: any, user: User): Promise<void> {
+    const res: TokensDto = await login(user)
+    commit('setAccessToken', res.access_token)
+    commit('setRefreshToken', res.refresh_token)
   },
-  authSuccess(resp: any) {
-    state.status = 'success'
-    state.token = resp.token
-    state.hasLoadedOnce = true
+}
+
+const mutations = {
+  setAccessToken(oldState: State, token: string): void {
+    oldState.accessToken = token
+    localStorage.setItem('access-token', token)
   },
-  authError() {
-    state.status = 'error'
-    state.hasLoadedOnce = true
+  setRefreshToken(oldState: State, token: string): void {
+    oldState.refreshToken = token
+    localStorage.setItem('refresh-token', token)
   },
-  authLogout() {
-    state.token = ''
+  authLogout(oldState: State): void {
+    oldState.accessToken = ''
+    oldState.refreshToken = ''
+
+    localStorage.removeItem('access-token')
+    localStorage.removeItem('refresh-token')
   },
 }
 
 export default {
-  state,
+  state: new State(),
   getters,
   actions,
   mutations,

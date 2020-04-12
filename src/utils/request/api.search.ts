@@ -6,7 +6,7 @@ const request = axios.create({
   timeout: process.env.VUE_APP_API_BASE_TIMEOUT,
 })
 
-async function getConveyor(id: string): Promise<Conveyor> {
+export async function getConveyor(id: string): Promise<Conveyor> {
   try {
     const res = await request.get(`conveyors/${id}`)
     return res.data as Conveyor
@@ -15,7 +15,7 @@ async function getConveyor(id: string): Promise<Conveyor> {
   }
 }
 
-async function getNearConveyors(payload: QuestionnaireDto): Promise<Array<Conveyor>> {
+export async function getNearConveyors(payload: QuestionnaireDto): Promise<Array<Conveyor>> {
   try {
     const res = await request.get(`conveyors/`, {
       params: payload,
@@ -25,5 +25,3 @@ async function getNearConveyors(payload: QuestionnaireDto): Promise<Array<Convey
     throw Error(error)
   }
 }
-
-export { getConveyor, getNearConveyors }

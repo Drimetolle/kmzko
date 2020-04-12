@@ -6,7 +6,7 @@ const request = axios.create({
   timeout: process.env.VUE_APP_API_BASE_TIMEOUT,
 })
 
-async function getConveyorTemplate(type: string): Promise<Conveyor> {
+export async function getConveyorTemplate(type: string): Promise<Conveyor> {
   try {
     const res = await request.get(`template/${type}`)
     return res.data as Conveyor
@@ -14,5 +14,3 @@ async function getConveyorTemplate(type: string): Promise<Conveyor> {
     throw Error(error)
   }
 }
-
-export { getConveyorTemplate }
