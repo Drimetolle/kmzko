@@ -10,21 +10,21 @@ server.listen(port, () => {
  console.log('JSON Server is running')
 })
 
-server.get('/api/questionnaire', (request, response) => {
+server.get('/api/questionnaires', (request, response) => {
   if (request.method === 'GET') {
     const questionnaire = require('./questionnaire')
     response.status(200).jsonp(questionnaire())
   }
 })
 
-server.get('/api/questionnaire/tape', (request, response) => {
+server.get('/api/questionnaires/tape', (request, response) => {
   if (request.method === 'GET') {
     const questionnaire = require('./questionnaire-tape')
     response.status(200).jsonp(questionnaire())
   }
 })
 
-server.get('/api/questionnaire/types', (request, response) => {
+server.get('/api/questionnaires/types', (request, response) => {
   if (request.method === 'GET') {
     const questionnaires = ['tape']
     response.status(200).jsonp(questionnaires)

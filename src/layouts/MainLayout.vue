@@ -30,12 +30,6 @@
     <v-content>
       <router-view/>
     </v-content>
-    <!-- <v-footer
-      color="#d94d33"
-      app
-    >
-      <span class="white--text">&copy; 2020</span>
-    </v-footer> -->
   </v-app>
 </template>
 
@@ -55,7 +49,10 @@ export default Vue.extend({
   methods: {
     pushTo({ title }: any) {
       if(title === 'settings') this.$router.push('/settings/profile')
-      else if (title === 'logout') this.$router.push('/login')
+      else if (title === 'logout') {
+        this.$store.commit('logout')
+        this.$router.push('/login')
+      }
       else if (title === 'purchase-history') this.$router.push('/purchase')
     },
   },

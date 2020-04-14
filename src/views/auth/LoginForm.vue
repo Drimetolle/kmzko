@@ -65,12 +65,13 @@ export default Vue.extend({
         }
     },
     methods: {
-        login() {
+        async login() {
             const { username, password } = {
               username: 'qwerty',
               password: '12345',
             }
-            this.$store.dispatch('authRequest', { username, password })
+            const tokens = await this.$store.dispatch('authRequest', { username, password })
+            // debugger
             this.$router.push('/')
         },
         redirectToReg() {

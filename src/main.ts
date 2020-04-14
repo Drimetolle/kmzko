@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import configAxios from './axios/config'
+import axios from 'axios'
 import './registerServiceWorker'
 import vuetify from './plugins/vuetify'
 import i18n from './plugins/i18n'
@@ -15,6 +17,8 @@ Vue.config.productionTip = false
 Vue.filter('currency', currencyFilter)
 Vue.filter('characteristic', rateFilter)
 Vue.filter('piece', pieceFilter)
+
+configAxios()
 
 new Vue({
   router,
