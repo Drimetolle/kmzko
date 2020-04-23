@@ -59,9 +59,15 @@ const router = new VueRouter({
   routes,
 })
 
+const whitelist = (name: string): boolean => {
+  const list = ['login', 'registration']
+  return list.includes(name)
+}
+
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login' && !store.getters.isAuthenticated) next({ name: 'login' })
-  else next()
+  if (whitelist(to.name!)) next()
+  else if (store.getters.isAuthenticated) next()
+  else if (to.name !== 'login' && !store.getters.isAuthenticated) next({ name: 'login' })
 })
 
 export default router

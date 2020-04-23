@@ -1,5 +1,5 @@
 import { User, TokensDto } from '@/types/index'
-import { login, refresh } from '@/utils/request/auth'
+import { login, refresh, registration } from '@/utils/request/auth'
 
 class State {
   accessToken: string = localStorage.getItem('access-token') ?? ''
@@ -29,6 +29,13 @@ const actions = {
     }
     catch (error) {
       //
+    }
+  },
+  async join({ commit, dispatch }: any, user: User) {
+    const { status } = await registration(user)
+
+    if (status === 'ok') {
+      dispatch('authRequest', user)
     }
   },
 }

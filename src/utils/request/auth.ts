@@ -33,3 +33,28 @@ export async function refresh(tokens: TokensDto): Promise<TokensDto> {
     throw Error(error)
   }
 }
+
+export async function registration(user: User): Promise<{ status: string }> {
+  try {
+    const res = await request.post(`/join`, user, {
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json',
+      },
+    })
+    return res.data
+  } catch (error) {
+    throw Error(error)
+  }
+}
+
+export async function checkFieldForUniqueness(id: string, field: string): Promise<{ error: string, status: string }> {
+  try {
+    const res = await axios.get(`/join`, {
+      params: { [id]: field },
+    })
+    return res.data
+  } catch (error) {
+    throw Error(error)
+  }
+}
