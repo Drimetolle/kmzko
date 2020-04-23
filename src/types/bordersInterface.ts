@@ -26,8 +26,8 @@ export interface OptionalDetail {
 }
 
 export interface User {
-  email: string
-  name: string
+  email?: string
+  username: string
   password: string
 }
 

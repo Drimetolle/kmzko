@@ -25,19 +25,21 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
+                  v-model="username"
                     label="Login"
                     name="login"
                     prepend-icon="person"
                     type="text"
                   />
-
                   <v-text-field
+                    v-model="password"
                     id="password"
                     label="Password"
                     name="password"
                     prepend-icon="lock"
                     type="password"
                   />
+                  <p v-if="success" style="color:red;">Неверный логин или пароль</p>
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -55,30 +57,43 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Component from 'vue-class-component'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { User } from '@/types'
 
-export default Vue.extend({
-    name: 'login',
-    data() {
-        return {
-            username: 'qwerty',
-            password: '12345',
-        }
-    },
-    methods: {
-        async login() {
-            const { username, password } = {
-              username: 'qwerty',
-              password: '12345',
-            }
-            const tokens = await this.$store.dispatch('authRequest', { username, password })
-            // debugger
-            this.$router.push('/')
-        },
-        redirectToReg() {
-            this.$router.push('/registration')
-        },
-    },
+@Component({
+  methods: {
+    ...mapActions(['authRequest']),
+  },
+  computed: {
+    ...mapGetters(['isAuthenticated']),
+  },
 })
+export default class LoginForm extends Vue {
+  username: string = ''
+  password: string = ''
+  success: boolean = false
+
+  isAuthenticated!: boolean
+  authRequest!: (user: User) => void
+
+  async login() {
+    const user: User = {
+      username: this.username,
+      password: this.password,
+    }
+    await this.authRequest(user)
+
+    this.success = !this.isAuthenticated
+    if (this.isAuthenticated) {
+      this.$router.push('/')
+    }
+  }
+
+  redirectToReg() {
+    this.$router.push('/registration')
+  }
+}
 </script>
 
 <style scoped>

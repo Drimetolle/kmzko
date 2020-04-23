@@ -20,12 +20,16 @@ const getters = {
 }
 
 const actions = {
-  async authRequest({ commit, dispatch }: any, user: User): Promise<TokensDto> {
-    const res: TokensDto = await login(user)
-    commit('setAccessToken', res.access_token)
-    commit('setRefreshToken', res.refresh_token)
-
-    return res
+  async authRequest({ commit, dispatch }: any, user: User) {
+    try {
+      const res: TokensDto = await login(user)
+      commit('setAccessToken', res.access_token)
+      commit('setRefreshToken', res.refresh_token)
+      commit('authenticate')
+    }
+    catch (error) {
+      //
+    }
   },
 }
 
@@ -48,9 +52,13 @@ const mutations = {
   logout(oldState: State): void {
     oldState.accessToken = ''
     oldState.refreshToken = ''
+    oldState.authenticated = false
 
     localStorage.removeItem('access-token')
     localStorage.removeItem('refresh-token')
+  },
+  authenticate(oldState: State) {
+    oldState.authenticated = true
   },
 }
 
