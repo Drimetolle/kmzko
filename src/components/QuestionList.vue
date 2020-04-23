@@ -1,39 +1,45 @@
 <template>
-  <v-form v-model="valid">
-    <v-container>
-      <v-row
-          align="center"
-          justify="start"
-      >
-        <v-col
-            cols="10"
-            md="24"
+  <v-row
+    align="center"
+    justify="start"
+  >
+    <v-col
+      cols="10"
+      md="24"
+    >
+      <v-container>
+        <v-select
+          :items="items"
+          v-model="select"
+          label="select"
+          @change="getForm"
         >
-          <v-select
-            :items="items"
-            v-model="select"
-            label="select"
-            @change="getForm"
-          >
-          </v-select>
-          <div class="text-center">
-            <v-progress-circular
-              v-if="!loaded"
-              indeterminate
-              color="primary"
-              size="50"
-            ></v-progress-circular>
-          </div>
+        </v-select>
+      </v-container>
+      <div class="text-center">
+        <v-progress-circular
+          v-if="!loaded"
+          indeterminate
+          color="primary"
+          size="50"
+        ></v-progress-circular>
+      </div>
+      <v-form v-model="valid">
+        <v-container v-if="show">
+          <h4>{{questionnaire.name}}</h4>
           <Field v-for="rate in questionnaire.rateList"
             :key="rate.mark"
             :item="rate"
             @unfocus="unfocus"
           />
-          <v-btn v-if="select !== '' && loaded" class="mr-4" @click.prevent="submit">{{ $t('submit') }}</v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-form>
+          <v-btn class="mr-4" @click.prevent="submit">{{ $t('submit') }}</v-btn>
+        </v-container>
+        <v-container class="text-center" v-else-if="select !== '' && loaded">
+          К сожалению опросных листов для такого типа конвейера нет
+        </v-container>
+      </v-form>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -74,7 +80,9 @@ export default class extends mixins(LoadingMixin) {
   @AsyncLoading
   async getForm() {
     this.setConveyorType(this.select)
-    this.questionnaire = await this.getFormConveyor(this.select)
+    const q = await this.getFormConveyor(this.select)
+    if ('id' in q) q.id = ''
+    this.questionnaire = q
   }
 
   submit() {
@@ -82,8 +90,13 @@ export default class extends mixins(LoadingMixin) {
     this.setState(States.ListOfConveyors)
   }
 
-  unfocus(item: QuestionnaireDto) {
-    // saveQuestionnaire(this.questionnaire)
+  async unfocus(item: QuestionnaireDto) {
+    const q = await saveQuestionnaire(this.questionnaire)
+    this.questionnaire.id = q.id
+  }
+
+  get show() {
+    return this.loaded && Object.keys(this.questionnaire).length > 0
   }
 }
 </script>

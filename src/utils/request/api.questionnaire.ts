@@ -12,8 +12,8 @@ export async function getConveyorTypes(): Promise<Array<string>> {
 
 export async function getQuestionnaireByType(type: string): Promise<QuestionnaireDto> {
   try {
-    const res = await axios.get(`/api/questionnaires/${type}`)
-    return res.data as QuestionnaireDto
+    const res = await axios.get(`/api/questionnaires`, { params: { type } })
+    return res.data.length === 0 ? { } as QuestionnaireDto : res.data[0] as QuestionnaireDto
   } catch (error) {
     throw Error(error)
   }

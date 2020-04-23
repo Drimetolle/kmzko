@@ -8,19 +8,24 @@
         size="50"
       ></v-progress-circular>
     </div>
-    <v-container v-for="component in conveyorСomponents"
-      :key="component.id"
-    >
-      <h2>{{ component.name }}</h2>
-      <Field v-for="detail in component.details"
-        :key="detail.id"
-        :item="toFieldSkelet(detail)"
-      />
-    </v-container>
-    <v-container>
-      <h2>{{ $t('options') }}</h2>
-    </v-container>
-    <v-btn v-if="loaded" class="mr-4" @click.prevent="submit">save</v-btn>
+    <div v-if="show">
+      <v-container v-for="component in conveyorСomponents"
+        :key="component.id"
+      >
+        <h2>{{ component.name }}</h2>
+        <Field v-for="detail in component.details"
+          :key="detail.id"
+          :item="toFieldSkelet(detail)"
+        />
+      </v-container>
+      <v-container>
+        <h2>{{ $t('options') }}</h2>
+      </v-container>
+      <v-btn class="mr-4" @click.prevent="submit">{{ $t('save') }}</v-btn>
+    </div>
+    <div class="text-center" v-else>
+      Похоже шаблона для такого типа конвейера нет
+    </div>
   </v-form>
 </template>
 
@@ -57,10 +62,9 @@ export default class EditConveyor extends mixins(LoadingMixin){
 
   @AsyncLoading
   async mounted() {
-    const a = await this.$store.dispatch('fetchConveyors', new Map())
-    this.setConveyor(a[0])
-    // const res = this.getConveyor
-    const res =  a[0]
+    const res = this.getConveyor
+    this.setConveyor(res)
+
     const nodes = res.nodes
     this.conveyorСomponents = nodes
   }
@@ -70,6 +74,10 @@ export default class EditConveyor extends mixins(LoadingMixin){
   }
   toFieldSkelet(option: any) {
     return OptionConverter.prototype.toFieldSkelet(option)
+  }
+
+  get show() {
+    return this.loaded && !!this.conveyorСomponents
   }
 }
 </script>

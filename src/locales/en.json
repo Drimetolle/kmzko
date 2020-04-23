@@ -1,9 +1,9 @@
 {
-  "question-list":"questionnaire",
-  "listof-conveyors":"list of conveyors",
-  "tape":"tape",
-  "submit":"submit",
-  "edit":"edit",
+  "question-list": "questionnaire",
+  "listof-conveyors": "list of conveyors",
+  "tape": "tape",
+  "submit": "submit",
+  "edit": "edit",
   "settings": "settings",
   "purchase-history": "purchase history",
   "options": "options",
@@ -11,5 +11,6 @@
   "piece": "piece",
   "pieces": "pieces",
   "logout": "logout",
-  "questionnaires": "questionnaires"
+  "questionnaires": "questionnaires",
+  "save": "save"
 }

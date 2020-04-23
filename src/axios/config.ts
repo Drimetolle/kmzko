@@ -18,6 +18,8 @@ const createSetAuthInterceptor = (options: any) => (config: any) => {
 const createUpdateAuthInterceptor = (vuex: any, http: AxiosStatic, vueRouter: VueRouter) => async (error: any) => {
   const { config, response: { status }} = error
 
+  debugger
+
   if (config && error.response && status === 401) {
     const tokens: TokensDto = await refresh({ access_token: vuex.getters.getAccessToken, refresh_token: vuex.getters.getRefreshToken })
     vuex.commit('setTokens', tokens)

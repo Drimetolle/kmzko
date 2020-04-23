@@ -22,12 +22,11 @@ export async function login(user: User): Promise<TokensDto> {
 
 export async function refresh(tokens: TokensDto): Promise<TokensDto> {
   try {
-    const res = await request.post(`/auth/refresh`, {
+    const res = await request.post(`/auth/refresh`, tokens, {
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',
       },
-      body: tokens,
     })
     return res.data as TokensDto
   } catch (error) {
