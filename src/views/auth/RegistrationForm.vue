@@ -39,11 +39,12 @@
                     name="username"
                     prepend-icon="person"
                     type="text"
-                    @blur="check($event.target)"
+                    @blur="check($event.target, username)"
+                    :error-messages="username.getError"
                   >
-                    <template v-slot:append>
+                    <template v-slot:append v-if="username.init">
                       <v-icon
-                        v-if="username.unique"
+                        v-if="username.getUnique"
                         color="success"
                       >
                         check
@@ -63,11 +64,12 @@
                     name="email"
                     prepend-icon="person"
                     type="email"
-                    @blur="check($event.target)"
+                    @blur="check($event.target, email)"
+                    :error-messages="email.getError"
                   >
-                    <template v-slot:append>
+                    <template v-slot:append v-if="email.init">
                       <v-icon
-                        v-if="email.unique"
+                        v-if="email.getUnique"
                         color="success"
                       >
                         check
@@ -112,18 +114,29 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Component from 'vue-class-component'
+import Component, { mixins } from 'vue-class-component'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { User } from '@/types'
 import { checkFieldForUniqueness } from '@/utils/request/index'
 import Field from '@/types/Field'
+import { required, minLength, between } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate'
 
 @Component({
+  mixins: [validationMixin],
   methods: {
     ...mapActions(['join']),
   },
   computed: {
     ...mapGetters(['isAuthenticated']),
+  },
+  validations: {
+    name: {
+      value: {
+        required,
+        minLength: minLength(4),
+      },
+    },
   },
 })
 export default class RegistrationForm extends Vue {
@@ -137,12 +150,12 @@ export default class RegistrationForm extends Vue {
   isAuthenticated!: boolean
   join!: (user: User) => void
 
-  async check(target: any) {
+  async check(target: any, data: Field) {
     const { id, value } = target
     const res = await checkFieldForUniqueness(id, value)
 
-    this.username.unique = JSON.parse(res.status.toLowerCase())
-    this.username.error = res.error ?? ''
+    data.unique = JSON.parse(res.status.toLowerCase())
+    data.error = res.error ?? ''
   }
 
   async registration() {
