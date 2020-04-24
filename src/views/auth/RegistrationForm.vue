@@ -31,6 +31,9 @@
                     name="Имя"
                     prepend-icon="person"
                     type="text"
+                    @input="$v.name.value.$touch()"
+                    @blur="$v.name.value.$touch()"
+                    :error-messages="nameErrors"
                   />
                   <v-text-field
                     v-model="username.value"
@@ -39,23 +42,10 @@
                     name="username"
                     prepend-icon="person"
                     type="text"
-                    @blur="check($event.target, username)"
-                    :error-messages="username.getError"
+                    @input="$v.name.value.$touch()"
+                    @blur="$v.username.value.$touch()"
+                    :error-messages="usernameErrors"
                   >
-                    <template v-slot:append v-if="username.init">
-                      <v-icon
-                        v-if="username.getUnique"
-                        color="success"
-                      >
-                        check
-                      </v-icon>
-                      <v-icon
-                        v-else
-                        color="error"
-                      >
-                        error
-                      </v-icon>
-                    </template>
                   </v-text-field>
                   <v-text-field
                     v-model="email.value"
@@ -64,23 +54,10 @@
                     name="email"
                     prepend-icon="person"
                     type="email"
-                    @blur="check($event.target, email)"
-                    :error-messages="email.getError"
+                    @input="$v.email.value.$touch()"
+                    @blur="$v.email.value.$touch()"
+                    :error-messages="emailErrors"
                   >
-                    <template v-slot:append v-if="email.init">
-                      <v-icon
-                        v-if="email.getUnique"
-                        color="success"
-                      >
-                        check
-                      </v-icon>
-                      <v-icon
-                        v-else
-                        color="error"
-                      >
-                        error
-                      </v-icon>
-                    </template>
                   </v-text-field>
                   <v-text-field
                     v-model="password.value"
@@ -89,6 +66,9 @@
                     name="password"
                     prepend-icon="lock"
                     type="password"
+                    @input="$v.password.value.$touch()"
+                    @blur="$v.password.value.$touch()"
+                    :error-messages="passwordErrors"
                   />
                   <v-text-field
                     v-model="secondpassword.value"
@@ -97,6 +77,9 @@
                     name="password"
                     prepend-icon="lock"
                     type="password"
+                    @input="$v.secondpassword.value.$touch()"
+                    @blur="$v.secondpassword.value.$touch()"
+                    :error-messages="secondpasswordErrors"
                   />
                 </v-form>
               </v-card-text>
@@ -119,7 +102,7 @@ import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { User } from '@/types'
 import { checkFieldForUniqueness } from '@/utils/request/index'
 import Field from '@/types/Field'
-import { required, minLength, between } from 'vuelidate/lib/validators'
+import { required, minLength, between, email, sameAs } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 
 @Component({
@@ -135,6 +118,43 @@ import { validationMixin } from 'vuelidate'
       value: {
         required,
         minLength: minLength(4),
+      },
+    },
+    username: {
+      value: {
+        required,
+        minLength: minLength(5),
+        isUnique(value) {
+          return checkFieldForUniqueness('username', this.$v.username.$model.value).then(result => {
+            this.$v.username.$model.unique = JSON.parse(result.status.toLowerCase())
+            this.$v.username.$model.error = result.error ?? ''
+            return this.$v.username.$model.unique
+          })
+        },
+      },
+    },
+    email: {
+      value: {
+        required,
+        email,
+        isUnique(value) {
+          return checkFieldForUniqueness('email', this.$v.email.$model.value).then(result => {
+            this.$v.email.$model.unique = JSON.parse(result.status.toLowerCase())
+            this.$v.email.$model.error = result.error ?? ''
+            return this.$v.email.$model.unique
+          })
+        },
+      },
+    },
+    password: {
+      value: {
+        required,
+        minLength: minLength(5),
+      },
+    },
+    secondpassword: {
+      value: {
+        sameAsPassword: sameAs(function(this: any) { return this.password.value }),
       },
     },
   },
@@ -166,6 +186,40 @@ export default class RegistrationForm extends Vue {
     if (this.isAuthenticated) {
       this.$router.push('/')
     }
+  }
+
+  get nameErrors () {
+    if (!this.$v.name.value!.$dirty) return ''
+    if (!this.$v.name.value!.required) return `Field is required`
+  }
+
+  get usernameErrors () {
+    if (!this.$v.username.value!.$dirty) return ''
+    if (!this.$v.username.value!.required) return `Field is required`
+    if (!this.$v.username.value!.minLength) return `Field min length is ${this.$v.username.value!.$params.minLength.min}`
+    if (!this.$v.username.value!.isUnique || this.$v.username.value!.$pending) {
+      return this.username.getError
+    }
+  }
+
+  get emailErrors () {
+    if (!this.$v.email.value!.$dirty) return ''
+    if (!this.$v.email.value!.required) return `Field is required`
+    if (!this.$v.email.value!.email) return `email`
+    if (!this.$v.email.value!.isUnique || this.$v.email.value!.$pending) {
+      return this.email.getError
+    }
+  }
+
+  get passwordErrors () {
+    if (!this.$v.password.value!.$dirty) return ''
+    if (!this.$v.password.value!.required) return `Field is required`
+    if (!this.$v.password.value!.minLength) return `Field min length is ${this.$v.username.value!.$params.minLength.min}`
+  }
+
+  get secondpasswordErrors () {
+    if (!this.$v.secondpassword.value!.$dirty) return ''
+    if (!this.$v.secondpassword.value!.sameAsPassword) return `sameAsPassword`
   }
 }
 </script>
