@@ -86,3 +86,9 @@ export interface TokensDto {
   access_token: string
   refresh_token: string
 }
+
+export interface BioDto {
+  name: string
+  email: string
+  phone: string
+}
