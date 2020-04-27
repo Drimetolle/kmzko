@@ -35,7 +35,8 @@ const actions = {
     const { status } = await registration(user)
 
     if (status === 'ok') {
-      dispatch('authRequest', user)
+      await dispatch('authRequest', user)
+      return
     }
   },
 }

@@ -28,7 +28,7 @@
                     v-model="name.value"
                     id="name"
                     label="Имя"
-                    name="Имя"
+                    name="name"
                     prepend-icon="person"
                     type="text"
                     @input="$v.name.value.$touch()"
@@ -182,7 +182,6 @@ export default class RegistrationForm extends Vue {
     const user: User = { name: this.name.value, username: this.username.value, password: this.password.value, email: this.email.value }
     await this.join(user)
 
-    this.success = !this.isAuthenticated
     if (this.isAuthenticated) {
       this.$router.push('/')
     }
