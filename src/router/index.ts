@@ -65,7 +65,7 @@ const whitelist = (name: string): boolean => {
 }
 
 router.beforeEach((to, from, next) => {
-  if (whitelist(to.name!)) next()
+  if (whitelist(to.name!) && store.getters.isAuthenticated) next({ name: 'configurator' })
   else if (store.getters.isAuthenticated) next()
   else if (to.name !== 'login' && !store.getters.isAuthenticated) next({ name: 'login' })
 })

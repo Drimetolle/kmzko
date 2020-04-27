@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-layout row fill-height>
     <v-col dense cols="2">
       <v-list flat>
         <div>
@@ -65,7 +65,7 @@
         </v-row>
       </v-form>
     </v-col>
-  </v-row>
+  </v-layout>
 </template>
 
 <script lang="ts">
@@ -111,7 +111,7 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
   newItem() {
     const newItem: QuestionnaireDto = { id: this.questionnaireList.length.toString(), name: 'newItem', type: '', rateList: [{ id: '0', name: '', value: '', mark: '' }] }
     this.questionnaireList.push(newItem)
-    this.questionnaire = newItem
+    this.select(newItem)
   }
 
   newRate() {
