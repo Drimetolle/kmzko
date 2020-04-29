@@ -1,11 +1,11 @@
-const path = require('path');
-const TSLintPlugin = require('tslint-webpack-plugin');
+const path = require('path')
+const TSLintPlugin = require('tslint-webpack-plugin')
 
 module.exports = {
   configureWebpack: {
     resolve: {
         alias: {
-            actions: path.resolve(__dirname, 'src/store/actions'),
+          actions: path.resolve(__dirname, 'src/store/actions'),
         }
     },
     plugins: [
