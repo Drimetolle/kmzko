@@ -33,7 +33,7 @@
                     type="text"
                     @input="$v.name.value.$touch()"
                     @blur="$v.name.value.$touch()"
-                    :error-messages="nameErrors"
+                    :error-messages="nameErrors($v.name.value)"
                   />
                   <v-text-field
                     v-model="username.value"
@@ -44,7 +44,7 @@
                     type="text"
                     @input="$v.name.value.$touch()"
                     @blur="$v.username.value.$touch()"
-                    :error-messages="usernameErrors"
+                    :error-messages="customUsernameErrors"
                   >
                   </v-text-field>
                   <v-text-field
@@ -68,7 +68,7 @@
                     type="password"
                     @input="$v.password.value.$touch()"
                     @blur="$v.password.value.$touch()"
-                    :error-messages="passwordErrors"
+                    :error-messages="passwordErrors($v.password.value)"
                   />
                   <v-text-field
                     v-model="secondpassword.value"
@@ -79,7 +79,7 @@
                     type="password"
                     @input="$v.secondpassword.value.$touch()"
                     @blur="$v.secondpassword.value.$touch()"
-                    :error-messages="secondpasswordErrors"
+                    :error-messages="secondpasswordErrors($v.secondpassword.value)"
                   />
                 </v-form>
               </v-card-text>
@@ -104,6 +104,7 @@ import { checkFieldForUniqueness } from '@/utils/request/index'
 import Field from '@/types/Field'
 import { required, minLength, between, email, sameAs } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
+import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
 
 @Component({
   mixins: [validationMixin],
@@ -159,7 +160,7 @@ import { validationMixin } from 'vuelidate'
     },
   },
 })
-export default class RegistrationForm extends Vue {
+export default class RegistrationForm extends mixins(ErrorsMixin) {
   name: Field = new Field()
   username: Field = new Field()
   email: Field = new Field()
@@ -187,12 +188,7 @@ export default class RegistrationForm extends Vue {
     }
   }
 
-  get nameErrors () {
-    if (!this.$v.name.value!.$dirty) return ''
-    if (!this.$v.name.value!.required) return `Field is required`
-  }
-
-  get usernameErrors () {
+  get customUsernameErrors() {
     if (!this.$v.username.value!.$dirty) return ''
     if (!this.$v.username.value!.required) return `Field is required`
     if (!this.$v.username.value!.minLength) return `Field min length is ${this.$v.username.value!.$params.minLength.min}`
@@ -201,24 +197,13 @@ export default class RegistrationForm extends Vue {
     }
   }
 
-  get emailErrors () {
+  get emailErrors() {
     if (!this.$v.email.value!.$dirty) return ''
     if (!this.$v.email.value!.required) return `Field is required`
     if (!this.$v.email.value!.email) return `email`
     if (!this.$v.email.value!.isUnique || this.$v.email.value!.$pending) {
       return this.email.getError
     }
-  }
-
-  get passwordErrors () {
-    if (!this.$v.password.value!.$dirty) return ''
-    if (!this.$v.password.value!.required) return `Field is required`
-    if (!this.$v.password.value!.minLength) return `Field min length is ${this.$v.username.value!.$params.minLength.min}`
-  }
-
-  get secondpasswordErrors () {
-    if (!this.$v.secondpassword.value!.$dirty) return ''
-    if (!this.$v.secondpassword.value!.sameAsPassword) return `sameAsPassword`
   }
 }
 </script>

@@ -61,6 +61,15 @@
               :error-messages="markErrors($v.questionnaire.rateList.$each[i])"
             ></v-select>
           </v-col>
+          <v-col>
+            <v-btn
+              bottom
+              right
+              @click="removeRate(rate)"
+            >
+              <v-icon>clear</v-icon>
+            </v-btn>
+          </v-col>
         </v-row>
         <v-row justify="center">
           <v-btn v-if="!!questionnaire.rateList" @click="newRate">add field</v-btn>
@@ -82,6 +91,7 @@ import { getAllQuestionnaire, deployQuestionnaire } from '@/utils/request/index'
 import QuestionnaireConverter from '@/utils/questionnaireConverter'
 import { required, minLength, between, email, sameAs } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
+import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
 
 @Component({
   mixins: [validationMixin],
@@ -135,7 +145,7 @@ import { validationMixin } from 'vuelidate'
     },
   },
 })
-export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
+export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, ErrorsMixin) {
   questionnaire: QuestionnaireDto = { } as any
   questionnaireList: Array<QuestionnaireDto> = []
 
@@ -162,6 +172,13 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
     this.questionnaire.rateList.push({ id: this.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
   }
 
+  removeRate(item: RateDto) {
+    const index = this.questionnaire.rateList.indexOf(item)
+    if (index > -1) {
+      this.questionnaire.rateList.splice(index, 1)
+    }
+  }
+
   submit() {
     (this.$refs.form as any).validate()
     const length = this.questionnaire.rateList.length
@@ -171,12 +188,6 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin) {
 
   get getConverter(): QuestionnaireConverter {
     return new QuestionnaireConverter()
-  }
-
-  nameErrors(target: any): string | Array<string> {
-    if (!target.name.$dirty) return ''
-    if (!target.name.required) return `Field is required`
-    return ''
   }
 
   markErrors(target: any): string | Array<string> {
