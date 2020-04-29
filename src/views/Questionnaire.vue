@@ -47,7 +47,7 @@
               :placeholder="rate.placeholder"
               @input="$v.questionnaire.rateList.$each[i].name.$touch()"
               @blur="$v.questionnaire.rateList.$each[i].name.$touch()"
-              :error-messages="nameErrors($v.questionnaire.rateList.$each[i])"
+              :error-messages="nameErrors($v.questionnaire.rateList.$each[i].name)"
             ></v-text-field>
           </v-col>
           <v-col>
@@ -58,7 +58,7 @@
               solo
               @input="$v.questionnaire.rateList.$each[i].mark.$touch()"
               @blur="$v.questionnaire.rateList.$each[i].mark.$touch()"
-              :error-messages="markErrors($v.questionnaire.rateList.$each[i])"
+              :error-messages="markErrors($v.questionnaire.rateList.$each[i].mark)"
             ></v-select>
           </v-col>
           <v-col>
@@ -191,9 +191,9 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
   }
 
   markErrors(target: any): string | Array<string> {
-    if (!target.mark.$dirty) return ''
-    if (!target.mark.required) return `Field is required`
-    if (!target.mark.isUnique && target.$model.error) return `Not unique`
+    if (!target.$dirty) return ''
+    if (!target.required) return `Field is required`
+    if (!target.isUnique && target.$model.error) return `Not unique`
     return ''
   }
 }
