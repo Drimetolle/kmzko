@@ -25,7 +25,8 @@
           <v-list-item
             v-for="(item, i) in questionnaireList"
             :key="i"
-            @click="select(item)"
+            @click="selectItem(item)"
+            class="on-hover"
           >
             <v-hover v-slot:default="{ hover }">
               <v-list-item-content>
@@ -35,22 +36,25 @@
                   small
                   fab
                   right
-                  @click.prevent="removeItem(item)"
+                  @click.stop="removeItem(item)"
                 >
                   <v-icon>clear</v-icon>
                 </v-btn>
-                <v-btn v-if="hover"
+                <v-btn v-if="hover && !isSaved(item)"
                   absolute
                   text
                   small
                   fab
                   right
-                  @click.prevent="save(item)"
-                  style="right: 40px !important;"
+                  @click.stop="save(item)"
+                  style="right: 45px !important;"
                 >
                   <v-icon>save</v-icon>
                 </v-btn>
-                <v-list-item-title>{{ item.name }}</v-list-item-title>
+                <v-btn absolute right v-if="!hover && !isSaved(item)" icon>
+                  <v-icon size="x-small">lens</v-icon> 
+                </v-btn>
+                <v-list-item-title>{{ item.questionnaire.name }}</v-list-item-title>
               </v-list-item-content>
             </v-hover>
           </v-list-item>
@@ -61,18 +65,18 @@
     <v-col dense>
       <v-form v-if="questionnaireList.length > 0">
         <v-text-field
-          v-model="questionnaire.name"
+          v-model="wrapperQuestionnaire.questionnaire.name"
         ></v-text-field>
-        <v-row v-for="(rate, i) in questionnaire.rateList"
+        <v-row v-for="(rate, i) in wrapperQuestionnaire.questionnaire.rateList"
           :key="rate.id">
           <v-col>
             <v-text-field
               v-model="rate.name"
               label="Характеристика"
               :placeholder="rate.placeholder"
-              @input="$v.questionnaire.rateList.$each[i].name.$touch()"
-              @blur="$v.questionnaire.rateList.$each[i].name.$touch()"
-              :error-messages="nameErrors($v.questionnaire.rateList.$each[i].name)"
+              @input="$v.wrapperQuestionnaire.questionnaire.rateList.$each[i].name.$touch()"
+              @blur="$v.wrapperQuestionnaire.questionnaire.rateList.$each[i].name.$touch()"
+              :error-messages="nameErrors($v.wrapperQuestionnaire.questionnaire.rateList.$each[i].name)"
             ></v-text-field>
           </v-col>
           <v-col>
@@ -81,9 +85,9 @@
               :items="marks"
               label="Метка"
               solo
-              @input="$v.questionnaire.rateList.$each[i].mark.$touch()"
-              @blur="$v.questionnaire.rateList.$each[i].mark.$touch()"
-              :error-messages="markErrors($v.questionnaire.rateList.$each[i].mark)"
+              @input="$v.wrapperQuestionnaire.questionnaire.rateList.$each[i].mark.$touch()"
+              @blur="$v.wrapperQuestionnaire.questionnaire.rateList.$each[i].mark.$touch()"
+              :error-messages="markErrors($v.wrapperQuestionnaire.questionnaire.rateList.$each[i], )"
             ></v-select>
           </v-col>
           <v-col>
@@ -97,7 +101,7 @@
           </v-col>
         </v-row>
         <v-row justify="center">
-          <v-btn v-if="!!questionnaire.rateList" @click="newRate">add field</v-btn>
+          <v-btn v-if="!!wrapperQuestionnaire.questionnaire.rateList" @click="newRate">add field</v-btn>
         </v-row>
       </v-form>
     </v-col>
@@ -118,12 +122,35 @@ import { required, minLength, between, email, sameAs } from 'vuelidate/lib/valid
 import { validationMixin } from 'vuelidate'
 import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
 
+interface Wrapper {
+  questionnaire: QuestionnaireDto
+  saved: boolean
+}
+
 @Component({
   mixins: [validationMixin],
   components: {
     Field,
   },
+  watch: {
+    questionnaireWatcher: {
+      handler(newVal, oldVal) {
+        (this as Questionnaire).wrapperQuestionnaire.saved = false
+      },
+      deep: true,
+    },
+  },
+//   watch: {
+//     wrapperQuestionnaire: {
+// wrapperQuestionnaire(newquestionnaire, oldquestionnaire) {
+//       console.log(124124, newquestionnaire)
+//       newquestionnaire.saved = false
+//     },
+//      deep: true
+//     },
+//   },
   validations: {
+    wrapperQuestionnaire: {
     questionnaire: {
       rateList: {
         required,
@@ -133,8 +160,9 @@ import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
           },
           mark: {
             required,
-            isUnique(this: Questionnaire) {
-              const array = this.questionnaire.rateList.map(rate => rate.mark)
+            isUnique(this: Questionnaire, a: any, b: any) {
+              const { wrapperQuestionnaire } = this
+              const array = wrapperQuestionnaire.questionnaire.rateList.map(rate => rate.mark)
 
               let indexNotUniqueField: Array<number> = []
               const indexNotUniqueMap: Map<any, any> = new Map()
@@ -149,38 +177,30 @@ import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
                   indexNotUniqueField = indexNotUniqueField.concat(v)
                 }
               })
-
-              // throw error
-              for (const rate of this.questionnaire.rateList) {
-                this.$set(rate, 'error', false)
-              }
-
-              // set error
-              if (indexNotUniqueField.length > 1) {
-                for (const index of indexNotUniqueField) {
-                  const rate = this.questionnaire.rateList[index!]
-                  this.$set(rate, 'error', true)
-                }
-              }
               return indexNotUniqueField.length === 0
             },
           },
         },
       },
     },
+    },
   },
 })
 export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, ErrorsMixin) {
-  questionnaire: QuestionnaireDto = { } as any
-  questionnaireList: Array<QuestionnaireDto> = []
+  wrapperQuestionnaire: Wrapper = {
+    questionnaire: { } as QuestionnaireDto,
+    saved: false,
+  }
+  questionnaireList: Array<Wrapper> = []
+  unwatchIsLiveProp = { }
 
   @AsyncLoading
   async mounted() {
-    this.questionnaireList = await getAllQuestionnaire()
+    this.questionnaireList = (await getAllQuestionnaire()).map(item => { return { questionnaire: item, saved: true} })
   }
 
-  select(target: QuestionnaireDto) {
-    this.questionnaire = target
+  selectItem(target: Wrapper) {
+    this.wrapperQuestionnaire = target
   }
 
   toFieldSkelet(option: any) {
@@ -188,12 +208,12 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
   }
 
   newItem() {
-    const newItem: QuestionnaireDto = { id: this.questionnaireList.length.toString(), name: 'newItem', type: '', rateList: [{ id: '0', name: '', value: '', mark: '' }] }
+    const newItem: Wrapper = { saved: false, questionnaire: { id: this.questionnaireList.length.toString(), name: 'newItem', type: '', rateList: [{ id: '0', name: '', value: '', mark: '' }] } }
     this.questionnaireList.push(newItem)
-    this.select(newItem)
+    this.selectItem(newItem)
   }
 
-  removeItem(item: QuestionnaireDto) {
+  removeItem(item: Wrapper) {
     const index = this.questionnaireList.indexOf(item)
     if (index > -1) {
       this.questionnaireList.splice(index, 1)
@@ -201,29 +221,44 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
   }
 
   newRate() {
-    this.questionnaire.rateList.push({ id: this.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
+    this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
   }
 
   removeRate(item: RateDto) {
-    const index = this.questionnaire.rateList.indexOf(item)
+    const index = this.wrapperQuestionnaire.questionnaire.rateList.indexOf(item)
     if (index > -1) {
-      this.questionnaire.rateList.splice(index, 1)
+      this.wrapperQuestionnaire.questionnaire.rateList.splice(index, 1)
     }
   }
 
   save() {
-    // deployQuestionnaire(this.questionnaire)
+    this.wrapperQuestionnaire.saved = true
+  }
+
+  isSaved(item: Wrapper): boolean {
+    const index = this.questionnaireList.indexOf(item)
+    return this.questionnaireList[index].saved
+  }
+
+  markErrors(target: any): string | Array<string> {
+    if (!target.mark.$dirty) return ''
+    if (!target.mark.required) return `Field is required`
+    if (!target.mark.isUnique) return `Not unique`
+    return ''
   }
 
   get getConverter(): QuestionnaireConverter {
     return new QuestionnaireConverter()
   }
 
-  markErrors(target: any): string | Array<string> {
-    if (!target.$dirty) return ''
-    if (!target.required) return `Field is required`
-    if (!target.isUnique && target.$model.error) return `Not unique`
-    return ''
+  get questionnaireWatcher() {
+    return this.wrapperQuestionnaire.questionnaire
   }
 }
 </script>
+
+<style scoped>
+.on-hover:hover {
+  background: rgba(0,0,0,.1);
+}
+</style>
