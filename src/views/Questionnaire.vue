@@ -11,9 +11,9 @@
             <v-col>
               <v-btn
                 small
+                fab
                 bottom
                 right
-                fab
                 @click="newItem"
               >
                 <v-icon>add</v-icon>
@@ -27,17 +27,42 @@
             :key="i"
             @click="select(item)"
           >
-            <v-list-item-content>
-              <v-list-item-title>{{ item.name }}</v-list-item-title>
-            </v-list-item-content>
+            <v-hover v-slot:default="{ hover }">
+              <v-list-item-content>
+                <v-btn v-if="hover"
+                  absolute
+                  text
+                  small
+                  fab
+                  right
+                  @click.prevent="removeItem(item)"
+                >
+                  <v-icon>clear</v-icon>
+                </v-btn>
+                <v-btn v-if="hover"
+                  absolute
+                  text
+                  small
+                  fab
+                  right
+                  @click.prevent="save(item)"
+                  style="right: 40px !important;"
+                >
+                  <v-icon>save</v-icon>
+                </v-btn>
+                <v-list-item-title>{{ item.name }}</v-list-item-title>
+              </v-list-item-content>
+            </v-hover>
           </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-col>
     <v-divider vertical/>
     <v-col dense>
-      <v-form>
-        <h3>{{ questionnaire.name }}</h3>
+      <v-form v-if="questionnaireList.length > 0">
+        <v-text-field
+          v-model="questionnaire.name"
+        ></v-text-field>
         <v-row v-for="(rate, i) in questionnaire.rateList"
           :key="rate.id">
           <v-col>
@@ -168,6 +193,13 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     this.select(newItem)
   }
 
+  removeItem(item: QuestionnaireDto) {
+    const index = this.questionnaireList.indexOf(item)
+    if (index > -1) {
+      this.questionnaireList.splice(index, 1)
+    }
+  }
+
   newRate() {
     this.questionnaire.rateList.push({ id: this.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
   }
@@ -179,11 +211,8 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     }
   }
 
-  submit() {
-    (this.$refs.form as any).validate()
-    const length = this.questionnaire.rateList.length
-    const valid: boolean = (new Set(this.questionnaire.rateList.map(i => i.mark))).size === length
-    deployQuestionnaire(this.questionnaire)
+  save() {
+    // deployQuestionnaire(this.questionnaire)
   }
 
   get getConverter(): QuestionnaireConverter {
@@ -198,7 +227,3 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
   }
 }
 </script>
-
-<style>
-
-</style>
