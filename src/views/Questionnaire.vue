@@ -134,21 +134,16 @@ interface Wrapper {
   },
   watch: {
     questionnaireWatcher: {
-      handler(newVal, oldVal) {
+      handler(newVal: QuestionnaireDto, oldVal: QuestionnaireDto) {
+        const valueNotChange = () => JSON.stringify(newVal) === JSON.stringify(oldVal)
+
+        const changed = (this as Questionnaire).questionnaireList.map(w => w.questionnaire).filter(q => oldVal === q).length === 1
+        if (changed && !valueNotChange()) return
         (this as Questionnaire).wrapperQuestionnaire.saved = false
       },
       deep: true,
     },
   },
-//   watch: {
-//     wrapperQuestionnaire: {
-// wrapperQuestionnaire(newquestionnaire, oldquestionnaire) {
-//       console.log(124124, newquestionnaire)
-//       newquestionnaire.saved = false
-//     },
-//      deep: true
-//     },
-//   },
   validations: {
     wrapperQuestionnaire: {
     questionnaire: {
@@ -231,8 +226,8 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     }
   }
 
-  save() {
-    this.wrapperQuestionnaire.saved = true
+  save(item: Wrapper) {
+    item.saved = true
   }
 
   isSaved(item: Wrapper): boolean {
