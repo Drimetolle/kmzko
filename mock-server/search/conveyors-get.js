@@ -5,6 +5,7 @@ module.exports = () => {
           "id": 0,
           "name": "Конвейер ленточный",
           "type": "tape",
+          "img": "https://picsum.photos/300/200",
           "nodes": [
               {
                   "id": 0,
