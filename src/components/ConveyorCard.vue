@@ -64,12 +64,10 @@ export default class ConveyorCard extends Props {
   }
 
   details(index: number): string {
-    // console.log(this.conveyor)
     return this.conveyor.nodes[index].details.map(n => n.name).join(', ')
   }
 
   characteristics(detail: Detail): Array<CharacteristicDto> {
-    // console.log(detail)
     return detail.characteristics
   }
 

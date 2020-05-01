@@ -21,11 +21,11 @@
             </v-col>
           </v-row>
         </div>
-        <v-list-item-group color="primary">
+        <v-list-item-group v-model="questionnaire" color="primary">
           <v-list-item
             v-for="(item, i) in questionnaireList"
             :key="i"
-            @click="selectItem(item)"
+            @click="selectItem(item, i)"
             class="on-hover"
           >
             <v-hover v-slot:default="{ hover }">
@@ -63,7 +63,7 @@
     </v-col>
     <v-divider vertical/>
     <v-col dense>
-      <v-form v-if="questionnaireList.length > 0">
+      <v-form v-if="questionnaireList.length > 0 && questionnaire >= 0">
         <v-text-field
           v-model="wrapperQuestionnaire.questionnaire.name"
         ></v-text-field>
@@ -135,9 +135,12 @@ interface Wrapper {
   watch: {
     questionnaireWatcher: {
       handler(newVal: QuestionnaireDto, oldVal: QuestionnaireDto) {
-        const valueNotChange = () => JSON.stringify(newVal) === JSON.stringify(oldVal)
+        const isEqual: boolean = JSON.stringify(newVal) === JSON.stringify(oldVal)
+        const emptyValue = () => JSON.stringify(oldVal) === JSON.stringify({ })
+        const valueNotChange = () => isEqual
 
         const changed = (this as Questionnaire).questionnaireList.map(w => w.questionnaire).filter(q => oldVal === q).length === 1
+        if (emptyValue()) return
         if (changed && !valueNotChange()) return
         (this as Questionnaire).wrapperQuestionnaire.saved = false
       },
@@ -186,6 +189,7 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     questionnaire: { } as QuestionnaireDto,
     saved: false,
   }
+  questionnaire: number = -1
   questionnaireList: Array<Wrapper> = []
   unwatchIsLiveProp = { }
 
@@ -194,8 +198,9 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     this.questionnaireList = (await getAllQuestionnaire()).map(item => { return { questionnaire: item, saved: true} })
   }
 
-  selectItem(target: Wrapper) {
+  selectItem(target: Wrapper, index: number) {
     this.wrapperQuestionnaire = target
+    this.questionnaire = index
   }
 
   toFieldSkelet(option: any) {
@@ -205,7 +210,7 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
   newItem() {
     const newItem: Wrapper = { saved: false, questionnaire: { id: this.questionnaireList.length.toString(), name: 'newItem', type: '', rateList: [{ id: '0', name: '', value: '', mark: '' }] } }
     this.questionnaireList.push(newItem)
-    this.selectItem(newItem)
+    this.selectItem(newItem, this.questionnaireList.length - 1)
   }
 
   removeItem(item: Wrapper) {
