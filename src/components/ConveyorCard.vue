@@ -17,22 +17,20 @@
         </v-list-item>
         <v-divider v-if="conveyor.nodes.length - 1 > i"/>
       </div>
-      <v-img v-if="conveyor.img" 
-        src="https://bad.src/not/valid"
-        lazy-src="https://via.placeholder.com/300.png/09f/fff"
-        contain
-        max-height="300"
+      <v-divider class="pb-2" v-if="conveyor.img"/>
+      <v-skeleton-loader
+        class="mx-auto"
+        max-width="500"
+        type="image"
+        v-if="conveyor.img" 
       >
-        <template v-slot:placeholder>
-          <v-row
-            class="fill-height ma-0"
-            align="center"
-            justify="center"
-          >
-            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-          </v-row>
-        </template>
-      </v-img>
+        <v-img 
+          :src="conveyor.img"
+          contain
+          max-height="300"
+        >
+        </v-img>
+      </v-skeleton-loader>
       <v-btn class="mr-4" @click.prevent="submit">{{ $t('edit') }}</v-btn>
       <v-btn class="mr-4" @click.prevent="selectOptions">{{ $t('options') }}</v-btn>
     </v-expansion-panel-content>
@@ -57,13 +55,9 @@ const Props = Vue.extend({
     ...mapMutations(['setConveyor', 'setState']),
   },
 })
-export default class extends Props {
+export default class ConveyorCard extends Props {
   setConveyor!: (...args: any) => void
   setState!: (...args: any) => void
-
-  get components(): string {
-      return this.conveyor.nodes.map(n => n.name).join(', ')
-  }
 
   select() {
     this.$emit('select', this.conveyor.id)
@@ -89,6 +83,10 @@ export default class extends Props {
     this.$emit('selectConveyor', this.conveyor.id)
     this.setConveyor(this.conveyor)
     this.setState(States.AddOptions)
+  }
+
+  get components(): string {
+    return this.conveyor.nodes.map(n => n.name).join(', ')
   }
 }
 </script>

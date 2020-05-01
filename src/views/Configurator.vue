@@ -1,21 +1,23 @@
 <template>
   <div class="content">
     <v-navigation-drawer
+      v-if="false"
       clipped
       right
       floating
       permanent
       app
-      overflow>
+      overflow
+    >
       <Basket class="basket"/>
     </v-navigation-drawer>
 
     <v-stepper v-model="stateIndex">
       <v-stepper-header>
         <div v-for="(step, i) in flow"
-          :key="step">
+          :key="step"
+        >
           <v-stepper-step :complete="flow.indexOf(state) >= i" :step="i+1">{{ $t(step) }}</v-stepper-step>
-          
           <v-divider></v-divider>
         </div>
       </v-stepper-header>
@@ -42,7 +44,7 @@
       </v-btn>
     </v-snackbar>
     <v-container>
-      <component v-if="true" :is="state"/>
+      <component :is="state"/>
     </v-container>
   </div>
 </template>
@@ -71,7 +73,6 @@ export default Vue.extend({
       state: States.QuestionList,
       stateIndex: 0,
       drawer: null,
-      // flow: [States.QuestionList, States.ListOfConveyors, States.EditConveyor, States.AddOptions],
       flow: [States.QuestionList, States.ListOfConveyors, States.AddOptions],
       snackbar: false,
     }
