@@ -146,38 +146,38 @@ interface Wrapper {
   },
   validations: {
     wrapperQuestionnaire: {
-    questionnaire: {
-      rateList: {
-        required,
-        $each: {
-          name: {
-            required,
-          },
-          mark: {
-            required,
-            isUnique(this: Questionnaire, a: any, b: any) {
-              const { wrapperQuestionnaire } = this
-              const array = wrapperQuestionnaire.questionnaire.rateList.map(rate => rate.mark)
+      questionnaire: {
+        rateList: {
+          required,
+          $each: {
+            name: {
+              required,
+            },
+            mark: {
+              required,
+              isUnique(this: Questionnaire, a: any, b: any) {
+                const { wrapperQuestionnaire } = this
+                const array = wrapperQuestionnaire.questionnaire.rateList.map(rate => rate.mark)
 
-              let indexNotUniqueField: Array<number> = []
-              const indexNotUniqueMap: Map<any, any> = new Map()
+                let indexNotUniqueField: Array<number> = []
+                const indexNotUniqueMap: Map<any, any> = new Map()
 
-              array.forEach((item, index) => {
-                indexNotUniqueMap.set(item, indexNotUniqueMap.get(item) ?? [])
-                indexNotUniqueMap.get(item).push(index)
-              })
+                array.forEach((item, index) => {
+                  indexNotUniqueMap.set(item, indexNotUniqueMap.get(item) ?? [])
+                  indexNotUniqueMap.get(item).push(index)
+                })
 
-              indexNotUniqueMap.forEach((v, k) => {
-                if (v.length > 1) {
-                  indexNotUniqueField = indexNotUniqueField.concat(v)
-                }
-              })
-              return indexNotUniqueField.length === 0
+                indexNotUniqueMap.forEach((v, k) => {
+                  if (v.length > 1) {
+                    indexNotUniqueField = indexNotUniqueField.concat(v)
+                  }
+                })
+                return indexNotUniqueField.length === 0
+              },
             },
           },
         },
       },
-    },
     },
   },
 })
