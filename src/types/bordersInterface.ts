@@ -74,6 +74,12 @@ export interface RateDto {
   name: string
   value: string
   mark: string
+  possibleRateValues?: Array<PossibleRateDto>
+}
+
+export interface PossibleRateDto {
+  id: string
+  name: string
 }
 
 export interface OptionalDetailDto {

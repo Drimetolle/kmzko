@@ -29,7 +29,7 @@
           <h4>{{questionnaire.name}}</h4>
           <Field v-for="rate in questionnaire.rateList"
             :key="rate.mark"
-            :item="rate"
+            :item="convertToFieldSkelet(rate)"
             @unfocus="unfocus"
           />
           <v-btn class="mr-4" @click.prevent="submit">{{ $t('submit') }}</v-btn>
@@ -86,6 +86,7 @@ export default class extends mixins(LoadingMixin) {
   }
 
   submit() {
+    const converted = this.questionnaire.rateList.map(r => this.$delete(r, 'child'))
     this.setQuestionnaire(this.questionnaire)
     this.setState(States.ListOfConveyors)
   }
@@ -93,6 +94,14 @@ export default class extends mixins(LoadingMixin) {
   async unfocus(item: QuestionnaireDto) {
     const q = await saveQuestionnaire(this.questionnaire)
     this.questionnaire.id = q.id
+  }
+
+  convertToFieldSkelet(rate: RateDto) {
+    if(!!rate.possibleRateValues) {
+      this.$set(rate, 'child', rate.possibleRateValues)
+      this.$delete(rate, 'possibleRateValues')
+    }
+    return rate
   }
 
   get show() {
