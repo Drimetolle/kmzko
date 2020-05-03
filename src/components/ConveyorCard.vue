@@ -9,7 +9,7 @@
           <v-list-item-content>
             <v-list-item-title class="title">{{ node.name }}</v-list-item-title>
             <v-list-item v-for="(detail, i) in node.details"
-                :key="i"
+              :key="i"
             >
               <v-list-item-title>{{ detail.name }} {{ detail.count | piece }}: {{ characteristics(detail) | characteristic }}</v-list-item-title>
             </v-list-item>
