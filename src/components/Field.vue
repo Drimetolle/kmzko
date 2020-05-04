@@ -1,39 +1,20 @@
 <template>
-  <v-text-field
-    v-if="valueOf(item) === 'textBox'"
-    :label="item.name"
-    :placeholder="item.placeholder"
-    v-model="item.value"
-    @blur="blur"
-  ></v-text-field>
-  <v-select 
-    v-else-if="valueOf(item) === 'selectBox'"
-    :items="convertValue(item.child)"
-    :label="item.name"
-    v-model="item.value"
-    @blur="blur"
-  ></v-select>
-  <div
-    v-else-if="valueOf(item) === 'colorPicker'">
-    <p>{{ item.name }}</p>
-    <v-color-picker
-      v-model="item.value"
-      @blur="blur"
-    >
-    </v-color-picker>
-  </div>
-  <v-checkbox
-    v-else-if="valueOf(item) === 'checkBox'"
-    v-model="item.value"
-    :label="`${item.name}`"
+  <component 
+    :is="valueOf(item)" 
+    v-model="item.value" 
+    :item="item" 
     @blur="blur"
   >
-  </v-checkbox>
+  </component>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { ImplSelectElement, FieldSkelet } from '@/types/index'
+import TextField from '@/components/vuetifyWrappers/TextField'
+import SelectField from '@/components/vuetifyWrappers/SelectField'
+import CheckboxField from '@/components/vuetifyWrappers/CheckboxField'
+import ColorPickerField from '@/components/vuetifyWrappers/ColorPickerField'
+import { FieldSkelet } from '@/types/index'
 
 function parseBoolean(str: string): boolean {
   return /^true$|^false$/i.test(str)
@@ -51,25 +32,29 @@ export default Vue.extend({
   },
   methods: {
     blur(): void {
+      console.log(1)
       this.$emit('unfocus', this.item)
     },
-    convertValue(item: Array<any>): Array<ImplSelectElement> {
-      return item.map(i => new ImplSelectElement(i.name, i.name))
-    },
-    valueOf(value: any): string {
+    valueOf(value: FieldSkelet): string {
       if (parseBoolean(value.value)) {
-        return 'checkBox'
+        return 'CheckboxField'
       }
       if (parseColorHex(value.value)) {
-        return 'colorPicker'
+        return 'ColorPickerField'
       }
       if (!!value.child) {
-        return 'selectBox'
+        return 'SelectField'
       }
       else {
-        return 'textBox'
+        return 'TextField'
       }
     },
+  },
+  components: {
+    CheckboxField,
+    ColorPickerField,
+    SelectField,
+    TextField,
   },
 })
 </script>
