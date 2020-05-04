@@ -4,7 +4,7 @@ import { SelectElement, ImplSelectElement } from '@/types/index'
 
 @Component
 export default class MarkMixin extends Vue {
-  marks: Array<SelectElement> = [
+  public marks: Array<SelectElement> = [
     new ImplSelectElement('Ширина ленты', 'tape-width'),
     new ImplSelectElement('Длина конвейера', 'tape-length'),
     new ImplSelectElement('Производительность', 'productivity'),

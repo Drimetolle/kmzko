@@ -43,10 +43,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import Field from '@/components/Field.vue'
-import { QuestionnaireDto, RateDto, States, SelectElement, ImplSelectElement, FieldSkelet } from '@/types/index'
+import { QuestionnaireDto, RateDto, States, SelectElement, ImplSelectElement } from '@/types/index'
 import { getConveyorTypes, saveQuestionnaire } from '@/utils/request/index'
 import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 import Component, { mixins } from 'vue-class-component'
@@ -62,49 +61,50 @@ import Component, { mixins } from 'vue-class-component'
 })
 export default class extends mixins(LoadingMixin) {
   items: Array<SelectElement> = []
-  select: string = ''
+  select = ''
   questionnaire: QuestionnaireDto = { } as any
-  valid: boolean = false
+  valid = false
 
   setState!: (...args: any) => void
   setQuestionnaire!: (...args: any) => void
   getFormConveyor!: (type: string) => Promise<QuestionnaireDto>
   setConveyorType!: (...args: any) => void
 
-  async created() {
+  async created(): Promise<void> {
     const conveyorTypes: Array<string> = await getConveyorTypes()
     const localeItems = conveyorTypes.map(i => this.$t(i)) as Array<string>
     this.items = conveyorTypes.map(i => new ImplSelectElement(this.$t(i), i))
   }
 
   @AsyncLoading
-  async getForm() {
+  async getForm(): Promise<void> {
     this.setConveyorType(this.select)
     const q = await this.getFormConveyor(this.select)
     if ('id' in q) q.id = ''
     this.questionnaire = q
   }
 
-  submit() {
-    const converted = this.questionnaire.rateList.map(r => this.$delete(r, 'child'))
+  submit(): void {
+    this.questionnaire.rateList.map(r => this.$delete(r, 'child'))
+
     this.setQuestionnaire(this.questionnaire)
     this.setState(States.ListOfConveyors)
   }
 
-  async unfocus(item: QuestionnaireDto) {
+  async unfocus(item: QuestionnaireDto): Promise<void> {
     const q = await saveQuestionnaire(this.questionnaire)
     this.questionnaire.id = q.id
   }
 
-  convertToFieldSkelet(rate: RateDto) {
-    if(!!rate.possibleRateValues) {
+  convertToFieldSkelet(rate: RateDto): RateDto {
+    if(rate.possibleRateValues) {
       this.$set(rate, 'child', rate.possibleRateValues)
       this.$delete(rate, 'possibleRateValues')
     }
     return rate
   }
 
-  get show() {
+  get show(): boolean {
     return this.loaded && Object.keys(this.questionnaire).length > 0
   }
 }

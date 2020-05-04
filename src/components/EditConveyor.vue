@@ -30,9 +30,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import Field from '@/components/Field.vue'
-import { Conveyor, Node, OptionalDetail } from '@/types/index'
+import { Conveyor, Node, OptionalDetail, FieldSkelet } from '@/types/index'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import OptionConverter from '@/utils/optionConverter'
 import Component, { mixins } from 'vue-class-component'
@@ -61,7 +60,7 @@ export default class EditConveyor extends mixins(LoadingMixin){
   getConveyorById!: (id: string) => Conveyor
 
   @AsyncLoading
-  async mounted() {
+  async mounted(): Promise<void> {
     const res = this.getConveyor
     this.setConveyor(res)
 
@@ -69,14 +68,14 @@ export default class EditConveyor extends mixins(LoadingMixin){
     this.conveyorСomponents = nodes
   }
 
-  submit() {
+  submit(): void {
     //
   }
-  toFieldSkelet(option: any) {
+  toFieldSkelet(option: any): FieldSkelet {
     return OptionConverter.prototype.toFieldSkelet(option)
   }
 
-  get show() {
+  get show(): boolean {
     return this.loaded && !!this.conveyorСomponents
   }
 }

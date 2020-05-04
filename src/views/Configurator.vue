@@ -87,7 +87,7 @@ export default Vue.extend({
     this.state = this.getState()
     this.$store.watch(
       (state, getters) => getters.getState,
-      (newValue, oldValue) => {
+      (newValue) => {
         this.state = newValue
       },
     )

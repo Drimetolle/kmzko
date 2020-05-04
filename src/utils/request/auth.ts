@@ -8,7 +8,7 @@ const request = axios.create({
 
 export async function login(user: User): Promise<TokensDto> {
   try {
-    const res = await request.post(`/auth`, user, {
+    const res = await request.post('/auth', user, {
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -22,7 +22,7 @@ export async function login(user: User): Promise<TokensDto> {
 
 export async function refresh(tokens: TokensDto): Promise<TokensDto> {
   try {
-    const res = await request.post(`/auth/refresh`, tokens, {
+    const res = await request.post('/auth/refresh', tokens, {
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -36,7 +36,7 @@ export async function refresh(tokens: TokensDto): Promise<TokensDto> {
 
 export async function registration(user: User): Promise<{ status: string }> {
   try {
-    const res = await request.post(`/join`, user, {
+    const res = await request.post('/join', user, {
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -50,7 +50,7 @@ export async function registration(user: User): Promise<{ status: string }> {
 
 export async function checkFieldForUniqueness(id: string, field: string): Promise<{ error: string, status: string }> {
   try {
-    const res = await axios.get(`/join`, {
+    const res = await axios.get('/join', {
       params: { [id]: field },
     })
     return res.data

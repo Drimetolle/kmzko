@@ -109,16 +109,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import Component, { mixins } from 'vue-class-component'
-import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
-import { QuestionnaireDto, RateDto } from '@/types/index'
+import { QuestionnaireDto, RateDto, FieldSkelet } from '@/types/index'
 import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 import MarkMixin from '@/mixin/mark.mixin'
-import { getAllQuestionnaire, deployQuestionnaire } from '@/utils/request/index'
+import { getAllQuestionnaire } from '@/utils/request/index'
 import QuestionnaireConverter from '@/utils/questionnaireConverter'
-import { required, minLength, between, email, sameAs } from 'vuelidate/lib/validators'
+import { required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
 
@@ -134,7 +132,7 @@ interface Wrapper {
   },
   watch: {
     questionnaireWatcher: {
-      handler(newVal: QuestionnaireDto, oldVal: QuestionnaireDto) {
+      handler(newVal: QuestionnaireDto, oldVal: QuestionnaireDto): void {
         const isEqual: boolean = JSON.stringify(newVal) === JSON.stringify(oldVal)
         const emptyValue = () => JSON.stringify(oldVal) === JSON.stringify({ })
         const valueNotChange = () => isEqual
@@ -158,19 +156,19 @@ interface Wrapper {
             },
             mark: {
               required,
-              isUnique(this: Questionnaire, a: any, b: any) {
+              isUnique(this: Questionnaire): boolean {
                 const { wrapperQuestionnaire } = this
                 const array = wrapperQuestionnaire.questionnaire.rateList.map(rate => rate.mark)
 
                 let indexNotUniqueField: Array<number> = []
-                const indexNotUniqueMap: Map<any, any> = new Map()
+                const indexNotUniqueMap: Map<string, any> = new Map()
 
                 array.forEach((item, index) => {
                   indexNotUniqueMap.set(item, indexNotUniqueMap.get(item) ?? [])
                   indexNotUniqueMap.get(item).push(index)
                 })
 
-                indexNotUniqueMap.forEach((v, k) => {
+                indexNotUniqueMap.forEach((v) => {
                   if (v.length > 1) {
                     indexNotUniqueField = indexNotUniqueField.concat(v)
                   }
@@ -189,49 +187,49 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     questionnaire: { } as QuestionnaireDto,
     saved: false,
   }
-  questionnaire: number = -1
+  questionnaire = -1
   questionnaireList: Array<Wrapper> = []
   unwatchIsLiveProp = { }
 
   @AsyncLoading
-  async mounted() {
-    this.questionnaireList = (await getAllQuestionnaire()).map(item => { return { questionnaire: item, saved: true} })
+  async mounted(): Promise<void> {
+    this.questionnaireList = (await getAllQuestionnaire()).map(item => { return { questionnaire: item, saved: true } })
   }
 
-  selectItem(target: Wrapper, index: number) {
+  selectItem(target: Wrapper, index: number): void {
     this.wrapperQuestionnaire = target
     this.questionnaire = index
   }
 
-  toFieldSkelet(option: any) {
+  toFieldSkelet(option: any): FieldSkelet {
     return QuestionnaireConverter.prototype.toFieldSkelet(option)
   }
 
-  newItem() {
+  newItem(): void {
     const newItem: Wrapper = { saved: false, questionnaire: { id: this.questionnaireList.length.toString(), name: 'newItem', type: '', rateList: [{ id: '0', name: '', value: '', mark: '' }] } }
     this.questionnaireList.push(newItem)
     this.selectItem(newItem, this.questionnaireList.length - 1)
   }
 
-  removeItem(item: Wrapper) {
+  removeItem(item: Wrapper): void {
     const index = this.questionnaireList.indexOf(item)
     if (index > -1) {
       this.questionnaireList.splice(index, 1)
     }
   }
 
-  newRate() {
+  newRate(): void {
     this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
   }
 
-  removeRate(item: RateDto) {
+  removeRate(item: RateDto): void {
     const index = this.wrapperQuestionnaire.questionnaire.rateList.indexOf(item)
     if (index > -1) {
       this.wrapperQuestionnaire.questionnaire.rateList.splice(index, 1)
     }
   }
 
-  save(item: Wrapper) {
+  save(item: Wrapper): void {
     item.saved = true
   }
 
@@ -242,8 +240,8 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
 
   markErrors(target: any): string | Array<string> {
     if (!target.mark.$dirty) return ''
-    if (!target.mark.required) return `Field is required`
-    if (!target.mark.isUnique) return `Not unique`
+    if (!target.mark.required) return 'Field is required'
+    if (!target.mark.isUnique) return 'Not unique'
     return ''
   }
 
@@ -251,7 +249,7 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     return new QuestionnaireConverter()
   }
 
-  get questionnaireWatcher() {
+  get questionnaireWatcher(): QuestionnaireDto {
     return this.wrapperQuestionnaire.questionnaire
   }
 }

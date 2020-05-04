@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ConveyorDto, QuestionnaireDto, RateDto } from '@/types/index'
+import { ConveyorDto, QuestionnaireDto } from '@/types/index'
 import ConveyorMinimizezer from '@/utils/minimizerConveyor'
 import QuestionnaireMinimizezer from '@/utils/minimizerQuestionnaire'
 
@@ -16,7 +16,7 @@ export async function saveQuestionnaire(questionnaire: QuestionnaireDto): Promis
       })
     }
     else {
-      res = await axios.post(`/api/user/questionnaires`, new QuestionnaireMinimizezer().minimize(questionnaire), {
+      res = await axios.post('/api/user/questionnaires', new QuestionnaireMinimizezer().minimize(questionnaire), {
         headers: {
           'accept': 'application/json',
           'content-type': 'application/json',
@@ -30,7 +30,7 @@ export async function saveQuestionnaire(questionnaire: QuestionnaireDto): Promis
   }
 }
 
-export async function saveConveyor(conveyor: ConveyorDto) {
+export async function saveConveyor(conveyor: ConveyorDto): Promise<ConveyorDto> {
   try {
     const res = await axios.put(`/api/user/questionnaires/${conveyor.id}`, new ConveyorMinimizezer().minimize(conveyor), {
       headers: {
@@ -39,7 +39,7 @@ export async function saveConveyor(conveyor: ConveyorDto) {
       },
     })
 
-    return res
+    return res.data
   } catch (error) {
     throw Error(error)
   }

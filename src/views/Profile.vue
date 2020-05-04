@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Component, { mixins } from 'vue-class-component'
+import Component from 'vue-class-component'
 import Bio from '@/components/profile/Bio'
 import PurchaseHistory from '@/components/profile/PurchaseHistory'
 
@@ -53,17 +53,17 @@ import PurchaseHistory from '@/components/profile/PurchaseHistory'
   },
 })
 export default class Profile extends Vue {
-  page: string = 'Bio'
+  page = 'Bio'
   userSnackbar = {
     text: 'Информация сохранена',
     visible: false,
   }
 
-  toggleUserSnackbar() {
+  toggleUserSnackbar(): void {
     this.userSnackbar.visible = true
   }
 
-  setPage(target: string) {
+  setPage(target: string): void {
     this.page = target
   }
 }

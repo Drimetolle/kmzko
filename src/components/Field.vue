@@ -34,7 +34,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ImplSelectElement, FieldSkelet } from '@/types/index'
-import FieldConverter from '@/utils/fieldConverter'
 
 function parseBoolean(str: string): boolean {
   return /^true$|^false$/i.test(str)
@@ -51,7 +50,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    blur() {
+    blur(): void {
       this.$emit('unfocus', this.item)
     },
     convertValue(item: Array<any>): Array<ImplSelectElement> {

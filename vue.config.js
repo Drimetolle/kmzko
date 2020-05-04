@@ -1,5 +1,4 @@
 const path = require('path')
-const TSLintPlugin = require('tslint-webpack-plugin')
 
 const isMock = () => process.env.NODE_ENV === 'mock'
 
@@ -16,11 +15,6 @@ module.exports = {
           actions: path.resolve(__dirname, 'src/store/actions'),
         }
     },
-    plugins: [
-      new TSLintPlugin({
-          files: ['./src/**/*.ts']
-      })
-    ],
   },
   transpileDependencies: [
     'vuetify'

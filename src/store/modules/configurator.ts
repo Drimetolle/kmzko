@@ -34,7 +34,7 @@ const getters = {
   getConveyorType(state: State): string | undefined {
     return state.conveyor?.type
   },
-  getUserConveyor(state: State) {
+  getUserConveyor(state: State): any {
     return { ...state.conveyor, optionalDetails: state.options }
   },
 }

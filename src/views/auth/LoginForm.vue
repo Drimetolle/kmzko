@@ -62,11 +62,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import Component, { mixins } from 'vue-class-component'
-import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { User } from '@/types'
-import { required, minLength, between, email, sameAs } from 'vuelidate/lib/validators'
+import { required, minLength } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
 
@@ -90,14 +89,14 @@ import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
   },
 })
 export default class LoginForm extends mixins(ErrorsMixin) {
-  username: string = ''
-  password: string = ''
-  success: boolean = false
+  username = ''
+  password = ''
+  success = false
 
   isAuthenticated!: boolean
   authRequest!: (user: User) => void
 
-  async login() {
+  async login(): Promise<void> {
     const user: User = {
       username: this.username,
       password: this.password,
@@ -110,7 +109,7 @@ export default class LoginForm extends mixins(ErrorsMixin) {
     }
   }
 
-  redirectToReg() {
+  redirectToReg(): void {
     this.$router.push('/registration')
   }
 }

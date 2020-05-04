@@ -1,5 +1,5 @@
 import { User, TokensDto } from '@/types/index'
-import { login, refresh, registration } from '@/utils/request/auth'
+import { login, registration } from '@/utils/request/auth'
 
 class State {
   accessToken: string = localStorage.getItem('access-token') ?? ''
@@ -20,7 +20,7 @@ const getters = {
 }
 
 const actions = {
-  async authRequest({ commit, dispatch }: any, user: User) {
+  async authRequest({ commit, dispatch }: any, user: User): Promise<void> {
     try {
       const res: TokensDto = await login(user)
       commit('setAccessToken', res.access_token)
@@ -31,7 +31,7 @@ const actions = {
       //
     }
   },
-  async join({ commit, dispatch }: any, user: User) {
+  async join({ commit, dispatch }: any, user: User): Promise<void> {
     const { status } = await registration(user)
 
     if (status === 'ok') {
@@ -50,7 +50,7 @@ const mutations = {
     oldState.refreshToken = token
     localStorage.setItem('refresh-token', token)
   },
-  setTokens(oldState: State, tokens: TokensDto) {
+  setTokens(oldState: State, tokens: TokensDto): void {
     oldState.accessToken = tokens.access_token
     oldState.refreshToken = tokens.refresh_token
 
@@ -65,7 +65,7 @@ const mutations = {
     localStorage.removeItem('access-token')
     localStorage.removeItem('refresh-token')
   },
-  authenticate(oldState: State) {
+  authenticate(oldState: State): void {
     oldState.authenticated = true
   },
 }

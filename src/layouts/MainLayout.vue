@@ -47,7 +47,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    pushTo({ title }: any) {
+    pushTo({ title }: any): void {
       if(title === 'settings') this.$router.push('/settings/profile')
       else if (title === 'logout') {
         this.$store.commit('logout')

@@ -3,7 +3,7 @@ import { BioDto } from '@/types/index'
 
 export async function getUser(): Promise<BioDto> {
   try {
-    const res = await axios.get(`/api/user`)
+    const res = await axios.get('/api/user')
     return res.data as BioDto
   } catch (error) {
     throw Error(error)
@@ -12,7 +12,7 @@ export async function getUser(): Promise<BioDto> {
 
 export async function saveBioUser(bio: BioDto): Promise<BioDto> {
   try {
-    const res = await axios.put(`/api/user`, bio, {
+    const res = await axios.put('/api/user', bio, {
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',

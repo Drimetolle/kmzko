@@ -21,7 +21,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { OptionalDetail } from '@/types/index'
 import Field from '@/components/Field.vue'
@@ -50,16 +49,16 @@ export default class extends mixins(LoadingMixin){
   getUserConveyor!: any
 
   @AsyncLoading
-  async mounted() {
+  async mounted(): Promise<void> {
     this.options = await this.fetchOptions('tape')
   }
 
-  submit() {
+  submit(): void {
     this.setListOfOptions(this.options)
     // saveConveyor(this.getUserConveyor)
   }
 
-  unfocus(item: OptionalDetail) {
+  unfocus(item: OptionalDetail): void {
     // SAVE
   }
 }

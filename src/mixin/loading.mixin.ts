@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Vue from 'vue'
 import Component, { createDecorator } from 'vue-class-component'
 
 @Component
 export default class LoadingMixin extends Vue {
-  loaded = true
+  public loaded = true
 }
 
 export const AsyncLoading = createDecorator((options: any, key: string) => {
@@ -16,16 +18,14 @@ export const AsyncLoading = createDecorator((options: any, key: string) => {
       await originalMethod.apply(this, args)
       this.loaded = true
     }
-  }
-  else if (key === 'created') {
+  } else if (key === 'created') {
     originalMethod = options.created
     options.created = async function wrapperMethod(...args: any) {
       this.loaded = false
       await originalMethod.apply(this, args)
       this.loaded = true
     }
-  }
-  else {
+  } else {
     originalMethod = options.methods[key]
     options.methods[key] = async function wrapperMethod(...args: any) {
       this.loaded = false
@@ -45,16 +45,14 @@ export const Loading = createDecorator((options: any, key: string) => {
       originalMethod.apply(this, args)
       this.loaded = true
     }
-  }
-  else if (key === 'created') {
+  } else if (key === 'created') {
     originalMethod = options.created
     options.created = function wrapperMethod(...args: any) {
       this.loaded = false
       originalMethod.apply(this, args)
       this.loaded = true
     }
-  }
-  else {
+  } else {
     originalMethod = options.methods[key]
     options.methods[key] = function wrapperMethod(...args: any) {
       this.loaded = false

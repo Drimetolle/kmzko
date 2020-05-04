@@ -96,13 +96,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import Component, { mixins } from 'vue-class-component'
-import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { User } from '@/types'
 import { checkFieldForUniqueness } from '@/utils/request/index'
 import Field from '@/types/Field'
-import { required, minLength, between, email, sameAs } from 'vuelidate/lib/validators'
+import { required, minLength, email, sameAs } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
 
@@ -166,12 +165,12 @@ export default class RegistrationForm extends mixins(ErrorsMixin) {
   email: Field = new Field()
   password: Field = new Field()
   secondpassword: Field = new Field()
-  success: boolean = true
+  success = true
 
   isAuthenticated!: boolean
   join!: (user: User) => void
 
-  async check(target: any, data: Field) {
+  async check(target: any, data: Field): Promise<void> {
     const { id, value } = target
     const res = await checkFieldForUniqueness(id, value)
 
@@ -179,7 +178,7 @@ export default class RegistrationForm extends mixins(ErrorsMixin) {
     data.error = res.error ?? ''
   }
 
-  async registration() {
+  async registration(): Promise<void> {
     const user: User = { name: this.name.value, username: this.username.value, password: this.password.value, email: this.email.value }
     await this.join(user)
 
@@ -188,22 +187,24 @@ export default class RegistrationForm extends mixins(ErrorsMixin) {
     }
   }
 
-  get customUsernameErrors() {
+  get customUsernameErrors(): string  {
     if (!this.$v.username.value!.$dirty) return ''
-    if (!this.$v.username.value!.required) return `Field is required`
+    if (!this.$v.username.value!.required) return 'Field is required'
     if (!this.$v.username.value!.minLength) return `Field min length is ${this.$v.username.value!.$params.minLength.min}`
     if (!this.$v.username.value!.isUnique || this.$v.username.value!.$pending) {
       return this.username.getError
     }
+    return ''
   }
 
-  get emailErrors() {
+  get emailErrors(): string {
     if (!this.$v.email.value!.$dirty) return ''
-    if (!this.$v.email.value!.required) return `Field is required`
-    if (!this.$v.email.value!.email) return `email`
+    if (!this.$v.email.value!.required) return 'Field is required'
+    if (!this.$v.email.value!.email) return 'email'
     if (!this.$v.email.value!.isUnique || this.$v.email.value!.$pending) {
       return this.email.getError
     }
+    return ''
   }
 }
 </script>

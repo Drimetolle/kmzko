@@ -15,7 +15,7 @@ export interface Detail {
   id: string
   name: string
   count: number
-  characteristics: Array<any>
+  characteristics: Array<CharacteristicDto>
 }
 
 export interface OptionalDetail {

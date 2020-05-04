@@ -21,15 +21,15 @@ export default class Field {
     this._error = value
   }
 
-  get init() {
+  get init(): boolean {
     return this._init
   }
 
-  get getUnique() {
+  get getUnique(): boolean {
     return this._unique
   }
 
-  get getError() {
+  get getError(): string {
     return this._error
   }
 }

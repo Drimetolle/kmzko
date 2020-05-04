@@ -21,7 +21,7 @@ import EmptyLayout from '@/layouts/EmptyLayout.vue'
 export default Vue.extend({
   name: 'App',
   computed: {
-    layout() {
+    layout(): string {
       return (this.$route.meta.layout || 'empty') + '-layout'
     },
   },

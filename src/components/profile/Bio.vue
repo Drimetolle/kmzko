@@ -42,10 +42,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Component, { mixins } from 'vue-class-component'
+import Component from 'vue-class-component'
 import { getUser, saveBioUser } from '@/utils/request/api.user-staff'
 import { BioDto } from '@/types/index'
-import { required, minLength, between, email, sameAs } from 'vuelidate/lib/validators'
+import { required, minLength } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 
 @Component({
@@ -70,30 +70,33 @@ import { validationMixin } from 'vuelidate'
 export default class Bio extends Vue {
   user: BioDto = { } as any
 
-  async created() {
+  async created(): Promise<void> {
     this.user = await getUser()
   }
 
-  async save() {
+  async save(): Promise<void> {
     const user = await saveBioUser(this.user)
 
     this.$emit('saveUserBio', user)
   }
 
-  get nameErrors () {
+  get nameErrors(): string {
     if (!this.$v.user.name!.$dirty) return ''
-    if (!this.$v.user.name!.required) return `Field is required`
+    if (!this.$v.user.name!.required) return 'Field is required'
     if (!this.$v.user.name!.minLength) return `Field min length is ${this.$v.user.name!.$params.minLength.min}`
+    return ''
   }
 
-  get emailErrors () {
+  get emailErrors(): string {
     if (!this.$v.user.email!.$dirty) return ''
-    if (!this.$v.user.email!.required) return `Field is required`
-    if (!this.$v.user.email!.email) return `email`
+    if (!this.$v.user.email!.required) return 'Field is required'
+    if (!this.$v.user.email!.email) return 'email'
+    return ''
   }
 
-  get phoneErrors () {
+  get phoneErrors(): string {
     if (!this.$v.user.email!.$dirty) return ''
+    return ''
   }
 }
 </script>
