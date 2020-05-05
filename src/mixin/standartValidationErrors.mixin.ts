@@ -19,8 +19,8 @@ export default class StandartValidationErrorsMixin extends Vue {
   }
 
   passwordErrors(target: any): string {
-    if (!target.$dirty) { return '' }
-    if (!target.required) { return 'Field is required' }
+    if (!target.$dirty) return ''
+    if (!target.required) return 'Field is required'
     if (!target.minLength) return `Field min length is ${target.$params.minLength.min}`
     return ''
   }
