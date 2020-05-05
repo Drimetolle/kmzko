@@ -8,6 +8,7 @@ import Profile from '@/views/Profile.vue'
 import Purchase from '@/views/Purchase.vue'
 import Questionnaire from '@/views/Questionnaire.vue'
 import Projects from '@/views/Projects.vue'
+import HomePage from '@/views/HomePage.vue'
 
 Vue.use(VueRouter)
 
@@ -25,7 +26,7 @@ const routes = [
     component: Registration,
   },
   {
-    path: '/',
+    path: '/configurator',
     name: 'configurator',
     meta: { layout: 'main' },
     component: Configurator,
@@ -58,6 +59,12 @@ const routes = [
     meta: { layout: 'main' },
     component: Projects,
   },
+  {
+    path: '/',
+    name: 'home',
+    meta: { layout: 'main' },
+    component: HomePage,
+  },
 ]
 
 const router = new VueRouter({
@@ -73,7 +80,7 @@ const whitelist = (name: string): boolean => {
 
 router.beforeEach((to, from, next) => {
   if (store.getters.isAuthenticated) {
-    if (whitelist(to.name!)) next({ name: 'configurator' })
+    if (whitelist(to.name!)) next({ name: 'home' })
     else if (store.getters.isAuthenticated) next()
     return
   }

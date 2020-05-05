@@ -3,9 +3,10 @@
       <div id="nav">
         <router-link to="/login">Login</router-link> |
         <router-link to="/registration">Registration</router-link> |
-        <router-link to="/">Configurator</router-link> |
+        <router-link to="/configurator">Configurator</router-link> |
         <router-link to="/questionnaire">Questionnaire</router-link> |
-        <router-link to="/projects">Projects</router-link>
+        <router-link to="/projects">Projects</router-link> |
+        <router-link to="/">Home</router-link>
       </div>
       <component :is="layout">
         <router-view/>
