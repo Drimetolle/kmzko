@@ -12,5 +12,7 @@
   "pieces": "pieces",
   "logout": "logout",
   "questionnaires": "questionnaires",
-  "save": "save"
+  "save": "save",
+  "projects": "projects",
+  "create": "create"
 }
