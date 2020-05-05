@@ -119,6 +119,7 @@ import QuestionnaireConverter from '@/utils/questionnaireConverter'
 import { required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
+import * as R from 'ramda'
 
 interface Wrapper {
   questionnaire: QuestionnaireDto
@@ -133,7 +134,7 @@ interface Wrapper {
   watch: {
     questionnaireWatcher: {
       handler(newVal: QuestionnaireDto, oldVal: QuestionnaireDto): void {
-        const isEqual: boolean = JSON.stringify(newVal) === JSON.stringify(oldVal)
+        const isEqual: boolean = R.equals(newVal, oldVal)
         const emptyValue = () => JSON.stringify(oldVal) === JSON.stringify({ })
         const valueNotChange = () => isEqual
 

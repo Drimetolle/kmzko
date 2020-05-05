@@ -40,7 +40,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Conveyor, Detail, States } from '@/types/index'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import { CharacteristicDto } from '@/types/index'
 import Component from 'vue-class-component'
 
@@ -59,7 +59,7 @@ export default class ConveyorCard extends Props {
   setConveyor!: (...args: any) => void
   setState!: (...args: any) => void
 
-  select() {
+  select(): void {
     this.$emit('select', this.conveyor.id)
   }
 
@@ -71,13 +71,13 @@ export default class ConveyorCard extends Props {
     return detail.characteristics
   }
 
-  submit() {
+  submit(): void {
     this.$emit('selectConveyor', this.conveyor.id)
     this.setConveyor(this.conveyor)
     this.setState(States.EditConveyor)
   }
 
-  selectOptions() {
+  selectOptions(): void {
     this.$emit('selectConveyor', this.conveyor.id)
     this.setConveyor(this.conveyor)
     this.setState(States.AddOptions)

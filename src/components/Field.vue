@@ -32,7 +32,6 @@ export default Vue.extend({
   },
   methods: {
     blur(): void {
-      console.log(1)
       this.$emit('unfocus', this.item)
     },
     valueOf(value: FieldSkelet): string {
