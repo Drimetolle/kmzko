@@ -187,7 +187,7 @@ export default class RegistrationForm extends mixins(ErrorsMixin) {
     }
   }
 
-  get customUsernameErrors(): string  {
+  get customUsernameErrors(): string {
     if (!this.$v.username.value!.$dirty) return ''
     if (!this.$v.username.value!.required) return 'Field is required'
     if (!this.$v.username.value!.minLength) return `Field min length is ${this.$v.username.value!.$params.minLength.min}`

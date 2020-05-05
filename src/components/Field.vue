@@ -41,7 +41,7 @@ export default Vue.extend({
       if (parseColorHex(value.value)) {
         return 'ColorPickerField'
       }
-      if (!!value.child) {
+      if (value.child) {
         return 'SelectField'
       }
       else {

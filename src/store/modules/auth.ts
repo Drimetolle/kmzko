@@ -8,7 +8,7 @@ class State {
 }
 
 const getters = {
-  getAccessToken(state: State): string  {
+  getAccessToken(state: State): string {
     return state.accessToken
   },
   getRefreshToken(state: State): string {

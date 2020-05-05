@@ -7,7 +7,6 @@
     "serve:mock": "cross-env NODE_ENV=mock&& vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
     "eslint": "eslint src --ext .js,.ts,.vue"
   },
   "dependencies": {
