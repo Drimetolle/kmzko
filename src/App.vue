@@ -4,7 +4,8 @@
         <router-link to="/login">Login</router-link> |
         <router-link to="/registration">Registration</router-link> |
         <router-link to="/">Configurator</router-link> |
-        <router-link to="/questionnaire">Questionnaire</router-link>
+        <router-link to="/questionnaire">Questionnaire</router-link> |
+        <router-link to="/projects">Projects</router-link>
       </div>
       <component :is="layout">
         <router-view/>

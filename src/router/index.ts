@@ -7,6 +7,7 @@ import Configurator from '@/views/Configurator.vue'
 import Profile from '@/views/Profile.vue'
 import Purchase from '@/views/Purchase.vue'
 import Questionnaire from '@/views/Questionnaire.vue'
+import Projects from '@/views/Projects.vue'
 
 Vue.use(VueRouter)
 
@@ -50,6 +51,12 @@ const routes = [
     name: 'questionnaire',
     meta: { layout: 'main' },
     component: Questionnaire,
+  },
+  {
+    path: '/projects',
+    name: 'projects',
+    meta: { layout: 'main' },
+    component: Projects,
   },
 ]
 
