@@ -1,5 +1,5 @@
 module.exports = () => {
-  return JSON.parse(`{
+  return JSON.parse(`[{
     "conveyor":{
        "id":0,
        "name":"Конвейер ленточный",
@@ -164,6 +164,6 @@ module.exports = () => {
           }
        ]
     }
- }`
+ }]`
   )
 }
