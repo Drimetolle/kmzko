@@ -31,6 +31,7 @@
       "named": "never",
       "asyncArrow": "always"
     }],
-    "no-extra-boolean-cast": 0
+    "no-extra-boolean-cast": 2,
+    "no-multi-spaces": 2
   }
 }
