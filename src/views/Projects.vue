@@ -1,29 +1,123 @@
 <template>
-   <v-card>
-    <v-tabs
-      dark
-      background-color="teal darken-3"
-      show-arrows
-    >
-      <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
+  <v-layout row fill-height>
+    <v-col dense cols="2">
+      <v-list flat>
+        <v-row>
+          <v-col>
+            <v-subheader><h2>{{ $t('projects') }}</h2></v-subheader>
+          </v-col>
+          <v-spacer/>
+          <v-col>
+            <v-dialog
+              v-model="dialog"
+              width="500"
+            >
+              <template v-slot:activator="{ on }">
+                <v-btn v-on="on">Новый</v-btn>
+              </template>
+              <v-card>
+                <v-card-title
+                  class="headline dark lighten-2"
+                  primary-title
+                >
+                  Новый проект
+                </v-card-title>
 
-      <v-tab
-        v-for="i in 30"
-        :key="i"
-        :href="'#tab-' + i"
-      >
-        Item {{ i }}
-      </v-tab>
-    </v-tabs>
-  </v-card>
+                <v-card-text>
+                  <v-select
+                    :items="items"
+                    v-model="select"
+                    label="Тип конвейера"
+                    @click="setTypes"
+                    @blur="$v.select.$touch()"
+                    :error-messages="nameErrors($v.select)"
+                  >
+                  </v-select>
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="#d94d33"
+                    text
+                    @click="createProject()"
+                  >
+                    {{ $t('create') }}
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-col>
+        </v-row>
+        <v-list-item-group color="primary">
+
+        </v-list-item-group>
+      </v-list>
+    </v-col>
+    <v-divider vertical/>
+    <v-col dense color="#f6f8fa">
+
+    </v-col>
+  </v-layout>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import Component, { mixins } from 'vue-class-component'
+import { mapMutations } from 'vuex'
+import { SelectElement, ImplSelectElement, ConveyorProjectDto } from '@/types/index'
+import { getConveyorTypes, createConveyorProject, getAllConveyorProjects } from '@/utils/request/index'
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
+import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
 
-@Component
-export default class Projects extends Vue {
+@Component({
+  mixins: [validationMixin],
+  methods: {
+    ...mapMutations(['setConveyorType']),
+  },
+  validations: {
+    select: {
+      required,
+    },
+  },
+})
+export default class Projects extends mixins(ErrorsMixin) {
+  projects: Array<ConveyorProjectDto> = []
+  items: Array<SelectElement> = []
+  select = ''
+  dialog = false
 
+  setConveyorType!: (type: string) => void
+
+  async fetchConveyorTypes(): Promise<Array<SelectElement>> {
+    const conveyorTypes: Array<string> = await getConveyorTypes()
+    const items = conveyorTypes.map(i => new ImplSelectElement(this.$t(i), i))
+
+    return items
+  }
+
+  async createProject(): Promise<void> {
+    this.setConveyorType(this.select)
+    await createConveyorProject(this.select)
+    this.dialog = false
+  }
+
+  async setTypes(): Promise<void> {
+    if (this.items.length === 0)
+      this.items = await this.fetchConveyorTypes()
+  }
+
+  async created(): Promise<void> {
+    this.projects = await getAllConveyorProjects()
+    this.items = await this.fetchConveyorTypes()
+  }
 }
 </script>
+
+<style scoped>
+h2 {
+  color: black;
+}
+</style>

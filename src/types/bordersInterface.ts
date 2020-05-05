@@ -98,3 +98,8 @@ export interface BioDto {
   email: string
   phone: string
 }
+
+export interface ConveyorProjectDto {
+  conveyor: ConveyorDto
+  questionnaire: QuestionnaireDto
+}
