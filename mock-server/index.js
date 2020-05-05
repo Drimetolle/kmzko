@@ -44,3 +44,10 @@ server.get('/api/search/conveyors', (request, response) => {
     response.status(200).jsonp(conveyors())
   }
 })
+
+server.get('/api/user/projects', (request, response) => {
+  if (request.method === 'GET') {
+    const projects = require('./projects')
+    response.status(200).jsonp(projects())
+  }
+})
