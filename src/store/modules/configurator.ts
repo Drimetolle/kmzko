@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Conveyor, OptionalDetail, ConveyorDto, States, QuestionnaireDto } from '@/types/index'
 import * as request from '@/utils/request/index'
 

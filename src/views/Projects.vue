@@ -28,7 +28,7 @@
                     :items="items"
                     v-model="select"
                     label="Тип конвейера"
-                    @click="setTypes"
+                    @focus="setTypes()"
                     @blur="$v.select.$touch()"
                     :error-messages="nameErrors($v.select)"
                   >
@@ -52,7 +52,15 @@
           </v-col>
         </v-row>
         <v-list-item-group color="primary">
-
+          <v-list-item
+            v-for="(project, i) in projects"
+            :key="i"
+            @click="selectProject(project)"
+          >
+            <v-list-item-content>
+              <v-list-item-title>{{ project.questionnaire.name }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-col>
@@ -66,16 +74,17 @@
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component'
 import { mapMutations } from 'vuex'
-import { SelectElement, ImplSelectElement, ConveyorProjectDto } from '@/types/index'
+import { SelectElement, ImplSelectElement, ConveyorProjectDto, States } from '@/types/index'
 import { getConveyorTypes, createConveyorProject, getAllConveyorProjects } from '@/utils/request/index'
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
+import * as R from 'ramda'
 
 @Component({
   mixins: [validationMixin],
   methods: {
-    ...mapMutations(['setConveyorType']),
+    ...mapMutations(['setConveyorType', 'setState']),
   },
   validations: {
     select: {
@@ -90,6 +99,16 @@ export default class Projects extends mixins(ErrorsMixin) {
   dialog = false
 
   setConveyorType!: (type: string) => void
+  setState!: (state: States) => void
+
+  selectProject(item: ConveyorProjectDto): void {
+    this.setConveyorType(this.select)
+
+    const state = R.isEmpty(item.conveyor) ? States.QuestionList : States.AddOptions
+
+    this.setState(state)
+    this.$router.push('/configurator')
+  }
 
   async fetchConveyorTypes(): Promise<Array<SelectElement>> {
     const conveyorTypes: Array<string> = await getConveyorTypes()
@@ -102,6 +121,10 @@ export default class Projects extends mixins(ErrorsMixin) {
     this.setConveyorType(this.select)
     await createConveyorProject(this.select)
     this.dialog = false
+
+    this.setState(States.QuestionList)
+
+    this.$router.push('/configurator')
   }
 
   async setTypes(): Promise<void> {
