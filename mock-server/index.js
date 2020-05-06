@@ -51,3 +51,10 @@ server.get('/api/user/projects', (request, response) => {
     response.status(200).jsonp(projects())
   }
 })
+
+server.post('/api/user/projects', (request, response) => {
+  if (request.method === 'POST') {
+    const projects = require('./projects')
+    response.status(200).jsonp(projects()[0])
+  }
+})
