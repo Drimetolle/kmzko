@@ -5,18 +5,20 @@ import * as request from '@/utils/request/index'
 export class Configurator {
   appState: States
   listOfConveyors: Array<Conveyor>
-  questionnaire: QuestionnaireDto
-  conveyor: ConveyorDto
+  questionnaire: QuestionnaireDto | null
+  conveyor: ConveyorDto | null
   options: Array<OptionalDetail>
   conveyorType: string
+  conveyorProject: ConveyorProjectDto | null
 
   constructor() {
     this.appState = States.QuestionList
     this.listOfConveyors = new Array<Conveyor>()
-    this.questionnaire = null as any
-    this.conveyor = null as any
-    this.options = null as any
-    this.conveyorType = null as any
+    this.questionnaire = null
+    this.conveyor = null
+    this.options = new Array<OptionalDetail>()
+    this.conveyorType = ''
+    this.conveyorProject = null
   }
 }
 
@@ -96,6 +98,9 @@ const mutations = {
   },
   setConveyorType(oldState: Configurator, type: string): void {
     oldState.conveyorType = type
+  },
+  setConveyorProject(oldState: Configurator, conveyorProject: ConveyorProjectDto): void {
+    oldState.conveyorProject = conveyorProject
   },
 }
 

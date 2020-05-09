@@ -36,10 +36,11 @@
 <script lang="ts">
 import { mapMutations, mapActions, mapState } from 'vuex'
 import Field from '@/components/Field.vue'
-import { QuestionnaireDto, RateDto, States, SelectElement } from '@/types/index'
+import { QuestionnaireDto, RateDto, States, SelectElement, ConveyorProjectDto } from '@/types/index'
 import { saveQuestionnaire } from '@/utils/request/index'
 import LoadingMixin from '@/mixin/loading.mixin'
 import Component, { mixins } from 'vue-class-component'
+import { Configurator } from '../store/modules/configurator'
 
 @Component({
   components: {
@@ -52,6 +53,7 @@ import Component, { mixins } from 'vue-class-component'
   computed: {
     ...mapState({
       getQuestionnaire: ({ configurator }: any) => configurator.questionnaire,
+      project: ({ configurator }: any) => configurator.conveyorProject,
     }),
   },
 })
@@ -66,6 +68,7 @@ export default class extends mixins(LoadingMixin) {
   getFormConveyor!: (type: string) => Promise<QuestionnaireDto>
   setConveyorType!: (...args: any) => void
   getQuestionnaire!: QuestionnaireDto
+  project!: ConveyorProjectDto
 
   created(): void {
     this.questionnaire = this.getQuestionnaire
@@ -79,7 +82,7 @@ export default class extends mixins(LoadingMixin) {
   }
 
   async unfocus(item: QuestionnaireDto): Promise<void> {
-    await saveQuestionnaire(this.questionnaire)
+    await saveQuestionnaire(this.project.id, this.questionnaire)
   }
 
   convertToFieldSkelet(rate: RateDto): RateDto {
