@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import VueRouter, { Route } from 'vue-router'
 import Login from '@/views/auth/LoginForm.vue'
 import Registration from '@/views/auth/RegistrationForm.vue'
 import store from '@/store'
@@ -11,6 +11,14 @@ import Projects from '@/views/Projects.vue'
 import HomePage from '@/views/HomePage.vue'
 
 Vue.use(VueRouter)
+
+const whitelist = (name: string): boolean => {
+  const list = ['login', 'registration']
+  return list.includes(name)
+}
+
+const checkUndifinedQuestionnaireAndConveyor = (): boolean => !(store.state as any).configurator.questionnaire && !(store.state as any).configurator.conveyor
+
 
 const routes = [
   {
@@ -30,6 +38,10 @@ const routes = [
     name: 'configurator',
     meta: { layout: 'main' },
     component: Configurator,
+    beforeEnter: (to: Route, from: Route, next: (path?: string) => void): void => {
+      if (checkUndifinedQuestionnaireAndConveyor()) next(from.fullPath)
+      else next()
+    },
   },
   {
     path: '/settings',
@@ -73,12 +85,7 @@ const router = new VueRouter({
   routes,
 })
 
-const whitelist = (name: string): boolean => {
-  const list = ['login', 'registration']
-  return list.includes(name)
-}
-
-router.beforeEach((to, from, next) => {
+router.beforeEach((to: Route, from, next) => {
   if (store.getters.isAuthenticated) {
     if (whitelist(to.name!)) next({ name: 'home' })
     else if (store.getters.isAuthenticated) next()

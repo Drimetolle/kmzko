@@ -94,12 +94,21 @@ export interface TokensDto {
 }
 
 export interface BioDto {
+  id: string
   name: string
   email: string
   phone: string
 }
 
 export interface ConveyorProjectDto {
+  id: string
   conveyor: ConveyorDto
   questionnaire: QuestionnaireDto
+}
+
+export interface ConveyorProjectViewDto {
+  id: string
+  title: string
+  conveyor: boolean
+  questionnaire: boolean
 }

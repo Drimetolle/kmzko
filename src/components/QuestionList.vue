@@ -7,15 +7,6 @@
       cols="10"
       md="24"
     >
-      <v-container>
-        <v-select
-          :items="items"
-          v-model="select"
-          label="select"
-          @change="getForm"
-        >
-        </v-select>
-      </v-container>
       <div class="text-center">
         <v-progress-circular
           v-if="!loaded"
@@ -43,11 +34,11 @@
 </template>
 
 <script lang="ts">
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapState } from 'vuex'
 import Field from '@/components/Field.vue'
-import { QuestionnaireDto, RateDto, States, SelectElement, ImplSelectElement } from '@/types/index'
-import { getConveyorTypes, saveQuestionnaire } from '@/utils/request/index'
-import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
+import { QuestionnaireDto, RateDto, States, SelectElement } from '@/types/index'
+import { saveQuestionnaire } from '@/utils/request/index'
+import LoadingMixin from '@/mixin/loading.mixin'
 import Component, { mixins } from 'vue-class-component'
 
 @Component({
@@ -56,7 +47,12 @@ import Component, { mixins } from 'vue-class-component'
   },
   methods: {
     ...mapMutations(['setState', 'setQuestionnaire', 'setConveyorType']),
-    ...mapActions(['getFormConveyor', 'fetchConveyors', 'getQuestionnaire']),
+    ...mapActions(['getFormConveyor', 'fetchConveyors']),
+  },
+  computed: {
+    ...mapState({
+      getQuestionnaire: ({ configurator }: any) => configurator.questionnaire,
+    }),
   },
 })
 export default class extends mixins(LoadingMixin) {
@@ -69,19 +65,10 @@ export default class extends mixins(LoadingMixin) {
   setQuestionnaire!: (...args: any) => void
   getFormConveyor!: (type: string) => Promise<QuestionnaireDto>
   setConveyorType!: (...args: any) => void
+  getQuestionnaire!: QuestionnaireDto
 
-  async created(): Promise<void> {
-    const conveyorTypes: Array<string> = await getConveyorTypes()
-    const localeItems = conveyorTypes.map(i => this.$t(i)) as Array<string>
-    this.items = conveyorTypes.map(i => new ImplSelectElement(this.$t(i), i))
-  }
-
-  @AsyncLoading
-  async getForm(): Promise<void> {
-    this.setConveyorType(this.select)
-    const q = await this.getFormConveyor(this.select)
-    if ('id' in q) q.id = ''
-    this.questionnaire = q
+  created(): void {
+    this.questionnaire = this.getQuestionnaire
   }
 
   submit(): void {
@@ -92,8 +79,7 @@ export default class extends mixins(LoadingMixin) {
   }
 
   async unfocus(item: QuestionnaireDto): Promise<void> {
-    const q = await saveQuestionnaire(this.questionnaire)
-    this.questionnaire.id = q.id
+    await saveQuestionnaire(this.questionnaire)
   }
 
   convertToFieldSkelet(rate: RateDto): RateDto {

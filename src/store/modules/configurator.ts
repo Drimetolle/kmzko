@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Conveyor, OptionalDetail, ConveyorDto, States, QuestionnaireDto } from '@/types/index'
+import { Conveyor, OptionalDetail, ConveyorDto, States, QuestionnaireDto, ConveyorProjectDto } from '@/types/index'
 import * as request from '@/utils/request/index'
 
-class State {
+export class Configurator {
   appState: States
   listOfConveyors: Array<Conveyor>
   questionnaire?: QuestionnaireDto
@@ -17,25 +17,25 @@ class State {
 }
 
 const getters = {
-  getState(state: State): string {
+  getState(state: Configurator): string {
     return state.appState
   },
-  getConveyors(state: State): Array<Conveyor> {
+  getConveyors(state: Configurator): Array<Conveyor> {
     return state.listOfConveyors
   },
-  getConveyorById(state: State, id: string): Conveyor | undefined {
-    return state.listOfConveyors.find(i => i.id === id)
+  getConveyorById(state: Configurator, id: string): Conveyor | null {
+    return state.listOfConveyors.find(i => i.id === id) ?? null
   },
-  getConveyor(state: State): ConveyorDto | undefined {
-    return state.conveyor
+  getConveyor(state: Configurator): ConveyorDto | null {
+    return state.conveyor ?? null
   },
-  getQuestionnaire(state: State): QuestionnaireDto | undefined {
-    return state.questionnaire
+  getQuestionnaire(state: Configurator): QuestionnaireDto | null {
+    return state.questionnaire ?? null
   },
-  getConveyorType(state: State): string | undefined {
-    return state.conveyor?.type
+  getConveyorType(state: Configurator): string | null {
+    return state.conveyorType ?? null
   },
-  getUserConveyor(state: State): any {
+  getUserConveyor(state: Configurator): any {
     return { ...state.conveyor, optionalDetails: state.options }
   },
 }
@@ -62,34 +62,41 @@ const actions = {
     commit('setListOfOptions', options)
     return options
   },
+  async fetchProjectById({ dispatch, commit }: any, id: string): Promise<ConveyorProjectDto> {
+    const project = await request.getConveyorProjectById(id)
+    commit('setQuestionnaire', project.questionnaire)
+    commit('setConveyor', project.conveyor)
+
+    return project
+  },
 }
 
 const mutations = {
-  setState(oldState: State, newState: States): void {
+  setState(oldState: Configurator, newState: States): void {
     oldState.appState = newState
   },
-  throwState(oldState: State): void {
+  throwState(oldState: Configurator): void {
     oldState.appState = States.QuestionList
   },
-  setListOfConveyors(oldState: State, listOfConveyors: Array<Conveyor>): void {
+  setListOfConveyors(oldState: Configurator, listOfConveyors: Array<Conveyor>): void {
     oldState.listOfConveyors = listOfConveyors
   },
-  setQuestionnaire(oldState: State, questionnaire: QuestionnaireDto): void {
+  setQuestionnaire(oldState: Configurator, questionnaire: QuestionnaireDto): void {
     oldState.questionnaire = questionnaire
   },
-  setConveyor(oldState: State, conveyor: ConveyorDto): void {
+  setConveyor(oldState: Configurator, conveyor: ConveyorDto): void {
     oldState.conveyor = conveyor
   },
-  setListOfOptions(oldState: State, options: Array<OptionalDetail>): void {
+  setListOfOptions(oldState: Configurator, options: Array<OptionalDetail>): void {
     oldState.options = options
   },
-  setConveyorType(oldState: State, type: string): void {
+  setConveyorType(oldState: Configurator, type: string): void {
     oldState.conveyorType = type
   },
 }
 
 export default {
-  state: new State(),
+  state: new Configurator(),
   getters,
   actions,
   mutations,

@@ -73,18 +73,18 @@
 
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component'
-import { mapMutations } from 'vuex'
-import { SelectElement, ImplSelectElement, ConveyorProjectDto, States } from '@/types/index'
+import { mapMutations, mapActions } from 'vuex'
+import { SelectElement, ImplSelectElement, ConveyorProjectViewDto, States, QuestionnaireDto, ConveyorDto, ConveyorProjectDto } from '@/types/index'
 import { getConveyorTypes, createConveyorProject, getAllConveyorProjects } from '@/utils/request/index'
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
-import * as R from 'ramda'
 
 @Component({
   mixins: [validationMixin],
   methods: {
-    ...mapMutations(['setConveyorType', 'setState']),
+    ...mapActions(['fetchProjectById']),
+    ...mapMutations(['setConveyorType', 'setState', 'setQuestionnaire', 'setConveyor']),
   },
   validations: {
     select: {
@@ -100,11 +100,16 @@ export default class Projects extends mixins(ErrorsMixin) {
 
   setConveyorType!: (type: string) => void
   setState!: (state: States) => void
+  setQuestionnaire!: (questionnaire: QuestionnaireDto) => void
+  setConveyor!: (conveyor: ConveyorDto) => void
+  fetchProjectById!: (id: string) => Promise<ConveyorProjectDto>
 
-  selectProject(item: ConveyorProjectDto): void {
+   async selectProject(item: ConveyorProjectDto): Promise<void> {
     this.setConveyorType(this.select)
 
-    const state = R.isEmpty(item.conveyor) ? States.QuestionList : States.AddOptions
+    const state = item.conveyor ? States.QuestionList : States.AddOptions
+
+    await this.fetchProjectById(item.id)
 
     this.setState(state)
     this.$router.push('/configurator')
@@ -119,10 +124,11 @@ export default class Projects extends mixins(ErrorsMixin) {
 
   async createProject(): Promise<void> {
     this.setConveyorType(this.select)
-    await createConveyorProject(this.select)
+    const { questionnaire } = await createConveyorProject(this.select)
     this.dialog = false
 
     this.setState(States.QuestionList)
+    this.setQuestionnaire(questionnaire)
 
     this.$router.push('/configurator')
   }

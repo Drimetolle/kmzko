@@ -1,20 +1,20 @@
 import { User, TokensDto } from '@/types/index'
 import { login, registration } from '@/utils/request/auth'
 
-class State {
+export class Auth {
   accessToken: string = localStorage.getItem('access-token') ?? ''
   refreshToken: string = localStorage.getItem('refresh-token') ?? ''
   authenticated: boolean = !!this.accessToken && this.accessToken !== ''
 }
 
 const getters = {
-  getAccessToken(state: State): string {
+  getAccessToken(state: Auth): string {
     return state.accessToken
   },
-  getRefreshToken(state: State): string {
+  getRefreshToken(state: Auth): string {
     return state.refreshToken
   },
-  isAuthenticated(state: State): boolean {
+  isAuthenticated(state: Auth): boolean {
     return state.authenticated
   },
 }
@@ -42,22 +42,22 @@ const actions = {
 }
 
 const mutations = {
-  setAccessToken(oldState: State, token: string): void {
+  setAccessToken(oldState: Auth, token: string): void {
     oldState.accessToken = token
     localStorage.setItem('access-token', token)
   },
-  setRefreshToken(oldState: State, token: string): void {
+  setRefreshToken(oldState: Auth, token: string): void {
     oldState.refreshToken = token
     localStorage.setItem('refresh-token', token)
   },
-  setTokens(oldState: State, tokens: TokensDto): void {
+  setTokens(oldState: Auth, tokens: TokensDto): void {
     oldState.accessToken = tokens.access_token
     oldState.refreshToken = tokens.refresh_token
 
     localStorage.setItem('access-token', tokens.access_token)
     localStorage.setItem('refresh-token', tokens.refresh_token)
   },
-  logout(oldState: State): void {
+  logout(oldState: Auth): void {
     oldState.accessToken = ''
     oldState.refreshToken = ''
     oldState.authenticated = false
@@ -65,13 +65,13 @@ const mutations = {
     localStorage.removeItem('access-token')
     localStorage.removeItem('refresh-token')
   },
-  authenticate(oldState: State): void {
+  authenticate(oldState: Auth): void {
     oldState.authenticated = true
   },
 }
 
 export default {
-  state: new State(),
+  state: new Auth(),
   getters,
   actions,
   mutations,

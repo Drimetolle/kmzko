@@ -1,12 +1,15 @@
 import axios from 'axios'
-import { ConveyorProjectDto } from '@/types/index'
+import { ConveyorProjectDto, ConveyorProjectViewDto } from '@/types/index'
 
 export async function createConveyorProject(type: string): Promise<ConveyorProjectDto> {
   try {
-    const res = await axios.post<ConveyorProjectDto>('/api/user/projects', type, {
+    const res = await axios.post<ConveyorProjectDto>('/api/user/projects', null, {
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',
+      },
+      params: {
+        type,
       },
     })
 
@@ -19,6 +22,16 @@ export async function createConveyorProject(type: string): Promise<ConveyorProje
 export async function getAllConveyorProjects(): Promise<Array<ConveyorProjectDto>> {
   try {
     const res = await axios.get<Array<ConveyorProjectDto>>('/api/user/projects')
+
+    return res.data
+  } catch (error) {
+    throw Error(error)
+  }
+}
+
+export async function getConveyorProjectById(id: string): Promise<ConveyorProjectDto> {
+  try {
+    const res = await axios.get<ConveyorProjectDto>(`/api/user/projects/${id}`)
 
     return res.data
   } catch (error) {
