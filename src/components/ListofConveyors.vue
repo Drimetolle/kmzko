@@ -30,10 +30,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { Conveyor, QuestionnaireDto } from '@/types/index'
 import ConveyorCard from '@/components/ConveyorCard'
-import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapMutations, mapActions, mapState } from 'vuex'
 import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 import Component, { mixins } from 'vue-class-component'
 
@@ -46,7 +45,10 @@ import Component, { mixins } from 'vue-class-component'
     ...mapMutations(['setState']),
   },
   computed: {
-    ...mapGetters(['getConveyors', 'getQuestionnaire']),
+    ...mapState({
+      getQuestionnaire: ({ configurator }: any) => configurator.questionnaire,
+      getConveyors: ({ configurator }: any) => configurator.conveyor,
+    }),
   },
 })
 export default class extends mixins(LoadingMixin) {
@@ -58,11 +60,11 @@ export default class extends mixins(LoadingMixin) {
   getQuestionnaire!: QuestionnaireDto
 
   @AsyncLoading
-  async mounted() {
+  async mounted(): Promise<void> {
     this.conveyors = await this.fetchConveyors(this.getQuestionnaire)
   }
 
-  redirect() {
+  redirect(): void {
     this.setState('edit-conveyor')
   }
 }

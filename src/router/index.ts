@@ -19,7 +19,6 @@ const whitelist = (name: string): boolean => {
 
 const checkUndifinedQuestionnaireAndConveyor = (): boolean => !(store.state as any).configurator.questionnaire && !(store.state as any).configurator.conveyor
 
-
 const routes = [
   {
     path: '/login',

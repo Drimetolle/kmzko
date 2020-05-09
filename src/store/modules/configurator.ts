@@ -5,14 +5,18 @@ import * as request from '@/utils/request/index'
 export class Configurator {
   appState: States
   listOfConveyors: Array<Conveyor>
-  questionnaire?: QuestionnaireDto
-  conveyor?: ConveyorDto
-  options?: Array<OptionalDetail>
-  conveyorType?: string
+  questionnaire: QuestionnaireDto
+  conveyor: ConveyorDto
+  options: Array<OptionalDetail>
+  conveyorType: string
 
   constructor() {
     this.appState = States.QuestionList
     this.listOfConveyors = new Array<Conveyor>()
+    this.questionnaire = null as any
+    this.conveyor = null as any
+    this.options = null as any
+    this.conveyorType = null as any
   }
 }
 
@@ -27,13 +31,13 @@ const getters = {
     return state.listOfConveyors.find(i => i.id === id) ?? null
   },
   getConveyor(state: Configurator): ConveyorDto | null {
-    return state.conveyor ?? null
+    return state.conveyor
   },
   getQuestionnaire(state: Configurator): QuestionnaireDto | null {
-    return state.questionnaire ?? null
+    return state.questionnaire
   },
   getConveyorType(state: Configurator): string | null {
-    return state.conveyorType ?? null
+    return state.conveyorType
   },
   getUserConveyor(state: Configurator): any {
     return { ...state.conveyor, optionalDetails: state.options }

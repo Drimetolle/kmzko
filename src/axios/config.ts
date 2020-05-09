@@ -18,6 +18,8 @@ const createSetAuthInterceptor = (options: any) => (config: any) => {
   return config
 }
 
+console.log(store)
+
 const createUpdateAuthInterceptor = (vuex: any, http: AxiosStatic, vueRouter: VueRouter) => async (error: any) => {
   const { config, response: { status } } = error
   if (config && error.response && status === 401) {
