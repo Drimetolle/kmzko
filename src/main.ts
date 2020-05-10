@@ -10,12 +10,14 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import currencyFilter from './filters/currency.filter.ts'
 import rateFilter from './filters/rate.filter.ts'
 import pieceFilter from './filters/count.filter.ts'
+import dateTimeFilter from './filters/date-time.filter.ts'
 
 Vue.config.productionTip = false
 
 Vue.filter('currency', currencyFilter)
 Vue.filter('characteristic', rateFilter)
 Vue.filter('piece', pieceFilter)
+Vue.filter('dateTime', dateTimeFilter)
 
 configAxios()
 

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './modules/auth'
 import configurator from './modules/configurator'
+import questionnaire from './modules/questionnaire'
 import { Auth } from '@/store/modules/auth'
 import { Configurator } from '@/store/modules/configurator'
 
@@ -12,6 +13,7 @@ const store = new Vuex.Store({
   modules: {
     auth,
     configurator,
+    questionnaire,
   },
 })
 
