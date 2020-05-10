@@ -1,13 +1,17 @@
 import axios from 'axios'
 import { Conveyor, QuestionnaireDto, RateDto } from '@/types/index'
 
-const constructQuery = (payload: QuestionnaireDto): Array<unknown> => {
+const constructQuery = (payload: QuestionnaireDto): object => {
   const rates = payload.rateList
-  function makeObj(rate: RateDto): { mark: string, value: string} {
-    return { mark: rate.mark, value: rate.value }
+  function makeObj(obj: any, rate: RateDto): object {
+    obj[rate.mark] = rate.value
+    return obj
   }
 
-  return rates.map(rate => makeObj(rate))
+  const result = { }
+  rates.forEach(rate => makeObj(result, rate))
+
+  return result
 }
 
 
