@@ -4,10 +4,6 @@ import { ConveyorProjectDto, ConveyorProjectViewDto } from '@/types/index'
 export async function createConveyorProject(type: string): Promise<ConveyorProjectDto> {
   try {
     const res = await axios.post<ConveyorProjectDto>('/api/user/projects', null, {
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-      },
       params: {
         type,
       },

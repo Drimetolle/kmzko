@@ -30,12 +30,7 @@ export async function getAllQuestionnaire(): Promise<Array<QuestionnaireDto>> {
 
 export async function deployQuestionnaire(questionnaire: QuestionnaireDto): Promise<QuestionnaireDto> {
   try {
-    const res = await axios.put(`/api/questionnaires/${questionnaire.id}`, questionnaire, {
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-      },
-    })
+    const res = await axios.put(`/api/questionnaires/${questionnaire.id}`, questionnaire)
     return res.data as QuestionnaireDto
   } catch (error) {
     throw Error(error)

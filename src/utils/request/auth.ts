@@ -8,12 +8,7 @@ const request = axios.create({
 
 export async function login(user: User): Promise<TokensDto> {
   try {
-    const res = await request.post('/auth', user, {
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-      },
-    })
+    const res = await request.post('/auth', user)
     return res.data as TokensDto
   } catch (error) {
     throw Error(error)
@@ -22,12 +17,7 @@ export async function login(user: User): Promise<TokensDto> {
 
 export async function refresh(tokens: TokensDto): Promise<TokensDto> {
   try {
-    const res = await request.post('/auth/refresh', tokens, {
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-      },
-    })
+    const res = await request.post('/auth/refresh', tokens)
     return res.data as TokensDto
   } catch (error) {
     throw Error(error)
@@ -36,12 +26,7 @@ export async function refresh(tokens: TokensDto): Promise<TokensDto> {
 
 export async function registration(user: User): Promise<{ status: string }> {
   try {
-    const res = await request.post('/join', user, {
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-      },
-    })
+    const res = await request.post('/join', user)
     return res.data
   } catch (error) {
     throw Error(error)

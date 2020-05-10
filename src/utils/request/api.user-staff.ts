@@ -12,12 +12,7 @@ export async function getUser(): Promise<BioDto> {
 
 export async function saveBioUser(bio: BioDto): Promise<BioDto> {
   try {
-    const res = await axios.put('/api/user', bio, {
-      headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-      },
-    })
+    const res = await axios.put('/api/user', bio)
     return res.data as BioDto
   } catch (error) {
     throw Error(error)
