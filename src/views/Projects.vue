@@ -58,7 +58,7 @@
             @click="selectProject(project)"
           >
             <v-list-item-content>
-              <v-list-item-title>{{ project.questionnaire.name }}</v-list-item-title>
+              <v-list-item-title>{{ project.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -93,7 +93,7 @@ import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
   },
 })
 export default class Projects extends mixins(ErrorsMixin) {
-  projects: Array<ConveyorProjectDto> = []
+  projects: Array<ConveyorProjectViewDto> = []
   items: Array<SelectElement> = []
   select = ''
   dialog = false
@@ -105,10 +105,10 @@ export default class Projects extends mixins(ErrorsMixin) {
   setConveyorProject!: (project: ConveyorProjectDto) => void
   fetchProjectById!: (id: string) => Promise<ConveyorProjectDto>
 
-   async selectProject(item: ConveyorProjectDto): Promise<void> {
+  async selectProject(item: ConveyorProjectViewDto): Promise<void> {
     this.setConveyorType(this.select)
 
-    const state = item.conveyor ? States.QuestionList : States.AddOptions
+    const state = item.conveyor ? States.AddOptions : States.QuestionList
 
     const project = await this.fetchProjectById(item.id)
 

@@ -15,9 +15,9 @@ export async function createConveyorProject(type: string): Promise<ConveyorProje
   }
 }
 
-export async function getAllConveyorProjects(): Promise<Array<ConveyorProjectDto>> {
+export async function getAllConveyorProjects(): Promise<Array<ConveyorProjectViewDto>> {
   try {
-    const res = await axios.get<Array<ConveyorProjectDto>>('/api/user/projects')
+    const res = await axios.get<Array<ConveyorProjectViewDto>>('/api/user/projects')
 
     return res.data
   } catch (error) {

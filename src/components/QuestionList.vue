@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { mapMutations, mapActions, mapState } from 'vuex'
+import { mapMutations, mapActions, mapState, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
 import { QuestionnaireDto, RateDto, States, SelectElement, ConveyorProjectDto } from '@/types/index'
 import { saveQuestionnaire } from '@/utils/request/index'
@@ -51,8 +51,8 @@ import { Configurator } from '../store/modules/configurator'
     ...mapActions(['getFormConveyor', 'fetchConveyors']),
   },
   computed: {
+    ...mapGetters(['getQuestionnaire']),
     ...mapState({
-      getQuestionnaire: ({ configurator }: any) => configurator.questionnaire,
       project: ({ configurator }: any) => configurator.conveyorProject,
     }),
   },
