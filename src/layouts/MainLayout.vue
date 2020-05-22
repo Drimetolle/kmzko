@@ -35,26 +35,25 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Component from 'vue-class-component'
 
-export default Vue.extend({
-  data: () => {
-    return {
-      items: [
-        { title: 'settings' },
-        { title: 'purchase-history' },
-        { title: 'logout' },
-      ],
+@Component
+export default class MainLayout extends Vue {
+  items = [
+    { title: 'settings' },
+    { title: 'projects' },
+    { title: 'purchase-history' },
+    { title: 'logout' },
+  ]
+
+  pushTo({ title }: any): void {
+    if(title === 'settings') this.$router.push('/settings/profile')
+    else if (title === 'logout') {
+      this.$store.commit('logout')
+      this.$router.push('/login')
     }
-  },
-  methods: {
-    pushTo({ title }: any): void {
-      if(title === 'settings') this.$router.push('/settings/profile')
-      else if (title === 'logout') {
-        this.$store.commit('logout')
-        this.$router.push('/login')
-      }
-      else if (title === 'purchase-history') this.$router.push('/purchase')
-    },
-  },
- })
+    else if (title === 'purchase-history') this.$router.push('/purchase')
+    else if (title === 'projects') this.$router.push('/projects')
+  }
+}
 </script>

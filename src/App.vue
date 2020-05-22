@@ -5,7 +5,6 @@
         <router-link to="/registration">Registration</router-link> |
         <router-link to="/configurator">Configurator</router-link> |
         <router-link to="/questionnaire">Questionnaire</router-link> |
-        <router-link to="/projects">Projects</router-link> |
         <router-link to="/">Home</router-link>
       </div>
       <component :is="layout">
@@ -16,21 +15,22 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
+import Component from 'vue-class-component'
 import MainLayout from '@/layouts/MainLayout.vue'
 import EmptyLayout from '@/layouts/EmptyLayout.vue'
 
-export default Vue.extend({
-  name: 'App',
-  computed: {
-    layout(): string {
-      return (this.$route.meta.layout || 'empty') + '-layout'
-    },
-  },
+@Component({
   components: {
-    EmptyLayout, MainLayout,
+    EmptyLayout,
+    MainLayout,
   },
 })
+export default class App extends Vue {
+
+  get layout(): string {
+    return (this.$route.meta.layout || 'empty') + '-layout'
+  }
+}
 </script>
 
 <style>

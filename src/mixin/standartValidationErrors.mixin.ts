@@ -30,4 +30,10 @@ export default class StandartValidationErrorsMixin extends Vue {
     if (!target.sameAsPassword) return 'sameAsPassword'
     return ''
   }
+
+  phoneErrors(target: any): string {
+    if (!target.$dirty) return ''
+    if (!target.minLength) return `Field min length is ${target.$params.minLength.min}`
+    return ''
+  }
 }

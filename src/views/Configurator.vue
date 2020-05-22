@@ -51,6 +51,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Component from 'vue-class-component'
 import { mapGetters, mapMutations } from 'vuex'
 import Basket from '@/components/Basket.vue'
 import ListofConveyors from '@/components/ListofConveyors'
@@ -59,41 +60,12 @@ import EditConveyor from '@/components/EditConveyor'
 import OptionsConveyor from '@/components/OptionsConveyor'
 import { States } from '@/types/states'
 
-interface Data {
-  state: States
-  drawer: null
-  stateIndex: number
-  flow: Array<States>
-  snackbar: boolean
-}
-
-export default Vue.extend({
-  data: (): Data => {
-    return {
-      state: States.QuestionList,
-      stateIndex: 0,
-      drawer: null,
-      flow: [States.QuestionList, States.ListOfConveyors, States.AddOptions],
-      snackbar: false,
-    }
+@Component({
+  methods: {
+    ...mapMutations(['setState']),
   },
   computed: {
-  },
-  methods: {
     ...mapGetters(['getState']),
-     ...mapMutations(['setState']),
-  },
-  created() {
-    this.state = this.getState()
-    this.$store.watch(
-      (state, getters) => getters.getState,
-      (newValue) => {
-        this.state = newValue
-      },
-    )
-  },
-  mounted() {
-    this.snackbar = false
   },
   components: {
     Basket,
@@ -103,6 +75,30 @@ export default Vue.extend({
     OptionsConveyor,
   },
 })
+export default class Configurator extends Vue {
+  state = States.QuestionList
+  stateIndex = 0
+  drawer = null
+  flow = [States.QuestionList, States.ListOfConveyors, States.AddOptions]
+  snackbar = false
+
+  getState!: States
+  setState!: (s: States) => void
+
+  created(): void {
+    this.state = this.getState
+    this.$store.watch(
+      (state, getters) => getters.getState,
+      (newValue) => {
+        this.state = newValue
+      },
+    )
+  }
+
+  mounted(): void {
+    this.snackbar = false
+  }
+}
 </script>
 
 <style scoped>
