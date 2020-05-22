@@ -9,7 +9,7 @@ export class Configurator {
   conveyor: ConveyorDto | null
   options: Array<OptionalDetail>
   conveyorType: string
-  conveyorProject: ConveyorProjectDto | null
+  conveyorProjectId: string
 
   constructor() {
     this.appState = States.QuestionList
@@ -18,7 +18,7 @@ export class Configurator {
     this.conveyor = null
     this.options = new Array<OptionalDetail>()
     this.conveyorType = ''
-    this.conveyorProject = null
+    this.conveyorProjectId = ''
   }
 }
 
@@ -43,6 +43,9 @@ const getters = {
   },
   getUserConveyor(state: Configurator): any {
     return { ...state.conveyor, optionalDetails: state.options }
+  },
+  getConveyorProjectId(state: Configurator): string | null {
+    return state.conveyorProjectId
   },
 }
 
@@ -72,6 +75,7 @@ const actions = {
     const project = await request.getConveyorProjectById(id)
     commit('setQuestionnaire', project.questionnaire)
     commit('setConveyor', project.conveyor)
+    commit('setConveyorProjectId', project.id)
 
     return project
   },
@@ -99,8 +103,8 @@ const mutations = {
   setConveyorType(oldState: Configurator, type: string): void {
     oldState.conveyorType = type
   },
-  setConveyorProject(oldState: Configurator, conveyorProject: ConveyorProjectDto): void {
-    oldState.conveyorProject = conveyorProject
+  setConveyorProjectId(oldState: Configurator, id: string): void {
+    oldState.conveyorProjectId = id
   },
 }
 

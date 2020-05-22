@@ -34,13 +34,13 @@
 </template>
 
 <script lang="ts">
-import { mapMutations, mapActions, mapState, mapGetters } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
-import { QuestionnaireDto, RateDto, States, SelectElement, ConveyorProjectDto } from '@/types/index'
+import { QuestionnaireDto, RateDto, States, SelectElement } from '@/types/index'
 import { saveQuestionnaire } from '@/utils/request/index'
 import LoadingMixin from '@/mixin/loading.mixin'
 import Component, { mixins } from 'vue-class-component'
-import { Configurator } from '../store/modules/configurator'
+import * as R from 'ramda'
 
 @Component({
   components: {
@@ -51,27 +51,26 @@ import { Configurator } from '../store/modules/configurator'
     ...mapActions(['getFormConveyor', 'fetchConveyors']),
   },
   computed: {
-    ...mapGetters(['getQuestionnaire']),
-    ...mapState({
-      project: ({ configurator }: any) => configurator.conveyorProject,
-    }),
+    ...mapGetters(['getQuestionnaire', 'getConveyorProjectId']),
   },
 })
-export default class extends mixins(LoadingMixin) {
+export default class QuestionList extends mixins(LoadingMixin) {
   items: Array<SelectElement> = []
   select = ''
   questionnaire: QuestionnaireDto = { } as any
   valid = false
+  project = ''
 
   setState!: (...args: any) => void
   setQuestionnaire!: (...args: any) => void
   getFormConveyor!: (type: string) => Promise<QuestionnaireDto>
   setConveyorType!: (...args: any) => void
   getQuestionnaire!: QuestionnaireDto
-  project!: ConveyorProjectDto
+  getConveyorProjectId!: string
 
   created(): void {
-    this.questionnaire = this.getQuestionnaire
+    this.questionnaire = R.clone(this.getQuestionnaire)
+    this.project = this.getConveyorProjectId
   }
 
   submit(): void {
@@ -82,7 +81,7 @@ export default class extends mixins(LoadingMixin) {
   }
 
   async unfocus(item: QuestionnaireDto): Promise<void> {
-    await saveQuestionnaire(this.project.id, this.questionnaire)
+    await saveQuestionnaire(this.project, this.questionnaire)
   }
 
   convertToFieldSkelet(rate: RateDto): RateDto {

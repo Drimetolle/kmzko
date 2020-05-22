@@ -59,7 +59,6 @@ import QuestionList from '@/components/QuestionList'
 import EditConveyor from '@/components/EditConveyor'
 import OptionsConveyor from '@/components/OptionsConveyor'
 import { States } from '@/types/states'
-
 @Component({
   methods: {
     ...mapMutations(['setState']),
@@ -81,10 +80,8 @@ export default class Configurator extends Vue {
   drawer = null
   flow = [States.QuestionList, States.ListOfConveyors, States.AddOptions]
   snackbar = false
-
   getState!: States
   setState!: (s: States) => void
-
   created(): void {
     this.state = this.getState
     this.$store.watch(
@@ -94,7 +91,6 @@ export default class Configurator extends Vue {
       },
     )
   }
-
   mounted(): void {
     this.snackbar = false
   }

@@ -84,7 +84,7 @@ import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
   mixins: [validationMixin],
   methods: {
     ...mapActions(['fetchProjectById']),
-    ...mapMutations(['setConveyorType', 'setState', 'setQuestionnaire', 'setConveyor', 'setConveyorProject']),
+    ...mapMutations(['setConveyorType', 'setState', 'setQuestionnaire', 'setConveyor']),
   },
   validations: {
     select: {
@@ -102,7 +102,6 @@ export default class Projects extends mixins(ErrorsMixin) {
   setState!: (state: States) => void
   setQuestionnaire!: (questionnaire: QuestionnaireDto) => void
   setConveyor!: (conveyor: ConveyorDto) => void
-  setConveyorProject!: (project: ConveyorProjectDto) => void
   fetchProjectById!: (id: string) => Promise<ConveyorProjectDto>
 
   async selectProject(item: ConveyorProjectViewDto): Promise<void> {
@@ -110,9 +109,8 @@ export default class Projects extends mixins(ErrorsMixin) {
 
     const state = item.conveyor ? States.AddOptions : States.QuestionList
 
-    const project = await this.fetchProjectById(item.id)
+    await this.fetchProjectById(item.id)
 
-    this.setConveyorProject(project)
     this.setState(state)
     this.$router.push('/configurator')
   }
