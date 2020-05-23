@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { QuestionnaireDto } from '@/types/index'
+import recursiveDeleteIds from '@/utils/recursiveRemoveIds'
 
 export async function getConveyorTypes(): Promise<Array<string>> {
   try {
@@ -29,6 +30,15 @@ export async function getAllQuestionnaire(): Promise<Array<QuestionnaireDto>> {
 }
 
 export async function deployQuestionnaire(questionnaire: QuestionnaireDto): Promise<QuestionnaireDto> {
+  try {
+    const res = await axios.post('/api/questionnaires', questionnaire)
+    return res.data as QuestionnaireDto
+  } catch (error) {
+    throw Error(error)
+  }
+}
+
+export async function putQuestionnaire(questionnaire: QuestionnaireDto): Promise<QuestionnaireDto> {
   try {
     const res = await axios.put(`/api/questionnaires/${questionnaire.id}`, questionnaire)
     return res.data as QuestionnaireDto

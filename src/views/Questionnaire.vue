@@ -67,6 +67,10 @@
         <v-text-field
           v-model="wrapperQuestionnaire.questionnaire.name"
         ></v-text-field>
+        <v-select
+          :items="listOfTypes"
+          v-model="wrapperQuestionnaire.questionnaire.type"
+        ></v-select>
         <v-row v-for="(rate, i) in wrapperQuestionnaire.questionnaire.rateList"
           :key="rate.id">
           <v-col>
@@ -87,7 +91,7 @@
               solo
               @input="$v.wrapperQuestionnaire.questionnaire.rateList.$each[i].mark.$touch()"
               @blur="$v.wrapperQuestionnaire.questionnaire.rateList.$each[i].mark.$touch()"
-              :error-messages="markErrors($v.wrapperQuestionnaire.questionnaire.rateList.$each[i], )"
+              :error-messages="markErrors($v.wrapperQuestionnaire.questionnaire.rateList.$each[i].mark)"
             ></v-select>
           </v-col>
           <v-col>
@@ -111,10 +115,10 @@
 <script lang="ts">
 import Component, { mixins } from 'vue-class-component'
 import Field from '@/components/Field.vue'
-import { QuestionnaireDto, RateDto, FieldSkelet } from '@/types/index'
+import { QuestionnaireDto, RateDto, FieldSkelet, ImplSelectElement } from '@/types/index'
 import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 import MarkMixin from '@/mixin/mark.mixin'
-import { getAllQuestionnaire } from '@/utils/request/index'
+import { getAllQuestionnaire, deployQuestionnaire, putQuestionnaire, getConveyorTypes } from '@/utils/request/index'
 import QuestionnaireConverter from '@/utils/questionnaireConverter'
 import { required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
@@ -124,6 +128,7 @@ import * as R from 'ramda'
 interface Wrapper {
   questionnaire: QuestionnaireDto
   saved: boolean
+  isNew: boolean
 }
 
 @Component({
@@ -187,14 +192,19 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
   wrapperQuestionnaire: Wrapper = {
     questionnaire: { } as QuestionnaireDto,
     saved: false,
+    isNew: true,
   }
   questionnaire = -1
   questionnaireList: Array<Wrapper> = []
   unwatchIsLiveProp = { }
+  listOfTypes: Array<ImplSelectElement> = []
 
   @AsyncLoading
   async mounted(): Promise<void> {
-    this.questionnaireList = (await getAllQuestionnaire()).map(item => { return { questionnaire: item, saved: true } })
+    const conveyorTypes: Array<string> = await getConveyorTypes()
+    this.listOfTypes = conveyorTypes.map(i => new ImplSelectElement(this.$t(i), i.toUpperCase()))
+
+    this.questionnaireList = (await getAllQuestionnaire()).map(item => { return { questionnaire: item, saved: true, isNew: false } })
   }
 
   selectItem(target: Wrapper, index: number): void {
@@ -207,7 +217,7 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
   }
 
   newItem(): void {
-    const newItem: Wrapper = { saved: false, questionnaire: { id: this.questionnaireList.length.toString(), name: 'newItem', type: '', rateList: [{ id: '0', name: '', value: '', mark: '' }] } }
+    const newItem: Wrapper = { isNew: true, saved: false, questionnaire: { id: this.questionnaireList.length.toString(), name: 'newItem', type: '', rateList: [{ id: '0', name: '', value: '', mark: '' }] } }
     this.questionnaireList.push(newItem)
     this.selectItem(newItem, this.questionnaireList.length - 1)
   }
@@ -230,8 +240,19 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     }
   }
 
-  save(item: Wrapper): void {
-    item.saved = true
+  async save(item: Wrapper): Promise<void> {
+    try {
+      if (item.isNew) {
+        await deployQuestionnaire(item.questionnaire)
+        item.isNew = false
+      }
+      else {
+        await putQuestionnaire(item.questionnaire)
+      }
+      item.saved = true
+    } catch (error) {
+      // TODO
+    }
   }
 
   isSaved(item: Wrapper): boolean {
@@ -240,9 +261,9 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
   }
 
   markErrors(target: any): string | Array<string> {
-    if (!target.mark.$dirty) return ''
-    if (!target.mark.required) return 'Field is required'
-    if (!target.mark.isUnique) return 'Not unique'
+    if (!target.$dirty) return ''
+    if (!target.required) return 'Field is required'
+    if (!target.isUnique) return 'Not unique'
     return ''
   }
 

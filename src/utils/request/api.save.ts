@@ -1,8 +1,8 @@
-import axios from 'axios'
 import { ConveyorDto, QuestionnaireDto } from '@/types/index'
 import ConveyorMinimizezer from '@/utils/minimizerConveyor'
+import axios from 'axios'
 
-export async function saveQuestionnaire(id: string, questionnaire: QuestionnaireDto): Promise<QuestionnaireDto> {
+export async function saveUserQuestionnaire(id: string, questionnaire: QuestionnaireDto): Promise<QuestionnaireDto> {
   try {
     const res = await axios.put<QuestionnaireDto>(`/api/user/projects/${id}/questionnaire`, questionnaire)
 

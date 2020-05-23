@@ -37,7 +37,7 @@
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
 import { QuestionnaireDto, RateDto, States, SelectElement } from '@/types/index'
-import { saveQuestionnaire } from '@/utils/request/index'
+import { saveUserQuestionnaire } from '@/utils/request/index'
 import LoadingMixin from '@/mixin/loading.mixin'
 import Component, { mixins } from 'vue-class-component'
 import * as R from 'ramda'
@@ -81,7 +81,7 @@ export default class QuestionList extends mixins(LoadingMixin) {
   }
 
   async unfocus(item: QuestionnaireDto): Promise<void> {
-    await saveQuestionnaire(this.project, this.questionnaire)
+    await saveUserQuestionnaire(this.project, this.questionnaire)
   }
 
   convertToFieldSkelet(rate: RateDto): RateDto {
