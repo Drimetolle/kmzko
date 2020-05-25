@@ -82,6 +82,11 @@
               @blur="$v.wrapperQuestionnaire.questionnaire.rateList.$each[i].name.$touch()"
               :error-messages="nameErrors($v.wrapperQuestionnaire.questionnaire.rateList.$each[i].name)"
             ></v-text-field>
+            <CompletableSelect>
+            </CompletableSelect>
+            <!-- <Field
+              :item="convertToFieldSkelet(rate)"
+            /> -->
           </v-col>
           <v-col>
             <v-select
@@ -105,7 +110,23 @@
           </v-col>
         </v-row>
         <v-row justify="center">
-          <v-btn v-if="!!wrapperQuestionnaire.questionnaire.rateList" @click="newRate">add field</v-btn>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on }">
+              <v-btn 
+                v-if="!!wrapperQuestionnaire.questionnaire.rateList" 
+                v-on="on">add field</v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                @click="newRate('text')">
+                Текстовое поле
+              </v-list-item>
+              <v-list-item
+                @click="newRate('select')">
+                Выбор из списка
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </v-row>
       </v-form>
     </v-col>
@@ -124,6 +145,7 @@ import { required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
 import * as R from 'ramda'
+import CompletableSelect from '@/components/CompletableSelect'
 
 interface Wrapper {
   questionnaire: QuestionnaireDto
@@ -135,6 +157,7 @@ interface Wrapper {
   mixins: [validationMixin],
   components: {
     Field,
+    CompletableSelect,
   },
   watch: {
     questionnaireWatcher: {
@@ -229,8 +252,9 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     }
   }
 
-  newRate(): void {
-    this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
+  newRate(type: string): void {
+    if (type === 'text') this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
+    else if (type === 'select') this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '', possibleRateValues: [{ id: '1', name: 'asfd' }] })
   }
 
   removeRate(item: RateDto): void {
@@ -258,6 +282,14 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
   isSaved(item: Wrapper): boolean {
     const index = this.questionnaireList.indexOf(item)
     return this.questionnaireList[index].saved
+  }
+
+  convertToFieldSkelet(rate: RateDto): RateDto {
+    if(rate.possibleRateValues) {
+      this.$set(rate, 'child', rate.possibleRateValues)
+      this.$delete(rate, 'possibleRateValues')
+    }
+    return rate
   }
 
   markErrors(target: any): string | Array<string> {
