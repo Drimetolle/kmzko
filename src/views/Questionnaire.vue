@@ -75,6 +75,7 @@
           :key="rate.id">
           <v-col>
             <v-text-field
+              v-if="rate.possibleRateValues < 1"
               v-model="rate.name"
               label="Характеристика"
               :placeholder="rate.placeholder"
@@ -82,11 +83,10 @@
               @blur="$v.wrapperQuestionnaire.questionnaire.rateList.$each[i].name.$touch()"
               :error-messages="nameErrors($v.wrapperQuestionnaire.questionnaire.rateList.$each[i].name)"
             ></v-text-field>
-            <CompletableSelect>
+            <CompletableSelect
+              :items="rate.possibleRateValues"
+              v-else>
             </CompletableSelect>
-            <!-- <Field
-              :item="convertToFieldSkelet(rate)"
-            /> -->
           </v-col>
           <v-col>
             <v-select
@@ -254,7 +254,7 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
 
   newRate(type: string): void {
     if (type === 'text') this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
-    else if (type === 'select') this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '', possibleRateValues: [{ id: '1', name: 'asfd' }] })
+    else if (type === 'select') this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '', possibleRateValues: [{ id: '1', name: '' }] })
   }
 
   removeRate(item: RateDto): void {
