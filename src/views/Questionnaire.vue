@@ -28,35 +28,28 @@
             @click="selectItem(item, i)"
             class="on-hover"
           >
-            <v-hover v-slot:default="{ hover }">
-              <v-list-item-content>
-                <v-btn v-if="hover"
-                  absolute
-                  text
-                  small
-                  fab
-                  right
-                  @click.stop="removeItem(item)"
-                >
-                  <v-icon>clear</v-icon>
-                </v-btn>
-                <v-btn v-if="hover && !isSaved(item)"
-                  absolute
-                  text
-                  small
-                  fab
-                  right
-                  @click.stop="save(item)"
-                  style="right: 45px !important;"
-                >
-                  <v-icon>save</v-icon>
-                </v-btn>
-                <v-btn absolute right v-if="!hover && !isSaved(item)" icon>
-                  <v-icon size="x-small">lens</v-icon> 
-                </v-btn>
-                <v-list-item-title>{{ item.questionnaire.name }}</v-list-item-title>
-              </v-list-item-content>
-            </v-hover>
+          <v-list-item-title>{{ item.questionnaire.name }}</v-list-item-title>
+          <v-spacer></v-spacer>
+            <v-list-item-action @click.stop>
+              <v-btn v-if="!isSaved(item)"
+                text
+                small
+                fab
+                @click.stop="save(item)"
+              >
+                <v-icon>save</v-icon>
+              </v-btn>
+            </v-list-item-action>
+            <v-list-item-action @click.stop>
+              <v-btn
+                text
+                small
+                fab
+                @click.stop="removeItem(item)"
+              >
+                <v-icon>clear</v-icon>
+              </v-btn>
+            </v-list-item-action>
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -75,7 +68,7 @@
           :key="rate.id">
           <v-col>
             <v-text-field
-              v-if="rate.possibleRateValues < 1"
+              v-if="!isSelect(rate)"
               v-model="rate.name"
               label="Характеристика"
               :placeholder="rate.placeholder"
@@ -297,6 +290,15 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     if (!target.required) return 'Field is required'
     if (!target.isUnique) return 'Not unique'
     return ''
+  }
+
+  isSelect(rate: RateDto): boolean {
+    if (rate.possibleRateValues) {
+      return rate.possibleRateValues.length >= 1
+    }
+    else {
+      return false
+    }
   }
 
   get getConverter(): QuestionnaireConverter {
