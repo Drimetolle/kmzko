@@ -1,5 +1,5 @@
 import { ConveyorDto } from '@/types/index'
-import Minimize from '@/utils/minimizerPayload'
+import Minimize from '@/utils/minimizers/minimizerPayload'
 
 export default class ConveyorMinimizezer implements Minimize<ConveyorDto> {
   minimize(payload: ConveyorDto): any {

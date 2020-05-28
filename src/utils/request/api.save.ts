@@ -1,5 +1,5 @@
 import { ConveyorDto, QuestionnaireDto } from '@/types/index'
-import ConveyorMinimizezer from '@/utils/minimizerConveyor'
+import ConveyorMinimizezer from '@/utils/minimizers/minimizerConveyor'
 import axios from 'axios'
 
 export async function saveUserQuestionnaire(id: string, questionnaire: QuestionnaireDto): Promise<QuestionnaireDto> {

@@ -1,6 +1,9 @@
 import axios from 'axios'
 import { QuestionnaireDto } from '@/types/index'
 import recursiveDeleteIds from '@/utils/recursiveRemoveIds'
+import QuestionnaireMinimizezer from '@/utils/minimizers/minimizerQuestionnaire'
+
+const minimize = (questionnaire: QuestionnaireDto): unknown => (new QuestionnaireMinimizezer()).minimize(questionnaire)
 
 export async function getConveyorTypes(): Promise<Array<string>> {
   try {
@@ -31,7 +34,7 @@ export async function getAllQuestionnaire(): Promise<Array<QuestionnaireDto>> {
 
 export async function deployQuestionnaire(questionnaire: QuestionnaireDto): Promise<QuestionnaireDto> {
   try {
-    const res = await axios.post('/api/questionnaires', questionnaire)
+    const res = await axios.post('/api/questionnaires', minimize(questionnaire))
     return res.data as QuestionnaireDto
   } catch (error) {
     throw Error(error)
@@ -40,7 +43,7 @@ export async function deployQuestionnaire(questionnaire: QuestionnaireDto): Prom
 
 export async function putQuestionnaire(questionnaire: QuestionnaireDto): Promise<QuestionnaireDto> {
   try {
-    const res = await axios.put(`/api/questionnaires/${questionnaire.id}`, questionnaire)
+    const res = await axios.put(`/api/questionnaires/${questionnaire.id}`, minimize(questionnaire))
     return res.data as QuestionnaireDto
   } catch (error) {
     throw Error(error)

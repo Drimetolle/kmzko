@@ -12,8 +12,6 @@
               <v-btn
                 small
                 fab
-                bottom
-                right
                 @click="newItem"
               >
                 <v-icon>add</v-icon>
@@ -64,7 +62,8 @@
           :items="listOfTypes"
           v-model="wrapperQuestionnaire.questionnaire.type"
         ></v-select>
-        <v-row v-for="(rate, i) in wrapperQuestionnaire.questionnaire.rateList"
+        <v-row 
+          v-for="(rate, i) in wrapperQuestionnaire.questionnaire.rateList"
           :key="rate.id">
           <v-col>
             <v-text-field
@@ -212,7 +211,6 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
   }
   questionnaire = -1
   questionnaireList: Array<Wrapper> = []
-  unwatchIsLiveProp = { }
   listOfTypes: Array<ImplSelectElement> = []
 
   @AsyncLoading
