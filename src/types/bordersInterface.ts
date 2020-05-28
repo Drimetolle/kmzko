@@ -59,7 +59,7 @@ export interface CharacteristicDto {
   name: string
   value: string
   mark: string
-  type: string
+  unit: string
 }
 
 export interface QuestionnaireDto {
