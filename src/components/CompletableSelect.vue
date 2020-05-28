@@ -44,7 +44,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import R from 'ramda'
+import * as R from 'ramda'
 
 const Props = Vue.extend({
   props: {
@@ -59,7 +59,10 @@ export default class CompletableSelect extends Props {
   model = null
 
   created(): void {
-    this.$set(this.items[0], 'text', '')
+    if (!(this.items[0].text === '')) {
+      const el = { text: '' }
+      this.items.unshift(el)
+    }
     this.editing = this.items[0]
   }
 

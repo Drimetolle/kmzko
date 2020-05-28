@@ -139,8 +139,27 @@ import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
 import * as R from 'ramda'
 import CompletableSelect from '@/components/CompletableSelect'
 
+function convertRate(rate: RateDto): unknown {
+  rate.possibleRateValues = rate.possibleRateValues!.map(val => { return { id: val.id, text: val.name } }) as any
+  return rate
+}
+
+function convertQuestionnaireDto(questionnaire: QuestionnaireDto): any {
+  const newQuestionnaire = R.clone(questionnaire)
+  newQuestionnaire.rateList = newQuestionnaire.rateList.map(rate => rate.possibleRateValues!.length > 0 ? convertRate(rate) : rate) as any
+
+  return newQuestionnaire
+}
+
+interface SomeQuestionnaire {
+  id: string
+  name: string
+  type: string
+  rateList: Array<any>
+}
+
 interface Wrapper {
-  questionnaire: QuestionnaireDto
+  questionnaire: SomeQuestionnaire
   saved: boolean
   isNew: boolean
 }
@@ -205,7 +224,7 @@ interface Wrapper {
 })
 export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, ErrorsMixin) {
   wrapperQuestionnaire: Wrapper = {
-    questionnaire: { } as QuestionnaireDto,
+    questionnaire: { } as any,
     saved: false,
     isNew: true,
   }
@@ -218,7 +237,7 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
     const conveyorTypes: Array<string> = await getConveyorTypes()
     this.listOfTypes = conveyorTypes.map(i => new ImplSelectElement(this.$t(i), i.toUpperCase()))
 
-    this.questionnaireList = (await getAllQuestionnaire()).map(item => { return { questionnaire: item, saved: true, isNew: false } })
+    this.questionnaireList = (await getAllQuestionnaire()).map(item => { return { questionnaire: convertQuestionnaireDto(item), saved: true, isNew: false } })
   }
 
   selectItem(target: Wrapper, index: number): void {
@@ -245,7 +264,7 @@ export default class Questionnaire extends mixins(LoadingMixin, MarkMixin, Error
 
   newRate(type: string): void {
     if (type === 'text') this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '' })
-    else if (type === 'select') this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '', possibleRateValues: [{ id: '1', name: '' }] })
+    else if (type === 'select') this.wrapperQuestionnaire.questionnaire.rateList.push({ id: this.wrapperQuestionnaire.questionnaire.rateList.length.toString(), name: '', value: '', mark: '', possibleRateValues: [{ id: '1', text: '' }] })
   }
 
   removeRate(item: RateDto): void {
