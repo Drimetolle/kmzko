@@ -1,18 +1,8 @@
 import axios from 'axios'
-import { Conveyor, QuestionnaireDto, RateDto } from '@/types/index'
+import { Conveyor, QuestionnaireDto } from '@/types/index'
+import QuestionnaireParamsMinimizer from '@/utils/minimizers/minimizerQuestionnaireParams'
 
-const constructQuery = (payload: QuestionnaireDto): object => {
-  const rates = payload.rateList
-  function makeObj(obj: any, rate: RateDto): object {
-    obj[rate.mark] = rate.value
-    return obj
-  }
-
-  const result = { }
-  rates.forEach(rate => makeObj(result, rate))
-
-  return result
-}
+const minimize = (questionnaire: QuestionnaireDto): object => (new QuestionnaireParamsMinimizer()).minimize(questionnaire)
 
 
 export async function getConveyor(id: string): Promise<Conveyor> {
@@ -26,8 +16,8 @@ export async function getConveyor(id: string): Promise<Conveyor> {
 
 export async function getNearConveyors(payload: QuestionnaireDto): Promise<Array<Conveyor>> {
   try {
-    const res = await axios.get<Array<Conveyor>>('/api/search/conveyors/', {
-      params: constructQuery(payload),
+    const res = await axios.get<Array<Conveyor>>('/api/search/conveyors', {
+      params: minimize(payload),
     })
     return res.data
   } catch (error) {

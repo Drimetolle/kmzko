@@ -8,6 +8,6 @@ const map = new Map<string, string>([
 ])
 
 export default function rateFilter(value: Array<CharacteristicDto>): string {
-  const formatArray = value.map((detail) => `${detail.name} - ${detail.value}${map.get(detail.type) ?? ''}`)
+  const formatArray = value.map((detail) => `${detail.name} - ${detail.value}${map.get(detail.unit) ?? ''}`)
   return formatArray.join(', ')
 }
