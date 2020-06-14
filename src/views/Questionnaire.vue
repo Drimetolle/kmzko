@@ -137,7 +137,7 @@ import { required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import ErrorsMixin from '@/mixin/standartValidationErrors.mixin'
 import * as R from 'ramda'
-import CompletableSelect from '@/components/CompletableSelect'
+import CompletableSelect from '@/components/vuetifyWrappers/CompletableSelect'
 
 function convertRate(rate: RateDto): unknown {
   rate.possibleRateValues = rate.possibleRateValues!.map(val => { return { id: val.id, text: val.name } }) as any

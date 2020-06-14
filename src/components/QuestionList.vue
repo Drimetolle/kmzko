@@ -15,6 +15,9 @@
           size="50"
         ></v-progress-circular>
       </div>
+      <div v-if="projectIsExist" class="text-center">
+        Такого проекта нет.
+      </div>
       <v-form v-model="valid">
         <v-container v-if="show">
           <h4>{{questionnaire.name}}</h4>
@@ -25,9 +28,6 @@
           />
           <v-btn class="mr-4" @click.prevent="submit">{{ $t('submit') }}</v-btn>
         </v-container>
-        <v-container class="text-center" v-else-if="select !== '' && loaded">
-          К сожалению опросных листов для такого типа конвейера нет
-        </v-container>
       </v-form>
     </v-col>
   </v-row>
@@ -36,9 +36,9 @@
 <script lang="ts">
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Field from '@/components/Field.vue'
-import { QuestionnaireDto, RateDto, States, SelectElement } from '@/types/index'
+import { QuestionnaireDto, RateDto, States, SelectElement, ConveyorProjectDto } from '@/types/index'
 import { saveUserQuestionnaire } from '@/utils/request/index'
-import LoadingMixin from '@/mixin/loading.mixin'
+import LoadingMixin, { AsyncLoading } from '@/mixin/loading.mixin'
 import Component, { mixins } from 'vue-class-component'
 import * as R from 'ramda'
 
@@ -48,7 +48,7 @@ import * as R from 'ramda'
   },
   methods: {
     ...mapMutations(['setState', 'setQuestionnaire', 'setConveyorType']),
-    ...mapActions(['getFormConveyor', 'fetchConveyors']),
+    ...mapActions(['getFormConveyor', 'fetchConveyors', 'fetchProjectById']),
   },
   computed: {
     ...mapGetters(['getQuestionnaire', 'getConveyorProjectId']),
@@ -56,7 +56,6 @@ import * as R from 'ramda'
 })
 export default class QuestionList extends mixins(LoadingMixin) {
   items: Array<SelectElement> = []
-  select = ''
   questionnaire: QuestionnaireDto = { } as any
   valid = false
   project = ''
@@ -65,10 +64,19 @@ export default class QuestionList extends mixins(LoadingMixin) {
   setQuestionnaire!: (...args: any) => void
   getFormConveyor!: (type: string) => Promise<QuestionnaireDto>
   setConveyorType!: (...args: any) => void
+  fetchProjectById!: (id: string) => Promise<ConveyorProjectDto>
   getQuestionnaire!: QuestionnaireDto
   getConveyorProjectId!: string
 
-  created(): void {
+  @AsyncLoading
+  async created(): Promise<void> {
+    try {
+      await this.fetchProjectById(this.$route.params.id)
+    }
+    catch(error) {
+      return
+    }
+
     this.questionnaire = R.clone(this.getQuestionnaire)
     this.project = this.getConveyorProjectId
   }
@@ -94,6 +102,10 @@ export default class QuestionList extends mixins(LoadingMixin) {
 
   get show(): boolean {
     return this.loaded && Object.keys(this.questionnaire).length > 0
+  }
+
+  get projectIsExist(): boolean {
+    return this.loaded && R.isEmpty(this.questionnaire)
   }
 }
 </script>

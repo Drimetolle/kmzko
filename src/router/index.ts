@@ -33,14 +33,11 @@ const routes = [
     component: Registration,
   },
   {
-    path: '/configurator',
+    path: '/configurator/:id',
     name: 'configurator',
     meta: { layout: 'main' },
     component: Configurator,
-    beforeEnter: (to: Route, from: Route, next: (path?: string) => void): void => {
-      if (checkUndifinedQuestionnaireAndConveyor()) next(from.fullPath)
-      else next()
-    },
+    props: true,
   },
   {
     path: '/settings',

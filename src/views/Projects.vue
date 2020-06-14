@@ -109,10 +109,8 @@ export default class Projects extends mixins(ErrorsMixin) {
 
     const state = item.conveyor ? States.AddOptions : States.QuestionList
 
-    await this.fetchProjectById(item.id)
-
     this.setState(state)
-    this.$router.push('/configurator')
+    this.$router.push(`/configurator/${item.id}`)
   }
 
   async fetchConveyorTypes(): Promise<Array<SelectElement>> {
